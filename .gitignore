@@ -50,3 +50,16 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+.cproject
+.project
+.settings
+*~
+core
+.depend
+.*.cmd
+*.mod
+*.mod.c
+.tmp_versions
+.vscode
+.idea
