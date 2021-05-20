@@ -12,6 +12,7 @@ Check the output of this command:
 If the directory exists, it should work fine. Otherwise please don't try to install the module as it won't work.
 
 ## Install
+Make sure secure boot is disabled, then:  
 ```bash
 git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
 cd "acer-helios-300-rgb-keyboard-linux-module"
