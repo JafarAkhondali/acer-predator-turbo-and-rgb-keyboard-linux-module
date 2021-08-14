@@ -1,15 +1,44 @@
-# Acer Predator Helios 300 RGB backlight keyboard linux kernel module
+# Acer Predator RGB keyboard backlight and Turbo mode linux kernel module
 Inspired by https://github.com/hackbnw/faustus, this projects extends current acer-wmi linux kernel module to support acer gaming functions
 
+Turbo mode should support Acer Helios Predator and Acer Triton Predator series. 
+RGB Keyboard is only tested on Acer Helios 300 ( 4-zone RGB ). I don't think it could work for other series.
 
-Experimental unofficial Linux platform driver module for Acer Predator Helios Gaming series laptops.
+Experimental unofficial Linux platform driver module for Acer Predator Gaming series laptops.
 # WARNING: Use at your own risk. This driver interacts with low-level WMI methods which hasn't been tested on all series.  
 
 ---
-**Does this works on my laptop?**  
+**Will this work on my laptop?**
+
+#### Turbo Mode:
+
+The Turbo mode should work on following models, but I dont have access to them, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel:
+```
+PH315-52
+PH315-53 -> ( this is mine, and it works on my machine xD )
+PH317-53
+PH317-54
+PH517-51
+PH517-52
+PH517-61
+PH717-71
+PH717-72
+PT315-51
+PT315-52
+PT515-51
+PT515-52
+PT917-71
+```
+
+You can find your model using this command:
+`sudo dmidecode -s system-product-name`
+___
+#### RGB Keyboard:
+Currently the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboard such as helios 315-53, but haven't test other meodels.
+
 Check the output of this command:  
 `# file /sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/`  
-If the directory exists, it should work fine. Otherwise please don't try to install the module as it won't work.
+If the directory exists, it should work fine. Otherwise RGB may not work.
 
 ## Install
 Make sure secure boot is disabled, then:  
@@ -21,7 +50,10 @@ chmod +x ./install.sh
 ```
 
 ## Usage
-The module will mount a new character device at `/dev/acer-gkbbl-0`.  
+Turbo mode should work fine by using the button.
+
+For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
+with kernel space.  
 To make it easier to interact with this device, a simple python has been attached.  
 `python3 facer_rgb.py`  
 or check help for more advanced usage:  
