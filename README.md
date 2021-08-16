@@ -14,9 +14,9 @@ Experimental unofficial Linux platform driver module for Acer Predator Gaming se
 
 The Turbo mode should work on following models, but I dont have access to them, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel:
 ```
-PH315-52
+PH315-52 -> Tested
 PH315-53 -> ( this is mine, and it works on my machine xD )
-PH317-53
+PH317-53 -> Tested
 PH317-54
 PH517-51
 PH517-52
