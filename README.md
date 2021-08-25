@@ -23,7 +23,7 @@ PH517-52
 PH517-61
 PH717-71
 PH717-72
-PT315-51
+PT315-51 -> Tested ( turbo mode works but doesn't turn on LED) 
 PT315-52
 PT515-51
 PT515-52
