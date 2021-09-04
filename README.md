@@ -1,53 +1,70 @@
-# Acer Predator RGB keyboard backlight and Turbo mode linux kernel module
+# Acer Gaming RGB keyboard backlight and Turbo mode linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
 Inspired by https://github.com/hackbnw/faustus, this projects extends current acer-wmi linux kernel module to support acer gaming functions
 
 Turbo mode should support Acer Helios Predator and Acer Triton Predator series. 
-RGB Keyboard is only tested on Acer Helios 300 ( 4-zone RGB ). I don't think it could work for other series.
+RGB Keyboard is only tested on Acer (Predator, Helios, Nitro) 300 series ( 4-zone RGB ). 
 
 Experimental unofficial Linux platform driver module for Acer Predator Gaming series laptops.
-# WARNING: Use at your own risk. This driver interacts with low-level WMI methods which hasn't been tested on all series.  
+## WARNING: Use at your own risk. This driver interacts with low-level WMI methods which hasn't been tested on all series.  
 
----
 **Will this work on my laptop?**
 
-#### Turbo Mode:
+Compablity table:
 
-The Turbo mode should work on following models, but I dont have access to them, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel:
-```
-PH315-52 -> Tested
-PH315-53 -> ( this is mine, and it works on my machine xD )
-PH317-53 -> Tested
-PH317-54
-PH517-51
-PH517-52
-PH517-61
-PH717-71
-PH717-72
-PT315-51 -> Tested ( turbo mode works but doesn't turn on LED) 
-PT315-52
-PT515-51
-PT515-52
-PT917-71
-```
+| Product name  | Turbo Mode (Implemented)| Turbo Mode (Tested)| RGB (Impelmented)| RGB (Tested)|
+| ------------- |:-----------------------:|:------------------:|:-----------------:|:------------:|
+| A515-55  |   No                   |   No               | Yes               |Yes           |
+| PH315-52 |   Yes                   |   Yes               | Yes               |Yes           |
+| PH315-53 |   Yes                   |   Yes               | Yes               |Yes           |
+| PH317-53 |   Yes                   |   Yes               | Yes               |Yes           |
+| PH317-54 |   Yes                   |   No               | Yes               |No           |
+| PH517-51 |   Yes                   |   No               | Yes               |No           |
+| PH517-52 |   Yes                   |   No               | Yes               |No           |
+| PH517-61 |   Yes                   |   No               | Yes               |No           |
+| PH717-71 |   Yes                   |   No               | Yes               |No           |
+| PH717-72 |   Yes                   |   No               | Yes               |No           |
+| PT314-51 |   No                   |   No               | Yes               |Yes           |
+| PT315-51 |   Yes                   |   Yes               | Yes               |Yes           |
+| PT315-52 |   Yes                   |   No               | Yes               |No           |
+| PT515-51 |   Yes                   |   No               | Yes               |No           |
+| PT515-52 |   Yes                   |   No               | Yes               |No           |
+| PT917-71 |   Yes                   |   No               | Yes               |No           |
+
+
+
+
+Obviously I dont have access to all these models, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel.
 
 You can find your model using this command:
 `sudo dmidecode -s system-product-name`
 ___
 #### RGB Keyboard:
-Currently the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboard such as helios 315-53, but haven't test other meodels.
+Currently the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboards like 300 series, but haven't test other models.
 
 Check the output of this command:  
 `# file /sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/`  
 If the directory exists, it should work fine. Otherwise RGB may not work.
 
+## Requirements
+Secure boot must be disabled.  
+Install linux headers using your distro package manager:
+Ubuntu (or other debian baseds distros):
+`sudo apt-get install linux-headers-$(uname -r)`
+
+Arch (I don't use arch anymore btw):
+`sudo pacman -S linux-headers`
+
+
+
 ## Install
-Make sure secure boot is disabled, then:  
 ```bash
 git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
 cd "acer-helios-300-rgb-keyboard-linux-module"
 chmod +x ./install.sh
 ./install.sh
 ```
+
+
 
 ## Usage
 Turbo mode should work fine by using the button.
@@ -131,6 +148,17 @@ Static waving (speed=0):
 
 
 
+## Known problems
+Changes are not persistent after reboot. You'll need to install the module again.  
+Sometimes creating RGB char device may fail. This can be fixed using (thanks to Zehra for mentioning this):
+```
+sudo ./uninstall.sh
+sudo rm /dev/acer-gkbbl-0
+sudo ./install.sh
+```
+If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
+
+
 ## Uninstall:
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.
 
@@ -138,4 +166,23 @@ Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.
 If this worked, or didn't worked for you, kindly make a new issue, and attach the following if possible:  
 `sudo dmidecode | grep "Product Name" -B 2 -A 4`  
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
+
+## Donation:
+Donations are not required but shows your ❤️ to open source and encourages me to implement more features for this tool.
+[Paypal](https://www.paypal.com/paypalme/jafarakhondali)
+
+BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
+Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
+BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
+
+
+## Roadmap:
+- [x] Send patch to kernel mainline (currently only turbo mode for 315-53 is implemented)  
+- [x] Implement Turbo mode  
+- [x] Implement RGB Dynamic effects (4-zone)  
+- [ ] GUI ([https://github.com/zehratullayl/Linux-Predator-GUI](Zehra) is working on this)
+- [ ] Custom Fans speed
+- [ ] Implement RGB Static coloring (4-zone)  
+- [ ] Implement RGB Dynamic effects (per key RGB)  
+- [ ] Implement RGB Static coloring (per key RGB)  
 
