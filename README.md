@@ -1,11 +1,13 @@
-# Acer Gaming RGB keyboard backlight and Turbo mode linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
-Inspired by https://github.com/hackbnw/faustus, this projects extends current acer-wmi linux kernel module to support acer gaming functions
+# Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
+![](keyboard.webp)
+    
+Inspired by https://github.com/hackbnw/faustus, this project extends current acer-wmi linux kernel module to support Acer gaming functions
 
 Turbo mode should support Acer Helios Predator and Acer Triton Predator series. 
 RGB Keyboard is only tested on Acer (Predator, Helios, Nitro) 300 series ( 4-zone RGB ). 
 
 Experimental unofficial Linux platform driver module for Acer Predator Gaming series laptops.
-## WARNING: Use at your own risk. This driver interacts with low-level WMI methods which hasn't been tested on all series.  
+## WARNING: Use at your own risk. This driver interacts with low-level WMI methods which haven't been tested on all series.  
 
 **Will this work on my laptop?**
 
@@ -33,22 +35,22 @@ Compablity table:
 
 
 
-Obviously I dont have access to all these models, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel.
+Obviously, I don't have access to all these models, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel.
 
 You can find your model using this command:
 `sudo dmidecode -s system-product-name`
 ___
 #### RGB Keyboard:
-Currently the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboards like 300 series, but haven't test other models.
+Currently, the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboards like 300 series but haven't tested other models.
 
 Check the output of this command:  
 `# file /sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/`  
-If the directory exists, it should work fine. Otherwise RGB may not work.
+If the directory exists, it should work fine. Otherwise, RGB may not work.
 
 ## Requirements
 Secure boot must be disabled.  
 Install linux headers using your distro package manager:
-Ubuntu (or other debian baseds distros):  
+Ubuntu (or other Debian baseds distros):  
 `sudo apt-get install linux-headers-$(uname -r)`
 
 Arch (I don't use arch anymore btw):  
@@ -93,8 +95,8 @@ Animation Speed:
     1 -> Slowest animation speed
     9 -> Fastest animation speed
     
-    You can use values between 1-9 to adjust the speed, or increase speed even more than 255, but keep in mind
-    that values higher than 9 were not used in official PredatorSense application.
+    You can use values between 1-9 to adjust the speed or increase speed even more than 255, but keep in mind
+    that values higher than 9 were not used in the official PredatorSense application.
 
 -b [brightness]
 Keyboard backlight Brightness:
@@ -163,12 +165,12 @@ If installation failed, check this [issue](https://github.com/JafarAkhondali/ace
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.
 
 ## Feedback:
-If this worked, or didn't worked for you, kindly make a new issue, and attach the following if possible:  
+If this worked or didn't worked for you, kindly make a new issue, and attach the following if possible:  
 `sudo dmidecode | grep "Product Name" -B 2 -A 4`  
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
 
 ## Donation:
-Donations are not required but shows your ❤️ to open source and encourages me to implement more features for this tool.
+Donations are not required but show your ❤️ to open source and encourages me to implement more features for this tool.
 [Paypal](https://www.paypal.com/paypalme/jafarakhondali)
 
 BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
@@ -176,13 +178,26 @@ Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C
 BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
 
 
+
+## Contributing
+**Are you a developer?**
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request
+
 ## Roadmap:
 - [x] Send patch to kernel mainline (currently only turbo mode for 315-53 is implemented)  
 - [x] Implement Turbo mode  
 - [x] Implement RGB Dynamic effects (4-zone)  
-- [ ] GUI ([https://github.com/zehratullayl/Linux-Predator-GUI](Zehra) is working on this)
+- [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
 - [ ] Implement RGB Static coloring (4-zone)  
 - [ ] Implement RGB Dynamic effects (per key RGB)  
 - [ ] Implement RGB Static coloring (per key RGB)  
 
+
+## License
+GNU General Public License v3
