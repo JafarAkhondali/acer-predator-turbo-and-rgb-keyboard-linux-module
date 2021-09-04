@@ -48,10 +48,10 @@ If the directory exists, it should work fine. Otherwise RGB may not work.
 ## Requirements
 Secure boot must be disabled.  
 Install linux headers using your distro package manager:
-Ubuntu (or other debian baseds distros):
+Ubuntu (or other debian baseds distros):  
 `sudo apt-get install linux-headers-$(uname -r)`
 
-Arch (I don't use arch anymore btw):
+Arch (I don't use arch anymore btw):  
 `sudo pacman -S linux-headers`
 
 
