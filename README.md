@@ -63,7 +63,7 @@ Arch (I don't use arch anymore btw):
 git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
 cd "acer-helios-300-rgb-keyboard-linux-module"
 chmod +x ./install.sh
-./install.sh
+sudo ./install.sh
 ```
 
 
