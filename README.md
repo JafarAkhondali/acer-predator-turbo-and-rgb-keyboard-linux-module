@@ -13,9 +13,11 @@ Experimental unofficial Linux platform driver module for Acer Predator Gaming se
 
 Compablity table:
 
+
 | Product name  | Turbo Mode (Implemented)| Turbo Mode (Tested)| RGB (Impelmented)| RGB (Tested)|
 | ------------- |:-----------------------:|:------------------:|:-----------------:|:------------:|
-| A515-55  |   No                   |   No               | Yes               |Yes           |
+| AN515-45  |   -                   |   -               | Yes               |Yes           |
+| AN515-55  |   -                   |   -               | Yes               |Yes           |
 | PH315-52 |   Yes                   |   Yes               | Yes               |Yes           |
 | PH315-53 |   Yes                   |   Yes               | Yes               |Yes           |
 | PH317-53 |   Yes                   |   Yes               | Yes               |Yes           |
