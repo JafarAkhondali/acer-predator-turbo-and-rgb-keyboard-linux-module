@@ -1903,6 +1903,8 @@ static void acer_led_exit(void)
  * for keyboard RGB backlight configurations.
  */
 
+u8 save_user_buf[GAMING_KBBL_CONFIG_LEN];
+
 static ssize_t gkbbl_drv_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *offset)
 {
@@ -1918,13 +1920,22 @@ static ssize_t gkbbl_drv_write(struct file *file,
 		pr_err("Copying data from userspace failed with code: %lu\n", err);
 
 	set_u8_array(config_buf, GAMING_KBBL_CONFIG_LEN, ACER_CAP_GAMINGKB);
+
+	memset(save_user_buf, 0, GAMING_KBBL_CONFIG_LEN);
+	strcpy(save_user_buf, config_buf);
+
 	return count;
 }
 
+static ssize_t gkbbl_read(struct file *fp, char __user *user_buffer, size_t length, loff_t *position)
+{
+    return simple_read_from_buffer(user_buffer, length, position, save_user_buf, GAMING_KBBL_CONFIG_LEN);
+}
 
 static const struct file_operations gkbbl_dev_fops = {
 		.owner      = THIS_MODULE,
-		.write       = gkbbl_drv_write
+		.read		= gkbbl_read,
+		.write      = gkbbl_drv_write
 };
 
 struct gkbbl_device_data {
