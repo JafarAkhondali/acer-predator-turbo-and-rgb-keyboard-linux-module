@@ -1718,7 +1718,7 @@ static acpi_status WMID_gaming_get_u8_array(u32 *value, u32 cap)
 		acpi_status status;
 		u32 tmp = 0;
 
-		status = wmi_evaluate_method(WMID_GUID4, 2, ACER_WMID_GET_GAMINGKBBL_METHODID, &input, &output);
+		status = wmi_evaluate_method(WMID_GUID4, 0, ACER_WMID_GET_GAMINGKBBL_METHODID, &input, &output);
 		if (ACPI_FAILURE(status))
 			return status;
 
@@ -1949,7 +1949,6 @@ static ssize_t gkbbl_read(struct file *fp, char __user *user_buffer, size_t leng
 	u32 keyboard_led_state;
 	u32 input = 0x1;
 	WMID_gaming_get_u8_array(&keyboard_led_state, input);
-	printk("%c", keyboard_led_state);
     return keyboard_led_state;
 }
 
