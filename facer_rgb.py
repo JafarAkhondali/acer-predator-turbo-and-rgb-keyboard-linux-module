@@ -1,5 +1,6 @@
 # /usr/bin/python3
 import argparse
+import binascii
 
 PAYLOAD_SIZE = 16
 CHARACTER_DEVICE = "/dev/acer-gkbbl-0"
@@ -125,4 +126,7 @@ payload[7] = args.blue
 
 with open(CHARACTER_DEVICE, 'wb') as cd:
     cd.write(bytes(payload))
+
+with open(CHARACTER_DEVICE, 'rb') as cd:
+    print(cd.read())
 
