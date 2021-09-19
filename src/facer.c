@@ -1710,6 +1710,28 @@ static acpi_status WMID_gaming_set_u8_array(u8 array[], size_t array_size, u32 c
 	return WMI_gaming_execute_u8_array(method_id, array, array_size, NULL);
 }
 
+static acpi_status WMID_gaming_get_u8_array(u32 *value, u32 cap)
+{
+	struct acpi_buffer input = { (acpi_size)sizeof(u32), &cap };
+	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
+	union acpi_object *obj;
+		acpi_status status;
+		u32 tmp = 0;
+
+		status = wmi_evaluate_method(WMID_GUID4, 0, ACER_WMID_GET_GAMINGKBBL_METHODID, &input, &output);
+		if (ACPI_FAILURE(status))
+			return status;
+
+		obj = (union acpi_object *)output.pointer;
+		if (obj && obj->type == ACPI_TYPE_INTEGER)
+			tmp = (u32)obj->integer.value;
+	if (value)
+		*value = tmp;
+
+	kfree(obj);
+	return status;
+}
+
 static acpi_status WMID_gaming_get_u64(u64 *value, u32 cap)
 {
 	acpi_status status;
@@ -1903,8 +1925,6 @@ static void acer_led_exit(void)
  * for keyboard RGB backlight configurations.
  */
 
-u8 save_user_buf[GAMING_KBBL_CONFIG_LEN];
-
 static ssize_t gkbbl_drv_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *offset)
 {
@@ -1921,15 +1941,15 @@ static ssize_t gkbbl_drv_write(struct file *file,
 
 	set_u8_array(config_buf, GAMING_KBBL_CONFIG_LEN, ACER_CAP_GAMINGKB);
 
-	memset(save_user_buf, 0, GAMING_KBBL_CONFIG_LEN);
-	strcpy(save_user_buf, config_buf);
-
 	return count;
 }
 
 static ssize_t gkbbl_read(struct file *fp, char __user *user_buffer, size_t length, loff_t *position)
 {
-    return simple_read_from_buffer(user_buffer, length, position, save_user_buf, GAMING_KBBL_CONFIG_LEN);
+	u32 keyboard_led_state;
+	u32 input = 0x1;
+	WMID_gaming_get_u8_array(&keyboard_led_state, input);
+    return keyboard_led_state;
 }
 
 static const struct file_operations gkbbl_dev_fops = {
