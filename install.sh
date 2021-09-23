@@ -10,6 +10,9 @@ if [[ -f "/sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/" ]]; then
     exit 1
 fi
 
+# Remove previous chr devices if any exists
+rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
+
 # compile the kernel module
 make
 

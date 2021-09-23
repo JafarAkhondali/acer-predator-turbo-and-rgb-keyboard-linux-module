@@ -81,18 +81,25 @@ or check help for more advanced usage:
 `python3 facer_rgb.py --help`
 
 ```
--m [mode index]
-Animation effect modes:
+usage: facer_rgb.py [-h] [-m MODE] [-z ZONE] [-s SPEED] [-b BRIGHTNESS] [-d DIRECTION] [-cR RED] [-cG GREEN] [-cB BLUE]
 
+Interacts with experimental Acer-wmi kernel module.
+-m [mode index]
+    Effect modes:
+    0 -> Static [Accepts ZoneID[1,2,3,4] + RGB Color]
     1 -> Breath [Accepts RGB color]
     2 -> Neon
     3 -> Wave
     4 -> Shifting [Accepts RGB color]
     5 -> Zoom [Accepts RGB color]
 
--s [speed]
-Animation Speed:
+-z [ZoneID]
+    Zone ID(Only in static mode):
+    Possible values: 1,2,3,4
 
+-s [speed]
+    Animation Speed:
+    
     0 -> No animation speed (static)
     1 -> Slowest animation speed
     9 -> Fastest animation speed
@@ -101,34 +108,45 @@ Animation Speed:
     that values higher than 9 were not used in the official PredatorSense application.
 
 -b [brightness]
-Keyboard backlight Brightness:
-
+    Keyboard backlight Brightness:
+    
     0   -> No backlight (turned off)
     100 -> Maximum backlight brightness
-
+    
 -d [direction]
-Animation direction:
-
+    Animation direction:
+    
     1   -> Right to Left
     2   -> Left to Right
 
 -cR [red value]
-Some modes require specific [R]GB color
-
+    Some modes require specific [R]GB color
+    
     0   -> Minimum red range
     255 -> Maximum red range
 
 -cG [green value]
-Some modes require specific R[G]B color
-
+    Some modes require specific R[G]B color
+    
     0   -> Minimum green range
     255 -> Maximum green range
 
 -cB [blue value]
-Some modes require specific RG[B] color
-
+    Some modes require specific RG[B] color
+    
     0   -> Minimum blue range
     255 -> Maximum blue range
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -m MODE
+  -z ZONE
+  -s SPEED
+  -b BRIGHTNESS
+  -d DIRECTION
+  -cR RED
+  -cG GREEN
+  -cB BLUE
 ```
 Sample usages:
 
@@ -150,6 +168,11 @@ Zoom effect with Green color (speed=7, brightness=100):
 Static waving (speed=0):
 `python3 facer_rgb.py -m 3 -s 0 -b 100`
 
+Static mode coloring (zone=1 => most left zone, color=blue):
+`python3 facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
+
+Static mode coloring (zone=4 => most right zone, color=purple):
+`python3 facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
 
 
 ## Known problems
@@ -194,9 +217,9 @@ BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc
 - [x] Send patch to kernel mainline (currently only turbo mode for 315-53 is implemented)  
 - [x] Implement Turbo mode  
 - [x] Implement RGB Dynamic effects (4-zone)  
+- [x] Implement RGB Static coloring (4-zone)
 - [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
-- [ ] Implement RGB Static coloring (4-zone)  
 - [ ] Implement RGB Dynamic effects (per key RGB)  
 - [ ] Implement RGB Static coloring (per key RGB)  
 
