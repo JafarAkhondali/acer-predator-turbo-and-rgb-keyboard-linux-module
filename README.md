@@ -44,11 +44,11 @@ You can find your model using this command:
 `sudo dmidecode -s system-product-name`
 ___
 #### RGB Keyboard:
-Currently, the repository only supports dynamic effects. I think It should work only on 4zone RGB keyboards like 300 series but haven't tested other models.
+I think dynamic RGB effects should work only on 4zone RGB keyboards like 300 series but haven't tested other models.
 
 Check the output of this command:  
 `# file /sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/`  
-If the directory exists, it should work fine. Otherwise, RGB may not work.
+If the directory exists, it may work fine. Otherwise, RGB will not work at all.
 
 ## Requirements
 Secure boot must be disabled.  
@@ -72,7 +72,7 @@ sudo ./install.sh
 
 
 ## Usage
-Turbo mode should work fine by using the button.
+Turbo mode should work fine by using the turbo button on keyboard.
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
 with kernel space.  
@@ -169,23 +169,17 @@ Zoom effect with Green color (speed=7, brightness=100):
 Static waving (speed=0):
 `python3 facer_rgb.py -m 3 -s 0 -b 100`
 
-Static mode coloring (zone=1 => most left zone, color=blue):
+Static mode coloring (zone=1 => most left zone, color=blue):  
 `python3 facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
 
-Static mode coloring (zone=4 => most right zone, color=purple):
+Static mode coloring (zone=4 => most right zone, color=purple):  
 `python3 facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
 
 
 ## Known problems
-Changes are not persistent after reboot. You'll need to install the module again.  
-Sometimes creating RGB char device may fail. This can be fixed using (thanks to Zehra for mentioning this):
-```
-sudo ./uninstall.sh
-sudo rm /dev/acer-gkbbl-0
-sudo ./install.sh
-```
+Changes are not persistent after reboot. You'll need to install the module again.
 If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
-
+If something didn't look right, do a reboot (or boot to windows) and play a little with some Predator Sense app to reset ACPI registers. 
 
 ## Uninstall:
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.
@@ -196,7 +190,7 @@ If this worked or didn't worked for you, kindly make a new issue, and attach the
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
 
 ## Donation:
-Donations are not required but show your ❤️ to open source and encourages me to implement more features for this tool.
+Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
 [Paypal](https://www.paypal.com/paypalme/jafarakhondali)
 
 BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
