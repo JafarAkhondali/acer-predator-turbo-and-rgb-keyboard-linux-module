@@ -61,12 +61,22 @@ Arch (I don't use arch anymore btw):
 
 
 
-## Install
+## Install one time (Module won't work after reboot)
 ```bash
 git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
 cd "acer-helios-300-rgb-keyboard-linux-module"
 chmod +x ./install.sh
 sudo ./install.sh
+```
+
+
+
+## Install as a service (Will work after reboot)
+```bash
+git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
+cd "acer-helios-300-rgb-keyboard-linux-module"
+chmod +x ./*.sh
+sudo ./install_service.sh
 ```
 
 
@@ -182,7 +192,8 @@ If installation failed, check this [issue](https://github.com/JafarAkhondali/ace
 If something didn't look right, do a reboot (or boot to windows) and play a little with some Predator Sense app to reset ACPI registers. 
 
 ## Uninstall:
-Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.
+Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.  
+If you have installed it as a service, simply run `./uninstal_service.sh`
 
 ## Feedback:
 If this worked or didn't worked for you, kindly make a new issue, and attach the following if possible:  
