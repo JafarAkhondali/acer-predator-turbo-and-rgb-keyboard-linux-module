@@ -187,7 +187,7 @@ Static mode coloring (zone=4 => most right zone, color=purple):
 
 
 ## Known problems
-Changes are not persistent after reboot. You'll need to install the module again.
+Changes are not persistent after reboot. You'll need to install the module again. Of course, if you didn't install the module as a service.
 If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
 If something didn't look right, do a reboot (or boot to windows) and play a little with some Predator Sense app to reset ACPI registers. 
 
