@@ -68,6 +68,7 @@ MODULE_LICENSE("GPL");
 
 #define ACER_WMID_SET_GAMING_LED_METHODID 2
 #define ACER_WMID_GET_GAMING_LED_METHODID 4
+#define ACER_WMID_SET_GAMING_STATIC_LED_METHODID 6
 #define ACER_WMID_SET_GAMING_FAN_BEHAVIOR 14
 #define ACER_WMID_SET_GAMING_MISC_SETTING_METHODID 22
 /*
@@ -158,11 +159,22 @@ struct event_return_value {
 
 /*
  * Gaming functions user-space communication
- * A character drive will be exposed in /dev/acer-gkbbl as char block for keyboard backlight config
+ * A character drive will be exposed in /dev/acer-gkbbl as char block for keyboard dynamic backlight config
  * Config length is 16 bytes
  */
+
 #define GAMING_KBBL_CHR "acer-gkbbl"
 #define GAMING_KBBL_CONFIG_LEN 16
+
+
+/*
+ * Gaming functions user-space communication
+ * A character drive will be exposed in /dev/acer-gkbbl-static as char block for keyboard static backlight config
+ * Config length is 16 bytes
+ */
+
+#define GAMING_KBBL_STATIC_CHR "acer-gkbbl-static"
+#define GAMING_KBBL_STATIC_CONFIG_LEN 4
 
 /* Hotkey Customized Setting and Acer Application Status.
  * Set Device Default Value and Report Acer Application Status.
@@ -240,6 +252,7 @@ struct hotkey_function_type_aa {
 #define ACER_CAP_TURBO_LED     BIT(8)
 #define ACER_CAP_TURBO_FAN     BIT(9)
 #define ACER_CAP_GAMINGKB		BIT(10)
+#define ACER_CAP_GAMINGKB_STATIC		BIT(11)
 
 /*
  * Interface type flags
@@ -325,6 +338,7 @@ static struct wmi_interface *gaming_interface;
  */
 
 #define GAMING_KBBL_MINOR 0
+#define GAMING_KBBL_STATIC_MINOR 0
 
 
 static int dev_major; // Global variable to store major number of driver
@@ -1686,6 +1700,9 @@ static acpi_status WMID_gaming_set_u64(u64 value, u32 cap)
 		case ACER_CAP_TURBO_OC:
 			method_id = ACER_WMID_SET_GAMING_MISC_SETTING_METHODID;
 			break;
+		case ACER_CAP_GAMINGKB_STATIC:
+			method_id = ACER_WMID_SET_GAMING_STATIC_LED_METHODID;
+			return WMI_gaming_execute_u64(method_id, value, NULL);
 		default:
 			return AE_BAD_PARAMETER;
 	}
@@ -2007,6 +2024,110 @@ static void __exit gaming_kbbl_cdev_exit(void)
 	class_destroy(gkbbl_dev_class);
 
 	unregister_chrdev_region(MKDEV(dev_major, GAMING_KBBL_MINOR), MINORMASK);
+}
+
+
+/*
+ * Keyboard RGB backlight character device handler.
+ * On systems supporting Acer gaming functions, a char device
+ * will be exposed to communicate with user space
+ * for keyboard RGB backlight configurations.
+ * Similar to above, but for handling static coloring
+ */
+
+
+struct led_zone_set_param {
+		u8 zone;
+		u8 red;
+		u8 green;
+		u8 blue;
+} __packed;
+
+static ssize_t gkbbl_static_drv_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
+{
+	u8 config_buf[4]={0,0,0,0};
+	unsigned long err;
+	struct led_zone_set_param set_params;
+	struct acpi_buffer set_input;
+	err = copy_from_user(config_buf, buf, GAMING_KBBL_STATIC_CONFIG_LEN);
+	set_params = (struct led_zone_set_param) {
+		.zone = config_buf[0],
+		.red = config_buf[1],
+		.green = config_buf[2],
+		.blue = config_buf[3],
+	};
+	set_input = (struct acpi_buffer) {
+		sizeof(set_params),
+		&set_params
+	};
+
+	if (count != GAMING_KBBL_STATIC_CONFIG_LEN) {
+		pr_err("Invalid data given to gaming keyboard static backlight");
+		return 0;
+	}
+
+	if (err < 0)
+		pr_err("Copying data from userspace failed with code: %lu\n", err);
+
+	wmi_evaluate_method( WMID_GUID4, 0, ACER_WMID_SET_GAMING_STATIC_LED_METHODID, &set_input, NULL);
+	return count;
+}
+
+
+static const struct file_operations gkbbl_static_dev_fops = {
+		.owner      = THIS_MODULE,
+		.write       = gkbbl_static_drv_write
+};
+
+struct gkbbl_static_device_data {
+	struct cdev cdev;
+};
+
+static struct class *gkbbl_static_dev_class;
+static struct gkbbl_device_data gkbbl_static_dev_data;
+
+static int gkbbl_static_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+{
+	add_uevent_var(env, "DEVMODE=%#o", 0666);
+	return 0;
+}
+
+static int __init gaming_kbbl_static_cdev_init(void)
+{
+	dev_t dev;
+	int err;
+
+	err = alloc_chrdev_region(&dev, 0, 1, GAMING_KBBL_STATIC_CHR);
+	if (err < 0) {
+		pr_err("Char drive registering for gaming keyboard static backlight failed: %d\n", err);
+		return err;
+	}
+
+	dev_major = MAJOR(dev);
+
+	gkbbl_static_dev_class = class_create(THIS_MODULE, GAMING_KBBL_STATIC_CHR);
+	gkbbl_static_dev_class->dev_uevent = gkbbl_static_dev_uevent;
+
+	cdev_init(&gkbbl_static_dev_data.cdev, &gkbbl_static_dev_fops);
+	gkbbl_static_dev_data.cdev.owner = THIS_MODULE;
+
+	cdev_add(&gkbbl_static_dev_data.cdev, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), 1);
+
+	device_create(gkbbl_static_dev_class, NULL, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), NULL, "%s-%d",
+				  GAMING_KBBL_STATIC_CHR,
+				  GAMING_KBBL_STATIC_MINOR);
+
+	return 0;
+}
+
+static void __exit gaming_kbbl_static_cdev_exit(void)
+{
+	device_destroy(gkbbl_static_dev_class, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR));
+
+	class_unregister(gkbbl_static_dev_class);
+	class_destroy(gkbbl_static_dev_class);
+
+	unregister_chrdev_region(MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), MINORMASK);
 }
 
 /*
@@ -2902,8 +3023,9 @@ static int __init acer_wmi_init(void)
 	if (wmi_has_guid(WMID_GUID3)) {
 		interface->capability |= ACER_CAP_SET_FUNCTION_MODE;
 		if (wmi_has_guid(WMID_GUID4)) {
-			gaming_interface->capability |= ACER_CAP_GAMINGKB;
+			gaming_interface->capability |= ACER_CAP_GAMINGKB | ACER_CAP_GAMINGKB_STATIC;
 			gaming_kbbl_cdev_init();
+			gaming_kbbl_static_cdev_init();
 		}
 	}
 
@@ -2984,8 +3106,10 @@ static void __exit acer_wmi_exit(void)
 	if (acer_wmi_accel_dev)
 		input_unregister_device(acer_wmi_accel_dev);
 
-	if (wmi_has_guid(WMID_GUID4))
+	if (wmi_has_guid(WMID_GUID4)) {
 		gaming_kbbl_cdev_exit();
+		gaming_kbbl_static_cdev_exit();
+	}
 
 	remove_debugfs();
 	platform_device_unregister(acer_platform_device);
