@@ -224,6 +224,7 @@ BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc
 - [x] Implement Turbo mode  
 - [x] Implement RGB Dynamic effects (4-zone)  
 - [x] Implement RGB Static coloring (4-zone)
+- [x] Install as a system service (Thanks to [Kapitoha](https://github.com/Kapitoha))
 - [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
