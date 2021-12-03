@@ -413,6 +413,12 @@ static struct quirk_entry quirk_acer_predator_ph315_53 = {
 		.gpu_fans = 1,
 };
 
+static struct quirk_entry quirk_acer_predator_ph315_54 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
 static struct quirk_entry quirk_acer_predator_ph317_53 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -658,6 +664,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH315-53"),
 				},
 				.driver_data = &quirk_acer_predator_ph315_53,
+		},
+		{
+				.callback = dmi_matched,
+				.ident = "Acer Predator PH315-54",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH315-54"),
+				},
+				.driver_data = &quirk_acer_predator_ph315_54,
 		},
 		{
 				.callback = dmi_matched,
