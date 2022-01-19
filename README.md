@@ -86,10 +86,10 @@ Turbo mode should work fine by using the turbo button on keyboard.
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
 with kernel space.  
-To make it easier to interact with this device, a simple python has been attached.  
-`python3 facer_rgb.py`  
+To make it easier to interact with this device, a simple python script has been attached.  
+`./facer_rgb.py`  
 or check help for more advanced usage:  
-`python3 facer_rgb.py --help`
+`./facer_rgb.py --help`
 
 ```
 usage: facer_rgb.py [-h] [-m MODE] [-z ZONE] [-s SPEED] [-b BRIGHTNESS] [-d DIRECTION] [-cR RED] [-cG GREEN] [-cB BLUE]
@@ -162,28 +162,28 @@ optional arguments:
 Sample usages:
 
 Breath effect with Purple color(speed=4, brightness=100):  
-`python3 facer_rgb.py -m 1 -s 4 -b 100 -cR 255 -cG 0 -cB 255`
+`./facer_rgb.py -m 1 -s 4 -b 100 -cR 255 -cG 0 -cB 255`
 
 Neon effect(speed=3, brightness=100):  
-`python3 facer_rgb.py -m 2 -s 3 -b 100`
+`./facer_rgb.py -m 2 -s 3 -b 100`
 
 Wave effect(speed=5, brightness=100):  
-`python3 facer_rgb.py -m 3 -s 5 -b 100`
+`./facer_rgb.py -m 3 -s 5 -b 100`
 
 Shifting effect with Blue color (speed=5, brightness=100):  
-`python3 facer_rgb.py -m 4 -s 5 -b 100 -cR 0 -cB 255 -cG 0`
+`./facer_rgb.py -m 4 -s 5 -b 100 -cR 0 -cB 255 -cG 0`
 
 Zoom effect with Green color (speed=7, brightness=100):  
-`python3 facer_rgb.py -m 5 -s 7 -b 100 -cR 0 -cB 0 -cG 255`
+`./facer_rgb.py -m 5 -s 7 -b 100 -cR 0 -cB 0 -cG 255`
 
 Static waving (speed=0):
-`python3 facer_rgb.py -m 3 -s 0 -b 100`
+`./facer_rgb.py -m 3 -s 0 -b 100`
 
 Static mode coloring (zone=1 => most left zone, color=blue):  
-`python3 facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
+`./facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
 
 Static mode coloring (zone=4 => most right zone, color=purple):  
-`python3 facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
+`./facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
 
 
 ## Known problems
