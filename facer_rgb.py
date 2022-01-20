@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import json
 
 PAYLOAD_SIZE = 16
 CHARACTER_DEVICE = "/dev/acer-gkbbl-0"
@@ -122,7 +123,23 @@ parser.add_argument('-cB',
                     dest='blue',
                     default=50)
 
+parser.add_argument('-save')
+
+parser.add_argument('-load')
+
 args = parser.parse_args()
+
+print(args)
+if args.save:
+    with open(args.save, 'wt') as f:
+        json.dump(vars(args), f, indent=4)
+
+
+if args.load:
+    with open(args.load, 'rt') as f:
+        t_args = argparse.Namespace()
+        t_args.__dict__.update(json.load(f))
+        args = parser.parse_args(namespace=t_args)
 
 if args.mode == 0:
     # Static coloring mode
