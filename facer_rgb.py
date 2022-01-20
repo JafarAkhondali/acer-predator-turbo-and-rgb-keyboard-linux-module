@@ -10,7 +10,8 @@ PAYLOAD_SIZE_STATIC_MODE = 4
 CHARACTER_DEVICE_STATIC = "/dev/acer-gkbbl-static-0"
 
 CONFIG_DIRECTORY = str(Path.home()) + "/.config/facer_rgb"
-Path(CONFIG_DIRECTORY).mkdir(parents=True, exist_ok=True)
+path = Path(CONFIG_DIRECTORY)
+path.mkdir(parents=True, exist_ok=True)
 
 parser = argparse.ArgumentParser(description="""Interacts with experimental Acer-wmi kernel module.
 -m [mode index]
@@ -131,7 +132,14 @@ parser.add_argument('-save')
 
 parser.add_argument('-load')
 
+parser.add_argument('-list',
+                    action='store_true')
+
 args = parser.parse_args()
+
+if args.list:
+    print("Saved profiles:")
+    for filepath in list(path.glob('*.*')): print(f"\t{filepath.stem}")
 
 if args.load:
     with open(f"{CONFIG_DIRECTORY}/{args.load}.json", 'rt') as f:
