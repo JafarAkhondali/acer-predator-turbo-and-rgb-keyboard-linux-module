@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 import argparse
 import json
+from pathlib import Path
 
 PAYLOAD_SIZE = 16
 CHARACTER_DEVICE = "/dev/acer-gkbbl-0"
 
 PAYLOAD_SIZE_STATIC_MODE = 4
 CHARACTER_DEVICE_STATIC = "/dev/acer-gkbbl-static-0"
+
+CONFIG_DIRECTORY = str(Path.home()) + "/.config/facer_rgb"
+Path(CONFIG_DIRECTORY).mkdir(parents=True, exist_ok=True)
 
 parser = argparse.ArgumentParser(description="""Interacts with experimental Acer-wmi kernel module.
 -m [mode index]
@@ -129,17 +133,17 @@ parser.add_argument('-load')
 
 args = parser.parse_args()
 
-print(args)
-if args.save:
-    with open(args.save, 'wt') as f:
-        json.dump(vars(args), f, indent=4)
-
-
 if args.load:
-    with open(args.load, 'rt') as f:
+    with open(f"{CONFIG_DIRECTORY}/{args.load}.json", 'rt') as f:
         t_args = argparse.Namespace()
         t_args.__dict__.update(json.load(f))
         args = parser.parse_args(namespace=t_args)
+
+if args.save:
+    with open(f"{CONFIG_DIRECTORY}/{args.save}.json", 'wt') as f:
+        vars(args).pop('save')
+        vars(args).pop('load')
+        json.dump(vars(args), f, indent=4)
 
 if args.mode == 0:
     # Static coloring mode
