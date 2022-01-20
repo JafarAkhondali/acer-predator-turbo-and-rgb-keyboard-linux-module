@@ -148,6 +148,16 @@ Interacts with experimental Acer-wmi kernel module.
     0   -> Minimum blue range
     255 -> Maximum blue range
 
+-save [profile name]
+    Add as last argument to save to a profile
+
+-load [profile name]
+    Loads the profile if it exists
+
+-list
+    Lists all the saved profiles in config directory
+    config directory is "$HOME/.config/predator/saved profiles/"
+
 optional arguments:
   -h, --help     show this help message and exit
   -m MODE
@@ -158,6 +168,9 @@ optional arguments:
   -cR RED
   -cG GREEN
   -cB BLUE
+  -save NAME
+  -load NAME
+  -list
 ```
 Sample usages:
 
@@ -182,8 +195,11 @@ Static waving (speed=0):
 Static mode coloring (zone=1 => most left zone, color=blue):  
 `./facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
 
-Static mode coloring (zone=4 => most right zone, color=purple):  
+Static mode coloring (zone=4 => most right zone, color=purple) and save it as example:  
 `./facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
+
+Load the previously saved profile:
+`./facer_rgb.py -load example`
 
 
 ## Known problems
