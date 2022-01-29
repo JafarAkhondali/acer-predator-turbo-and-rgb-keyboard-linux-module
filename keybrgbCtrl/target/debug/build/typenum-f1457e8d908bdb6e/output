@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/amy/acer-keybrgb/acer-predator-rgb-keyboard-gui/keybrgbCtrl/target/debug/build/typenum-f1457e8d908bdb6e/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/amy/acer-keybrgb/acer-predator-rgb-keyboard-gui/keybrgbCtrl/target/debug/build/typenum-f1457e8d908bdb6e/out/op.rs
