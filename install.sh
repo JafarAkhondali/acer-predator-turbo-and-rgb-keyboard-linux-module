@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ $EUID -ne 0 ]]; then
    echo "[*] This script must be run as root"
@@ -14,7 +14,7 @@ fi
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
 # compile the kernel module
-make
+# make
 
 # remove previous acer_wmi module
 rmmod acer_wmi

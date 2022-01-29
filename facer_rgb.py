@@ -138,10 +138,10 @@ if args.mode == 0:
 
     # Tell WMI To use STATIC coloring
     # Dynamic coloring mode
-    payload = [0] * PAYLOAD_SIZE
-    payload[2] = args.brightness
-    with open(CHARACTER_DEVICE, 'wb') as cd:
-        cd.write(bytes(payload))
+    #payload = [0] * PAYLOAD_SIZE
+    #payload[2] = args.brightness
+    #with open(CHARACTER_DEVICE, 'wb') as cd:
+    #    cd.write(bytes(payload))
 
 
 
@@ -157,5 +157,6 @@ else:
     payload[6] = args.green
     payload[7] = args.blue
 
-    with open(CHARACTER_DEVICE, 'wb') as cd:
-        cd.write(bytes(payload))
+    #with open(CHARACTER_DEVICE, 'wb') as cd:
+    #    cd.write(bytes(payload))
+    
