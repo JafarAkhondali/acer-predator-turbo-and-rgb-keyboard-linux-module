@@ -1742,6 +1742,28 @@ static acpi_status WMID_gaming_set_u8_array(u8 array[], size_t array_size, u32 c
 	return WMI_gaming_execute_u8_array(method_id, array, array_size, NULL);
 }
 
+static acpi_status WMID_gaming_get_u8_array(u32 *value, u32 cap)
+{
+	struct acpi_buffer input = { (acpi_size)sizeof(u32), &cap };
+	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
+	union acpi_object *obj;
+		acpi_status status;
+		u32 tmp = 0;
+
+		status = wmi_evaluate_method(WMID_GUID4, 0, ACER_WMID_GET_GAMINGKBBL_METHODID, &input, &output);
+		if (ACPI_FAILURE(status))
+			return status;
+
+		obj = (union acpi_object *)output.pointer;
+		if (obj && obj->type == ACPI_TYPE_INTEGER)
+			tmp = (u32)obj->integer.value;
+	if (value)
+		*value = tmp;
+
+	kfree(obj);
+	return status;
+}
+
 static acpi_status WMID_gaming_get_u64(u64 *value, u32 cap)
 {
 	acpi_status status;
@@ -1950,13 +1972,22 @@ static ssize_t gkbbl_drv_write(struct file *file,
 		pr_err("Copying data from userspace failed with code: %lu\n", err);
 
 	set_u8_array(config_buf, GAMING_KBBL_CONFIG_LEN, ACER_CAP_GAMINGKB);
+
 	return count;
 }
 
+static ssize_t gkbbl_read(struct file *fp, char __user *user_buffer, size_t length, loff_t *position)
+{
+	u32 keyboard_led_state;
+	u32 input = 0x1;
+	WMID_gaming_get_u8_array(&keyboard_led_state, input);
+    return keyboard_led_state;
+}
 
 static const struct file_operations gkbbl_dev_fops = {
 		.owner      = THIS_MODULE,
-		.write       = gkbbl_drv_write
+		.read		= gkbbl_read,
+		.write      = gkbbl_drv_write
 };
 
 struct gkbbl_device_data {
