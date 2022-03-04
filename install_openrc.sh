@@ -9,6 +9,8 @@ service=turbo-fan # Service name
 target_dir=/opt/turbo-fan # Instalation folder
 service_dir=/etc/init.d/ # Service setup folder (where all services are stored)
 
+make
+
 echo "[Mode: $mode]";
 
 # Sudo check
