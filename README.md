@@ -1,5 +1,6 @@
-# Gui for [acer keyboard rgb and turbo](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module)
-![](flutter-app.jpg)
+# Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
+![](keyboard.webp)
+    
 Inspired by https://github.com/hackbnw/faustus, this project extends current acer-wmi linux kernel module to support Acer gaming functions
 
 Turbo mode should support Acer Helios Predator and Acer Triton Predator series. 
@@ -58,64 +59,26 @@ Ubuntu (or other Debian baseds distros):
 Arch (I don't use arch anymore btw):  
 `sudo pacman -S linux-headers`
 
-## Buid gui backend
-I wrote a custom backend for changing the keyboard mode in rust with a websocket backend for the gui
-this needs [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) installed
+
+
+## Install one time (Module won't work after reboot)
 ```bash
-git clone https://github.com/axtloss/acer-predator-rgb-keyboard-gui
-cd acer-predator-rgb-keyboard-gui/keybrgbCtrl/
-make release
-make install
-```
-The backend has a config file in `~/.config/keybrgbctl.cfg`
-```toml
-websocket_ip = "" # Change the ip address to the websocket server, default is 127.0.0.1
-websocket_port = "" # Change the port to the websocket server, default is 8080
-restore_conf = "" # Path to the last set payload, default is ~/.cache/lastPayload
-```
-
-
-## Build phone gui
-make sure you have [flutter](https://flutter.dev/) installed and running (flutter doctor doesnt show errors for android)
-here you need to edit lib/main.dart at line 26 and change the 127.0.0.1 to the ip you set in the config file for keybrgbCtrl (ill automate this as soon as i can)
-```bash
-git clone https://github.com/axtloss/acer-predator-rgb-keyboard-gui
-cd acer-predator-rgb-keyboard-gui/nitro_keybrgb/
-flutter build apk
-adb install build/app/outputs/flutter-apk/app-release.apk # make sure your android device is connected via adb
-```
-
-## Desktop gui
-make sure you have [flutter](https://flutter.dev/) installed and running (flutter doctor doesnt show errors for android)
-here you need to edit lib/main.dart at line 26 and change the 127.0.0.1 to the ip you set in the config file for keybrgbCtrl (ill automate this as soon as i can)
-I've only tested building it on linux mint, package names may vary.
-```bash
-sudo apt install clang cmake meson libgtk3-dev
-git clone https://github.com/axtloss/acer-predator-rgb-keyboard-gui
-cd acer-predator-rgb-keyboard-gui/nitro_keybrgb/
-flutter build linux
-./build/linux/x64/release/bundle/nitro_keybrgb_pc
-```
-
-
-
-## Install Kernel module one time (Module won't work after reboot)
-```bash
-git clone https://github.com/axtloss/acer-predator-rgb-keyboard-gui
-cd acer-predator-rgb-keyboard-gui/acer-wmi-module/
+git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
+cd "acer-helios-300-rgb-keyboard-linux-module"
 chmod +x ./install.sh
 sudo ./install.sh
 ```
 
-## Install Kernel module as a service (Will work after reboot)
+
+
+## Install as a service (Will work after reboot)
 ```bash
-git clone https://github.com/axtloss/acer-predator-rgb-keyboard-gui
-cd acer-predator-rgb-keyboard-gui/acer-wmi-module/
+git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
+cd "acer-helios-300-rgb-keyboard-linux-module"
 chmod +x ./*.sh
 sudo ./install_service.sh
 ```
 
-### I'll make one single makefile for all these parts once i figure out how to automatically change the ip in the dart code
 
 
 ## Usage
@@ -123,51 +86,121 @@ Turbo mode should work fine by using the turbo button on keyboard.
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
 with kernel space.  
-The python script in upstream has been replaced with the keybrgbCtrl rust project
-**Note that this has only been tested on the acer nitro 5 AN515-55**
+To make it easier to interact with this device, a simple python script has been attached.  
+`./facer_rgb.py`  
+or check help for more advanced usage:  
+`./facer_rgb.py --help`
+
 ```
-Control your keyboard backlight
+usage: facer_rgb.py [-h] [-m MODE] [-z ZONE] [-s SPEED] [-b BRIGHTNESS] [-d DIRECTION] [-cR RED] [-cG GREEN] [-cB BLUE]
 
-USAGE:
-    keybrgbctl [FLAGS] [OPTIONS]
+Interacts with experimental Acer-wmi kernel module.
+-m [mode index]
+    Effect modes:
+    0 -> Static [Accepts ZoneID[1,2,3,4] + RGB Color]
+    1 -> Breath [Accepts RGB color]
+    2 -> Neon
+    3 -> Wave
+    4 -> Shifting [Accepts RGB color]
+    5 -> Zoom [Accepts RGB color]
 
-FLAGS:
-    -h, --help         Prints help information
-    -V, --version      Prints version information
-    -ws, --websocket    Start websocket server
+-z [ZoneID]
+    Zone ID(Only in static mode):
+    Possible values: 1,2,3,4
 
-OPTIONS:
-    -b, --brightness <BRIGHTNESS>    Set the brightness of the keyboard
-    -c, --color <COLOR>              Set the color of the keyboard
-    -d, --direction <DIRECTION>      Set the direction of the keyboard [possible values: left, right]
-    -m, --mode <MODE>                Set the mode of the keyboard [possible values: static, breath, neon, wave,
-                                     shifting, zoom]
-    -s, --speed <SPEED>              Set the speed of the keyboard
+-s [speed]
+    Animation Speed:
+    
+    0 -> No animation speed (static)
+    1 -> Slowest animation speed
+    9 -> Fastest animation speed
+    
+    You can use values between 1-9 to adjust the speed or increase speed even more than 255, but keep in mind
+    that values higher than 9 were not used in the official PredatorSense application.
+
+-b [brightness]
+    Keyboard backlight Brightness:
+    
+    0   -> No backlight (turned off)
+    100 -> Maximum backlight brightness
+    
+-d [direction]
+    Animation direction:
+    
+    1   -> Right to Left
+    2   -> Left to Right
+
+-cR [red value]
+    Some modes require specific [R]GB color
+    
+    0   -> Minimum red range
+    255 -> Maximum red range
+
+-cG [green value]
+    Some modes require specific R[G]B color
+    
+    0   -> Minimum green range
+    255 -> Maximum green range
+
+-cB [blue value]
+    Some modes require specific RG[B] color
+    
+    0   -> Minimum blue range
+    255 -> Maximum blue range
+
+-save [profile name]
+    Add as last argument to save to a profile
+
+-load [profile name]
+    Loads the profile if it exists
+
+-list
+    Lists all the saved profiles in config directory
+    config directory is "$HOME/.config/predator/saved profiles/"
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -m MODE
+  -z ZONE
+  -s SPEED
+  -b BRIGHTNESS
+  -d DIRECTION
+  -cR RED
+  -cG GREEN
+  -cB BLUE
+  -save NAME
+  -load NAME
+  -list
 ```
-some examples for the usage:
-```bash
-keybrgbctl -ws # This starts the websocket used by the flutter app
+Sample usages:
 
-# Static colouring 
-#NOTE: different zones seem to be broken,
-#so I didn't implement that feature here, zones wont be supported I used a workaround to get the whole keyboard one static colour
-keybrgbctl -m static -b 100 -c ff00ff
+Breath effect with Purple color(speed=4, brightness=100):  
+`./facer_rgb.py -m 1 -s 4 -b 100 -cR 255 -cG 0 -cB 255`
 
-# breathe with colour purple at speed 5
-keybrgbctl -m breathe -b 100 -c ff00ff -s 5
+Neon effect(speed=3, brightness=100):  
+`./facer_rgb.py -m 2 -s 3 -b 100`
 
-# wave at speed 4 direction left
-keybrgbctl -m wave -b 100 -d left
+Wave effect(speed=5, brightness=100):  
+`./facer_rgb.py -m 3 -s 5 -b 100`
 
-# neon at speed 8
-keybrgbctl -m neon -b 100 -s 8
+Shifting effect with Blue color (speed=5, brightness=100):  
+`./facer_rgb.py -m 4 -s 5 -b 100 -cR 0 -cB 255 -cG 0`
 
-# shifting at speed 3 with colour purple direction right
-keybrgbctl -m shifting -b 100 -s 3 -d right
+Zoom effect with Green color (speed=7, brightness=100):  
+`./facer_rgb.py -m 5 -s 7 -b 100 -cR 0 -cB 0 -cG 255`
 
-# zoom with colour purple speed 9
-keybrgbctl -m zoom -b 100 -s 9 
-```
+Static waving (speed=0):
+`./facer_rgb.py -m 3 -s 0 -b 100`
+
+Static mode coloring (zone=1 => most left zone, color=blue):  
+`./facer_rgb.py -m 0 -z 1 -cR 0 -cB 255 -cG 0`
+
+Static mode coloring (zone=4 => most right zone, color=purple) and save it as example:  
+`./facer_rgb.py -m 0 -z 4 -cR 255 -cB 255 -cG 0`
+
+Load the previously saved profile:
+`./facer_rgb.py -load example`
+
 
 ## Known problems
 If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
@@ -183,7 +216,13 @@ If this worked or didn't worked for you, kindly make a new issue, and attach the
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
 
 ## Donation:
-I do not take donations, but if you want to donate, donate to the original author of this kernel module, without his development I wouldnt've made this: https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module#donation
+Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
+[Paypal](https://www.paypal.com/paypalme/jafarakhondali)
+
+BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
+Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
+BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
+
 
 
 ## Contributing
@@ -201,13 +240,12 @@ I do not take donations, but if you want to donate, donate to the original autho
 - [x] Implement RGB Dynamic effects (4-zone)  
 - [x] Implement RGB Static coloring (4-zone)
 - [x] Install as a system service (Thanks to [Kapitoha](https://github.com/Kapitoha))
-- [X] GUI
+- [ ] Add support for saving\load\list profiles (Thanks to [jayrfs](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/33))
+- [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
 - [ ] Implement RGB Static coloring (per key RGB)  
 
 
 ## License
-GNU General Public License v3 <br>
-The code in keybrgbCtl/src/hexrgb.rs has been modified from https://github.com/shrirambalaji/cli-hex-rgb and falls under the MIT license
-
+GNU General Public License v3

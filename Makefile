@@ -1,6 +1,6 @@
 obj-m	:= src/facer.o
 
-KERNELDIR ?= /nix/store/ly96q2wlq1hglxa2axb87570l079qzm1-linux-5.15.11-dev/lib/modules/5.15.11-xanmod1-tt/build/
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD       := $(shell pwd)
 
 all: default
