@@ -63,23 +63,29 @@ Arch (I don't use arch anymore btw):
 
 ## Install one time (Module won't work after reboot)
 ```bash
-git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
-cd "acer-helios-300-rgb-keyboard-linux-module"
+git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
+cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
 chmod +x ./install.sh
 sudo ./install.sh
 ```
 
 
 
-## Install as a service (Will work after reboot)
+## Install as a systemd service (Will work after reboot)
 ```bash
-git clone https://github.com/JafarAkhondali/acer-helios-300-rgb-keyboard-linux-module
-cd "acer-helios-300-rgb-keyboard-linux-module"
+git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
+cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
 chmod +x ./*.sh
 sudo ./install_service.sh
 ```
 
-
+## Install as an openrc service (Will work after reboot)
+```bash
+git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
+cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
+chmod +x ./*.sh
+sudo ./install_openrc.sh
+```
 
 ## Usage
 Turbo mode should work fine by using the turbo button on keyboard.
