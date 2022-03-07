@@ -245,8 +245,9 @@ BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc
 - [x] Implement Turbo mode  
 - [x] Implement RGB Dynamic effects (4-zone)  
 - [x] Implement RGB Static coloring (4-zone)
-- [x] Install as a system service (Thanks to [Kapitoha](https://github.com/Kapitoha))
-- [ ] Add support for saving\load\list profiles (Thanks to [jayrfs](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/33))
+- [x] Install as a systemd service (Thanks to [Kapitoha](https://github.com/Kapitoha))
+- [x] Add support for saving\load\list profiles (Thanks to [jayrfs](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/33))
+- [x] Install as openrc service (Thanks to [Axtloss](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/36))
 - [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
