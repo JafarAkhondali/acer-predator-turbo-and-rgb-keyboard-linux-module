@@ -54,7 +54,7 @@ If the directory exists, it may work fine. Otherwise, RGB will not work at all.
 Secure boot must be disabled.  
 Install linux headers using your distro package manager:
 Ubuntu (or other Debian baseds distros):  
-`sudo apt-get install linux-headers-$(uname -r)`
+`sudo apt-get install linux-headers-$(uname -r) gcc make`
 
 Arch (I don't use arch anymore btw):  
 `sudo pacman -S linux-headers`
