@@ -1,13 +1,20 @@
-# Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
+# Unofficial Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
 ![](keyboard.webp)
     
-Inspired by https://github.com/hackbnw/faustus, this project extends current acer-wmi linux kernel module to support Acer gaming functions
+Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
 
-Turbo mode should support Acer Helios Predator and Acer Triton Predator series. 
-RGB Keyboard is only tested on Acer (Predator, Helios, Nitro) 300 series ( 4-zone RGB ). 
 
-Experimental unofficial Linux platform driver module for Acer Predator Gaming series laptops.
-## WARNING: Use at your own risk. This driver interacts with low-level WMI methods which haven't been tested on all series.  
+## WARNING: Use at your own risk! Asus was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
+
+
+### Donation:
+Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
+[Paypal](https://www.paypal.com/paypalme/jafarakhondali)
+
+BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
+Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
+BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
+
 
 **Will this work on my laptop?**
 
@@ -220,14 +227,6 @@ If you have installed it as a service, simply run `./uninstal_service.sh`
 If this worked or didn't worked for you, kindly make a new issue, and attach the following if possible:  
 `sudo dmidecode | grep "Product Name" -B 2 -A 4`  
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
-
-## Donation:
-Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
-[Paypal](https://www.paypal.com/paypalme/jafarakhondali)
-
-BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
-Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
-BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
 
 
 
