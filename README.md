@@ -86,7 +86,7 @@ sudo pacman -U Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
 ```
 <h3 align="center"> OR install from AUR</h3> 
 
-`yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON
+`yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON in AUR
 
 ## Install as a systemd service (Will work after reboot)
 ```bash
