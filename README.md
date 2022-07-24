@@ -83,6 +83,9 @@ cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
 cd PKGBUILD/
 chmod +x Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
 sudo pacman -U Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
+systemctl daemon-reload
+systemctl start turbo-fan
+systemctl enable turbo-fan  
 ```
 <h3 align="center"> OR install from AUR</h3> 
 
