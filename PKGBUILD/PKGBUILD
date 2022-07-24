@@ -28,8 +28,6 @@ package() {
 
 	mkdir -p $target_dir
 	mkdir -p $service_dir
-
-	touch $service_dir/turbo-fan.service
 	
 	rsync -av ./* $target_dir --exclude=".git/*"
 
@@ -37,17 +35,22 @@ package() {
 [Unit]
 Description = Enables turbo button
 After=sysinit.target
-StartLimitIntervalSec=$service_start_delay
+StartLimitIntervalSec=5
+
 [Service]
 Type=simple
 Restart=no
 RemainAfterExit=yes
 User=root
-WorkingDirectory=$target_dir
+WorkingDirectory=/opt/turbo-fan
 ExecStart=/bin/bash ./install.sh
 ExecStop=/bin/bash ./uninstall.sh
+
 [Install]
 WantedBy=multi-user.target
+
 EOF
+
+chmod  +x $target_dir/*.sh
 
 }
