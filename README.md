@@ -76,7 +76,17 @@ chmod +x ./install.sh
 sudo ./install.sh
 ```
 
+## Install as a systemd service (Will work after reboot) For Arch Linux
+```bash
+git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
+cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
+cd PKGBUILD/
+chmod +x Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
+sudo pacman -U Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
+```
+<h3 align="center"> OR install from AUR</h3> 
 
+`yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON
 
 ## Install as a systemd service (Will work after reboot)
 ```bash
@@ -223,6 +233,11 @@ If something didn't look right, do a reboot (or boot to windows) and play a litt
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.  
 If you have installed it as a service, simply run `./uninstal_service.sh`
 
+## Uninstall FOR Arch Linux Only
+
+If you install it via binary package OR from AUR RUN `sudo pacman -R Predator-Sense-systemd-git`
+
+
 ## Feedback:
 If this worked or didn't worked for you, kindly make a new issue, and attach the following if possible:  
 `sudo dmidecode | grep "Product Name" -B 2 -A 4`  
@@ -247,6 +262,7 @@ If this worked or didn't worked for you, kindly make a new issue, and attach the
 - [x] Install as a systemd service (Thanks to [Kapitoha](https://github.com/Kapitoha))
 - [x] Add support for saving\load\list profiles (Thanks to [jayrfs](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/33))
 - [x] Install as openrc service (Thanks to [Axtloss](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/36))
+- [x] Make binary package For Arch Linux (By [mmsaeed509](https://github.com/mmsaeed509)). 
 - [ ] GUI ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI) is working on this, but it's still in beta )
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
