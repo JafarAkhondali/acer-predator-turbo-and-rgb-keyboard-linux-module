@@ -23,6 +23,7 @@ build_pkg () {
 	echo -e "\nBuilding Package...... \n"
 	makepkg -s 
 	
+    rm -rf acer-predator-turbo-and-rgb-keyboard-linux-module src pkg
 }
 
 # Execute

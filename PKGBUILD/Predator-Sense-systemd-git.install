@@ -16,3 +16,24 @@ post_install() {
 	echo '************************************************'
 
 }
+
+post_remove(){
+
+    echo ''
+	echo '************************************************'
+    echo '*                                              *'
+	echo '*     Remove service to use RGB/Turbo mode     *'
+    echo '*                                              *'
+    echo '*     RUN these commands To enable service     *'
+    echo '*                                              *'
+    echo '*          systemctl stop turbo-fan            *'
+    echo '*                                              *'
+    echo '*          systemctl disable turbo-fan         *'
+    echo '*                                              *'
+    echo '*          systemctl daemon-reload             *'
+    echo '*                                              *'
+    echo '*          sudo rm -rvf /opt/turbo-fan         *'
+    echo '*                                              *'
+	echo '************************************************'
+
+}
