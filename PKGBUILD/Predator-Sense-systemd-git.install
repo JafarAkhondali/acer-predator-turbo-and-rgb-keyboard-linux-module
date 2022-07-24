@@ -1,0 +1,18 @@
+post_install() {
+
+    echo ''
+	echo '************************************************'
+    echo '*                                              *'
+	echo '*     enable service to use RGB/Turbo mode     *'
+    echo '*                                              *'
+    echo '*     RUN these commands To enable service     *'
+    echo '*                                              *'
+    echo '*          systemctl daemon-reload             *'
+    echo '*                                              *'
+    echo '*          systemctl start turbo-fan           *'
+    echo '*                                              *'
+    echo '*          systemctl enable turbo-fan          *'
+    echo '*                                              *'
+	echo '************************************************'
+
+}
