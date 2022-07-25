@@ -76,20 +76,9 @@ chmod +x ./install.sh
 sudo ./install.sh
 ```
 
-## Install as a systemd service (Will work after reboot) For Arch Linux
-```bash
-git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
-cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
-cd PKGBUILD/
-chmod +x Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
-sudo pacman -U Predator-Sense-systemd-git-1.0-1-any.pkg.tar.zst
-systemctl daemon-reload
-systemctl start turbo-fan
-systemctl enable turbo-fan  
-```
-<h3 align="center"> OR install from AUR</h3> 
+## Install as a systemd service (Will work after reboot) For Arch Linux from AUR repository
 
-`yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON in AUR
+#### `yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON in AUR
 
 ## Install as a systemd service (Will work after reboot)
 ```bash
@@ -238,7 +227,7 @@ If you have installed it as a service, simply run `./uninstal_service.sh`
 
 ## Uninstall FOR Arch Linux Only
 
-If you install it via binary package OR from AUR RUN `sudo pacman -R Predator-Sense-systemd-git`
+If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd-git`
 
 
 ## Feedback:
