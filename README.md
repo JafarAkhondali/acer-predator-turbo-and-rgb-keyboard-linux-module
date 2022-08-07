@@ -4,7 +4,7 @@
 Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
 
 
-## WARNING: Use at your own risk! Asus was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
+## WARNING: Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
 
 
 ### Donation:
@@ -15,6 +15,9 @@ BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg
 Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
 BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
 
+
+#### Note to contributors:
+As most of the contributions in this project are less related to the C code and as I don't own a Predator anymore, I'll soon release a video tutorial on how to reverse engineer other features of your laptop and implement it in this project. 
 
 **Will this work on my laptop?**
 
