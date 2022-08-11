@@ -1,39 +1,16 @@
 post_install() {
 
-    echo ''
-	echo '************************************************'
-    echo '*                                              *'
-	echo '*     enable service to use RGB/Turbo mode     *'
-    echo '*                                              *'
-    echo '*     RUN these commands To enable service     *'
-    echo '*                                              *'
-    echo '*          systemctl daemon-reload             *'
-    echo '*                                              *'
-    echo '*          systemctl start turbo-fan           *'
-    echo '*                                              *'
-    echo '*          systemctl enable turbo-fan          *'
-    echo '*                                              *'
-	echo '************************************************'
+    sudo systemctl daemon-reload
+    sudo systemctl start turbo-fan
+    sudo systemctl enable turbo-fan
 
 }
 
 post_remove(){
 
-    echo ''
-	echo '************************************************'
-    echo '*                                              *'
-	echo '*     Remove service to use RGB/Turbo mode     *'
-    echo '*                                              *'
-    echo '*     RUN these commands To enable service     *'
-    echo '*                                              *'
-    echo '*          systemctl stop turbo-fan            *'
-    echo '*                                              *'
-    echo '*          systemctl disable turbo-fan         *'
-    echo '*                                              *'
-    echo '*          systemctl daemon-reload             *'
-    echo '*                                              *'
-    echo '*          sudo rm -rvf /opt/turbo-fan         *'
-    echo '*                                              *'
-	echo '************************************************'
+    sudo systemctl stop turbo-fan
+    sudo systemctl disable turbo-fan
+    sudo systemctl daemon-reload
+    sudo rm -rvf /opt/turbo-fan
 
 }

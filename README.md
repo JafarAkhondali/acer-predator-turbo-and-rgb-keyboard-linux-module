@@ -3,9 +3,8 @@
     
 Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
 
-
-## WARNING: Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
-
+> **Warning**
+> ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
 
 ### Donation:
 Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
@@ -15,9 +14,10 @@ BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg
 Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
 BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
 
+> **Note**
+> # Note to contributors:
+> As most of the contributions in this project are less related to the C code and as I don't own a Predator anymore, I'll soon release a video tutorial on how to reverse engineer other features of your laptop and implement it in this project. 
 
-#### Note to contributors:
-As most of the contributions in this project are less related to the C code and as I don't own a Predator anymore, I'll soon release a video tutorial on how to reverse engineer other features of your laptop and implement it in this project. 
 
 **Will this work on my laptop?**
 
@@ -79,9 +79,15 @@ chmod +x ./install.sh
 sudo ./install.sh
 ```
 
-## Install as a systemd service (Will work after reboot) For Arch Linux from AUR repository
+### Install as a systemd service (Will work after reboot) For Arch Linux from [ExodiaOS Repo](https://github.com/Exodia-OS/exodia-repo/blob/master/x86_64/Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst)
 
-#### `yay -S Predator-Sense-systemd-git` NOTE: It Will be available SOON in AUR
+```bash
+
+wget https://raw.githubusercontent.com/Exodia-OS/exodia-repo/master/x86_64/Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst
+
+sudo pacman -U Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst
+
+```
 
 ## Install as a systemd service (Will work after reboot)
 ```bash

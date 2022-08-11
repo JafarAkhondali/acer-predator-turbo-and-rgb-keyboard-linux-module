@@ -19,12 +19,15 @@ trap exit_on_signal_SIGINT SIGINT
 trap exit_on_signal_SIGTERM SIGTERM
 
 # Build packages (create a binary package -> pkg.pkg.tar.zst)
-build_pkg () {
+BUILDPKG () {
+
+    echo -e "\nRemoving olda PKGs \n"
+    rm ./*.pkg.tar.zst
 	echo -e "\nBuilding Package...... \n"
-	makepkg -s 
+	makepkg -s -f
 	
     rm -rf acer-predator-turbo-and-rgb-keyboard-linux-module src pkg
 }
 
 # Execute
-build_pkg
+BUILDPKG
