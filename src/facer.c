@@ -401,6 +401,18 @@ static struct quirk_entry quirk_acer_travelmate_2490 = {
 		.mailled = 1,
 };
 
+static struct quirk_entry quirk_acer_predator_ph315_51s = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
+static struct quirk_entry quirk_acer_predator_ph315_52s = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
 static struct quirk_entry quirk_acer_predator_ph315_52 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -646,6 +658,24 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 						DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 4200"),
 				},
 				.driver_data = &quirk_acer_travelmate_2490,
+		},
+		{
+				.callback = dmi_matched,
+				.ident = "Acer Predator PH314-51s",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH314-51s"),
+				},
+				.driver_data = &quirk_acer_predator_ph315_51s,
+		},
+			{
+				.callback = dmi_matched,
+				.ident = "Acer Predator PH314-52s",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH314-52s"),
+				},
+				.driver_data = &quirk_acer_predator_ph315_52s,
 		},
 		{
 				.callback = dmi_matched,
