@@ -41,7 +41,7 @@ Compablity table:
 | PT314-51 |   No                   |   No               | Yes               |Yes           |
 | PT315-51 |   Yes                   |   Yes               | Yes               |Yes           |
 | PT315-52 |   Yes                   |   No               | Yes               |No           |
-| PT515-51 |   Yes                   |   No               | Yes               |No           |
+| PT515-51 |   Yes                   |   Yes               | Yes               |Yes           |
 | PT515-52 |   Yes                   |   No               | Yes               |No           |
 | PT917-71 |   Yes                   |   No               | Yes               |No           |
 
