@@ -68,6 +68,7 @@ MODULE_LICENSE("GPL");
 
 #define ACER_WMID_SET_GAMING_LED_METHODID 2
 #define ACER_WMID_GET_GAMING_LED_METHODID 4
+#define ACER_WMID_GET_GAMING_SYSINFO_METHODID 5
 #define ACER_WMID_SET_GAMING_STATIC_LED_METHODID 6
 #define ACER_WMID_SET_GAMING_FAN_BEHAVIOR 14
 #define ACER_WMID_SET_GAMING_MISC_SETTING_METHODID 22
@@ -2951,6 +2952,7 @@ static void __init create_debugfs(void)
 static int __init acer_wmi_init(void)
 {
 	int err;
+	u64 gaming_sysinfo;
 
 	pr_info("Acer Laptop ACPI-WMI Extras\n");
 
@@ -3027,6 +3029,12 @@ static int __init acer_wmi_init(void)
 	}
 
 	set_quirks();
+
+	/*
+	 * Querying GetGamingSysInfo appears to be required to enable Nitro AN515-57
+	 * and possibly other Acer (Predator/Nitro) 4 zone LED keyboards.
+	 */
+	WMI_gaming_execute_u64(ACER_WMID_GET_GAMING_SYSINFO_METHODID, 0, &gaming_sysinfo);
 
 	if (dmi_check_system(video_vendor_dmi_table))
 		acpi_video_set_dmi_backlight_type(acpi_backlight_vendor);
