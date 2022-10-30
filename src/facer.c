@@ -3035,6 +3035,8 @@ static int __init acer_wmi_init(void)
 	 * and possibly other Acer (Predator/Nitro) 4 zone LED keyboards.
 	 */
 	WMI_gaming_execute_u64(ACER_WMID_GET_GAMING_SYSINFO_METHODID, 0, &gaming_sysinfo);
+	/* Turn on all 4 zones */
+	WMI_gaming_execute_u64(ACER_WMID_SET_GAMING_LED_METHODID, 8L | (15UL<<40), NULL);
 
 	if (dmi_check_system(video_vendor_dmi_table))
 		acpi_video_set_dmi_backlight_type(acpi_backlight_vendor);
