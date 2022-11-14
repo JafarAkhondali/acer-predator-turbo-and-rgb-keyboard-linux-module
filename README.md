@@ -3,6 +3,8 @@
     
 Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
 
+![](AKL.png)
+
 > **Warning**
 > ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
 
