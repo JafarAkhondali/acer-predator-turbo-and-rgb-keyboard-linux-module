@@ -68,6 +68,7 @@ MODULE_LICENSE("GPL");
 
 #define ACER_WMID_SET_GAMING_LED_METHODID 2
 #define ACER_WMID_GET_GAMING_LED_METHODID 4
+#define ACER_WMID_GET_GAMING_SYSINFO_METHODID 5
 #define ACER_WMID_SET_GAMING_STATIC_LED_METHODID 6
 #define ACER_WMID_SET_GAMING_FAN_BEHAVIOR 14
 #define ACER_WMID_SET_GAMING_MISC_SETTING_METHODID 22
@@ -2134,6 +2135,19 @@ static int __init gaming_kbbl_static_cdev_init(void)
 	return 0;
 }
 
+static int __init gaming_kbbl_poll_and_enable_zones(void)
+{
+	u64 gaming_sysinfo;
+	/*
+	 * Querying GetGamingSysInfo appears to be required to enable Nitro AN515-57
+	 * and possibly other Acer (Predator/Nitro) 4 zone LED keyboards.
+	 */
+	WMI_gaming_execute_u64(ACER_WMID_GET_GAMING_SYSINFO_METHODID, 0, &gaming_sysinfo);
+	/* Turn on all 4 zones */
+	WMI_gaming_execute_u64(ACER_WMID_SET_GAMING_LED_METHODID, 8L | (15UL<<40), NULL);
+	return 0;
+}
+
 static void __exit gaming_kbbl_static_cdev_exit(void)
 {
 	device_destroy(gkbbl_static_dev_class, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR));
@@ -3040,6 +3054,7 @@ static int __init acer_wmi_init(void)
 			gaming_interface->capability |= ACER_CAP_GAMINGKB | ACER_CAP_GAMINGKB_STATIC;
 			gaming_kbbl_cdev_init();
 			gaming_kbbl_static_cdev_init();
+			gaming_kbbl_poll_and_enable_zones();
 		}
 	}
 
