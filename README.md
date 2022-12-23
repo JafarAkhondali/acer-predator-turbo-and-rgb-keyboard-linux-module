@@ -77,17 +77,17 @@ Arch (I don't use arch anymore btw):
 ```bash
 git clone https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module
 cd "acer-predator-turbo-and-rgb-keyboard-linux-module"
-chmod +x ./install.sh
+chmod +x ./*.sh
 sudo ./install.sh
 ```
 
-### Install as a systemd service (Will work after reboot) For Arch Linux from [ExodiaOS Repo](https://github.com/Exodia-OS/exodia-repo/blob/master/x86_64/Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst)
+### Install as a systemd service (Will work after reboot) for Arch Linux from [ExodiaOS Repo](https://github.com/Exodia-OS/exodia-repo/blob/master/x86_64/)
 
 ```bash
 
-wget https://raw.githubusercontent.com/Exodia-OS/exodia-repo/master/x86_64/Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst
+# Download the latest version of Predator-Sense-CLI available)
 
-sudo pacman -U Predator-Sense-systemd-git-1.0-2-any.pkg.tar.zst
+sudo pacman -U Predator-Sense-CLI-{version}-any.pkg.tar.zst
 
 ```
 
