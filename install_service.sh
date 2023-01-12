@@ -57,7 +57,6 @@ RemainAfterExit=yes
 User=root
 WorkingDirectory=$target_dir
 ExecStart=/bin/bash ./install.sh
-ExecStop=/bin/bash ./uninstall.sh
 
 [Install]
 WantedBy=multi-user.target
