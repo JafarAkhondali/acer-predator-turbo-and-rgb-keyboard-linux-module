@@ -31,6 +31,7 @@ Compablity table:
 | AN517-41  |   -                   |   -               | Yes               |Yes           |
 | PH315-52 |   Yes                   |   Yes               | Yes               |Yes           |
 | PH315-53 |   Yes                   |   Yes               | Yes               |Yes           |
+| PH315-54 |   Yes                   |   Yes               | Yes               |Yes           |
 | PH317-53 |   Yes                   |   Yes               | Yes               |Yes           |
 | PH317-54 |   Yes                   |   No               | Yes               |No           |
 | PH517-51 |   Yes                   |   No               | Yes               |No           |
