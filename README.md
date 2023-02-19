@@ -16,8 +16,7 @@ BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc
 
 > **Note**
 > # Note to contributors:
-> As most of the contributions in this project are less related to the C code and as I don't own a Predator anymore, I'll soon release a video tutorial on how to reverse engineer other features of your laptop and implement it in this project. 
-
+> I started to record a mini-series to share my experience in creating this project on [youtube](https://www.youtube.com/watch?v=97-WNhUmoig&list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr). This will definitly help you to contribute in this project or similar projects that are using WMI for communication.
 
 **Will this work on my laptop?**
 
