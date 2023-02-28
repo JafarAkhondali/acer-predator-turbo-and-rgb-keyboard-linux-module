@@ -1996,7 +1996,7 @@ struct gkbbl_device_data {
 static struct class *gkbbl_dev_class;
 static struct gkbbl_device_data gkbbl_dev_data;
 
-static int gkbbl_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+static int gkbbl_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
 {
 	add_uevent_var(env, "DEVMODE=%#o", 0666);
 	return 0;
@@ -2100,7 +2100,7 @@ struct gkbbl_static_device_data {
 static struct class *gkbbl_static_dev_class;
 static struct gkbbl_device_data gkbbl_static_dev_data;
 
-static int gkbbl_static_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+static int gkbbl_static_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
 {
 	add_uevent_var(env, "DEVMODE=%#o", 0666);
 	return 0;
