@@ -30,11 +30,19 @@
 #include <linux/input.h>
 #include <linux/cdev.h>
 #include <linux/input/sparse-keymap.h>
+#include <linux/version.h>
 
 MODULE_AUTHOR("Carlos Corbacho");
 MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
 MODULE_LICENSE("GPL");
 
+/*
+ * RTLNX_VER_MIN
+ * Evaluates to true if the linux kernel version is equal or higher to the
+ * one specfied.
+ */
+#define RTLNX_VER_MIN(a_Major, a_Minor, a_Patch) \
+    (LINUX_VERSION_CODE >= KERNEL_VERSION(a_Major, a_Minor, a_Patch))
 
 /*
  * Magic Number
@@ -1996,7 +2004,11 @@ struct gkbbl_device_data {
 static struct class *gkbbl_dev_class;
 static struct gkbbl_device_data gkbbl_dev_data;
 
-static int gkbbl_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
+static int gkbbl_dev_uevent(
+#if RTLNX_VER_MIN(6, 2, 0)
+const
+#endif
+struct device *dev, struct kobj_uevent_env *env)
 {
 	add_uevent_var(env, "DEVMODE=%#o", 0666);
 	return 0;
@@ -2100,7 +2112,11 @@ struct gkbbl_static_device_data {
 static struct class *gkbbl_static_dev_class;
 static struct gkbbl_device_data gkbbl_static_dev_data;
 
-static int gkbbl_static_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
+static int gkbbl_static_dev_uevent(
+#if RTLNX_VER_MIN(6, 2, 0)
+const
+#endif
+struct device *dev, struct kobj_uevent_env *env)
 {
 	add_uevent_var(env, "DEVMODE=%#o", 0666);
 	return 0;
