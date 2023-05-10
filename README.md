@@ -37,7 +37,7 @@ Compablity table:
 | PH317-54 |   Yes                   |   No               | Yes               |No           |
 | PH517-51 |   Yes                   |   No               | Yes               |No           |
 | PH517-52 |   Yes                   |   No               | Yes               |No           |
-| PH517-61 |   Yes                   |   No               | Yes               |No           |
+| PH517-61 |   [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)                   |   [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)               | Yes               |Yes           |
 | PH717-71 |   Yes                   |   No               | Yes               |No           |
 | PH717-72 |   Yes                   |   No               | Yes               |No           |
 | PT314-51 |   No                   |   No               | Yes               |Yes           |
