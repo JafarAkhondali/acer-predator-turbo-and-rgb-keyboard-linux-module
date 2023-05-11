@@ -184,6 +184,13 @@ struct event_return_value {
 #define GAMING_KBBL_STATIC_CHR "acer-gkbbl-static"
 #define GAMING_KBBL_STATIC_CONFIG_LEN 4
 
+/*
+ *  Fan turbo-mode user-space communication
+  * A character drive will be exposed in /dev/acer-fan-max as a char block for switching the fans from auto to max
+ */
+
+ #define GAMING_FAN_MAX_CHR "acer-fan-max"
+
 /* Hotkey Customized Setting and Acer Application Status.
  * Set Device Default Value and Report Acer Application Status.
  * When Acer Application starts, it will run this method to inform
@@ -347,6 +354,7 @@ static struct wmi_interface *gaming_interface;
 
 #define GAMING_KBBL_MINOR 0
 #define GAMING_KBBL_STATIC_MINOR 0
+#define GAMING_FAN_MAX_MINOR 0
 
 
 static int dev_major; // Global variable to store major number of driver
@@ -379,8 +387,10 @@ static void __init set_quirks(void)
 		interface->capability |= ACER_CAP_BRIGHTNESS;
 
 	if (quirks->turbo)
-		interface->capability |= ACER_CAP_TURBO_OC | ACER_CAP_TURBO_LED
-								 | ACER_CAP_TURBO_FAN;
+		interface->capability |= ACER_CAP_TURBO_OC;
+
+	if (quirks->cpu_fans | quirks->gpu_fans)
+		interface->capability |= ACER_CAP_TURBO_LED | ACER_CAP_TURBO_FAN;
 }
 
 static int __init dmi_matched(const struct dmi_system_id *dmi)
@@ -450,7 +460,6 @@ static struct quirk_entry quirk_acer_predator_ph317_54 = {
 		.gpu_fans = 1,
 };
 static struct quirk_entry quirk_acer_predator_ph517_51 = {
-		.turbo = 1,
 		.cpu_fans = 1,
 		.gpu_fans = 1,
 };
@@ -460,7 +469,6 @@ static struct quirk_entry quirk_acer_predator_ph517_52 = {
 		.gpu_fans = 1,
 };
 static struct quirk_entry quirk_acer_predator_ph517_61 = {
-		.turbo = 1,
 		.cpu_fans = 1,
 		.gpu_fans = 1,
 };
@@ -2150,6 +2158,86 @@ static int __init gaming_kbbl_static_cdev_init(void)
 	return 0;
 }
 
+
+static ssize_t gkbbl_turbo_fan_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
+{
+	u8 turbo_buf[2]={0}; //allow null-terminated user space input (e.g. "echo 1 > /dev/acer-fan-max")
+	unsigned long err;
+	if (count > 2) {
+		pr_err("invalid data given to fan turbo setting.  Data size %lu, expected 1 or 2\n",count);
+		return -EINVAL;
+	}
+	err = copy_from_user(turbo_buf, buf, 1);
+	switch(turbo_buf[0]) {
+		case 0x00:
+		case 0x30: // ASCII 0
+			WMID_gaming_set_fan_mode(0x1); //auto mode
+			break;
+		case 0x01:
+		case 0x31: // ASCII 1
+			WMID_gaming_set_fan_mode(0x2); //turbo mode
+			break;
+		default:
+			pr_err("invalid data given to turbo setting.  Expected 0 or 1");
+	}
+	return count;
+}
+
+static const struct file_operations gkbbl_turbo_fan_dev_fops = {
+		.owner      = THIS_MODULE,
+		.write      = gkbbl_turbo_fan_write
+};
+
+static struct class *gkbbl_turbo_fan_dev_class;
+static struct gkbbl_device_data turbo_fan_static_dev_data;
+
+static void __exit gkbbl_turbo_fan_cdev_exit(void)
+{
+	device_destroy(gkbbl_turbo_fan_dev_class, MKDEV(dev_major, GAMING_FAN_MAX_MINOR));
+	class_unregister(gkbbl_turbo_fan_dev_class);
+	class_destroy(gkbbl_turbo_fan_dev_class);
+	unregister_chrdev_region(MKDEV(dev_major, GAMING_FAN_MAX_MINOR), MINORMASK);
+}
+
+static int gkbbl_static_turbo_fan_uevent(
+#if RTLNX_VER_MIN(6, 2, 0)
+const
+#endif
+struct device *dev, struct kobj_uevent_env *env)
+{
+	add_uevent_var(env, "DEVMODE=%#o", 0666);
+	return 0;
+}
+
+static int __init gkbbl_turbo_fan_cdev_init(void)
+{
+	dev_t dev;
+	int err;
+
+	err = alloc_chrdev_region(&dev, 0, 1, GAMING_FAN_MAX_CHR);
+	if (err < 0) {
+		pr_err("Char drive registering for gaming keyboard turbo fan failed: %d\n", err);
+		return err;
+	}
+
+	dev_major = MAJOR(dev);
+
+	gkbbl_turbo_fan_dev_class = class_create(THIS_MODULE, GAMING_FAN_MAX_CHR);
+	gkbbl_turbo_fan_dev_class->dev_uevent = gkbbl_static_turbo_fan_uevent;
+
+	cdev_init(&turbo_fan_static_dev_data.cdev, &gkbbl_turbo_fan_dev_fops);
+	turbo_fan_static_dev_data.cdev.owner = THIS_MODULE;
+
+	cdev_add(&turbo_fan_static_dev_data.cdev, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), 1);
+
+	device_create(gkbbl_turbo_fan_dev_class, NULL, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), NULL, "%s-%d",
+				  GAMING_FAN_MAX_CHR,
+				  GAMING_FAN_MAX_MINOR);
+
+	return 0;
+}
+
+
 static int __init gaming_kbbl_poll_and_enable_zones(void)
 {
 	u64 gaming_sysinfo;
@@ -3067,6 +3155,7 @@ static int __init acer_wmi_init(void)
 			gaming_kbbl_cdev_init();
 			gaming_kbbl_static_cdev_init();
 			gaming_kbbl_poll_and_enable_zones();
+			gkbbl_turbo_fan_cdev_init();
 		}
 	}
 
@@ -3150,6 +3239,7 @@ static void __exit acer_wmi_exit(void)
 	if (wmi_has_guid(WMID_GUID4)) {
 		gaming_kbbl_cdev_exit();
 		gaming_kbbl_static_cdev_exit();
+		gkbbl_turbo_fan_cdev_exit();
 	}
 
 	remove_debugfs();
