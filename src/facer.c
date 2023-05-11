@@ -387,10 +387,10 @@ static void __init set_quirks(void)
 		interface->capability |= ACER_CAP_BRIGHTNESS;
 
 	if (quirks->turbo)
-		interface->capability |= ACER_CAP_TURBO_OC;
+		interface->capability |= ACER_CAP_TURBO_OC | ACER_CAP_TURBO_LED;
 
 	if (quirks->cpu_fans | quirks->gpu_fans)
-		interface->capability |= ACER_CAP_TURBO_LED | ACER_CAP_TURBO_FAN;
+		interface->capability |= ACER_CAP_TURBO_FAN;
 }
 
 static int __init dmi_matched(const struct dmi_system_id *dmi)
