@@ -2158,16 +2158,15 @@ static int __init gaming_kbbl_static_cdev_init(void)
 	return 0;
 }
 
-
-static ssize_t gkbbl_turbo_fan_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
+static ssize_t gkbbl_max_fan_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
 {
-	u8 turbo_buf[2]={0}; //allow null-terminated user space input (e.g. "echo 1 > /dev/acer-fan-max")
+	u8 turbo_buf[2]={0,0}; //allow null-terminated user space input (e.g. "echo 1 > /dev/acer-fan-max")
 	unsigned long err;
 	if (count > 2) {
-		pr_err("invalid data given to fan turbo setting.  Data size %lu, expected 1 or 2\n",count);
+		pr_err("invalid data given to fan max fan setting.  Data size %lu, expected 1 or 2\n",count);
 		return -EINVAL;
 	}
-	err = copy_from_user(turbo_buf, buf, 1);
+	err = copy_from_user(turbo_buf, buf, count);
 	switch(turbo_buf[0]) {
 		case 0x00:
 		case 0x30: // ASCII 0
@@ -2178,28 +2177,28 @@ static ssize_t gkbbl_turbo_fan_write(struct file *file, const char __user *buf, 
 			WMID_gaming_set_fan_mode(0x2); //turbo mode
 			break;
 		default:
-			pr_err("invalid data given to turbo setting.  Expected 0 or 1");
+			pr_err("invalid data given to max fan setting.  Expected 0 or 1\n");
 	}
 	return count;
 }
 
-static const struct file_operations gkbbl_turbo_fan_dev_fops = {
+static const struct file_operations gkbbl_max_fan_dev_fops = {
 		.owner      = THIS_MODULE,
-		.write      = gkbbl_turbo_fan_write
+		.write      = gkbbl_max_fan_write
 };
 
-static struct class *gkbbl_turbo_fan_dev_class;
-static struct gkbbl_device_data turbo_fan_static_dev_data;
+static struct class *gkbbl_max_fan_dev_class;
+static struct gkbbl_device_data max_fan_static_dev_data;
 
-static void __exit gkbbl_turbo_fan_cdev_exit(void)
+static void __exit gkbbl_max_fan_cdev_exit(void)
 {
-	device_destroy(gkbbl_turbo_fan_dev_class, MKDEV(dev_major, GAMING_FAN_MAX_MINOR));
-	class_unregister(gkbbl_turbo_fan_dev_class);
-	class_destroy(gkbbl_turbo_fan_dev_class);
+	device_destroy(gkbbl_max_fan_dev_class, MKDEV(dev_major, GAMING_FAN_MAX_MINOR));
+	class_unregister(gkbbl_max_fan_dev_class);
+	class_destroy(gkbbl_max_fan_dev_class);
 	unregister_chrdev_region(MKDEV(dev_major, GAMING_FAN_MAX_MINOR), MINORMASK);
 }
 
-static int gkbbl_static_turbo_fan_uevent(
+static int gkbbl_static_max_fan_uevent(
 #if RTLNX_VER_MIN(6, 2, 0)
 const
 #endif
@@ -2209,7 +2208,7 @@ struct device *dev, struct kobj_uevent_env *env)
 	return 0;
 }
 
-static int __init gkbbl_turbo_fan_cdev_init(void)
+static int __init gkbbl_max_fan_cdev_init(void)
 {
 	dev_t dev;
 	int err;
@@ -2222,15 +2221,15 @@ static int __init gkbbl_turbo_fan_cdev_init(void)
 
 	dev_major = MAJOR(dev);
 
-	gkbbl_turbo_fan_dev_class = class_create(THIS_MODULE, GAMING_FAN_MAX_CHR);
-	gkbbl_turbo_fan_dev_class->dev_uevent = gkbbl_static_turbo_fan_uevent;
+	gkbbl_max_fan_dev_class = class_create(THIS_MODULE, GAMING_FAN_MAX_CHR);
+	gkbbl_max_fan_dev_class->dev_uevent = gkbbl_static_max_fan_uevent;
 
-	cdev_init(&turbo_fan_static_dev_data.cdev, &gkbbl_turbo_fan_dev_fops);
-	turbo_fan_static_dev_data.cdev.owner = THIS_MODULE;
+	cdev_init(&max_fan_static_dev_data.cdev, &gkbbl_max_fan_dev_fops);
+	max_fan_static_dev_data.cdev.owner = THIS_MODULE;
 
-	cdev_add(&turbo_fan_static_dev_data.cdev, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), 1);
+	cdev_add(&max_fan_static_dev_data.cdev, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), 1);
 
-	device_create(gkbbl_turbo_fan_dev_class, NULL, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), NULL, "%s-%d",
+	device_create(gkbbl_max_fan_dev_class, NULL, MKDEV(dev_major, GAMING_FAN_MAX_MINOR), NULL, "%s-%d",
 				  GAMING_FAN_MAX_CHR,
 				  GAMING_FAN_MAX_MINOR);
 
@@ -3155,7 +3154,7 @@ static int __init acer_wmi_init(void)
 			gaming_kbbl_cdev_init();
 			gaming_kbbl_static_cdev_init();
 			gaming_kbbl_poll_and_enable_zones();
-			gkbbl_turbo_fan_cdev_init();
+			gkbbl_max_fan_cdev_init();
 		}
 	}
 
@@ -3239,7 +3238,7 @@ static void __exit acer_wmi_exit(void)
 	if (wmi_has_guid(WMID_GUID4)) {
 		gaming_kbbl_cdev_exit();
 		gaming_kbbl_static_cdev_exit();
-		gkbbl_turbo_fan_cdev_exit();
+		gkbbl_max_fan_cdev_exit();
 	}
 
 	remove_debugfs();
