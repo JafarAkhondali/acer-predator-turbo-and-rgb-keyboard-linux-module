@@ -45,6 +45,7 @@ Compablity table:
 | PT315-52 |   Yes                   |   No               | Yes               |No           |
 | PT515-51 |   Yes                   |   Yes               | Yes               |Yes           |
 | PT515-52 |   Yes                   |   No               | Yes               |No           |
+| PT516-52s |   No                   |   No               | Yes               |Yes(3zone)           |
 | PT917-71 |   Yes                   |   No               | Yes               |No           |
 
 
