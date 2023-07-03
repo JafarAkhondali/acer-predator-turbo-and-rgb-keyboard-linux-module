@@ -2027,7 +2027,13 @@ static int __init gaming_kbbl_cdev_init(void)
 
 	dev_major = MAJOR(dev);
 
-	gkbbl_dev_class = class_create(THIS_MODULE, GAMING_KBBL_CHR);
+
+	#if RTLNX_VER_MIN(6, 4, 0)
+		gkbbl_dev_class = class_create(GAMING_KBBL_CHR);
+	#else
+		gkbbl_dev_class = class_create(THIS_MODULE, GAMING_KBBL_CHR);
+	#endif
+
 	gkbbl_dev_class->dev_uevent = gkbbl_dev_uevent;
 
 	cdev_init(&gkbbl_dev_data.cdev, &gkbbl_dev_fops);
@@ -2135,7 +2141,12 @@ static int __init gaming_kbbl_static_cdev_init(void)
 
 	dev_major = MAJOR(dev);
 
-	gkbbl_static_dev_class = class_create(THIS_MODULE, GAMING_KBBL_STATIC_CHR);
+	#if RTLNX_VER_MIN(6, 4, 0)
+		gkbbl_static_dev_class = class_create(GAMING_KBBL_STATIC_CHR);
+	#else
+		gkbbl_static_dev_class = class_create(THIS_MODULE, GAMING_KBBL_STATIC_CHR);
+	#endif
+
 	gkbbl_static_dev_class->dev_uevent = gkbbl_static_dev_uevent;
 
 	cdev_init(&gkbbl_static_dev_data.cdev, &gkbbl_static_dev_fops);
