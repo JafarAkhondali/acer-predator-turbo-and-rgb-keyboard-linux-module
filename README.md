@@ -23,30 +23,32 @@ BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc
 Compablity table:
 
 
-| Product name  | Turbo Mode (Implemented)| Turbo Mode (Tested)| RGB (Impelmented)| RGB (Tested)|
-| ------------- |:-----------------------:|:------------------:|:-----------------:|:------------:|
-| AN515-45  |   -                   |   -               | Yes               |Yes           |
-| AN515-55  |   -                   |   -               | Yes               |Yes           |
-| AN515-57  |   -                   |   -               | Yes               |Yes           |
-| AN515-58  |   -                   |   -               | Yes               |Yes           |
-| AN517-41  |   -                   |   -               | Yes               |Yes           |
-| PH315-52 |   Yes                   |   Yes               | Yes               |Yes           |
-| PH315-53 |   Yes                   |   Yes               | Yes               |Yes           |
-| PH315-54 |   Yes                   |   Yes               | Yes               |Yes           |
-| PH317-53 |   Yes                   |   Yes               | Yes               |Yes           |
-| PH317-54 |   Yes                   |   No               | Yes               |No           |
-| PH517-51 |   Yes                   |   No               | Yes               |No           |
-| PH517-52 |   Yes                   |   No               | Yes               |No           |
-| PH517-61 |   [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)                   |   [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)               | Yes               |Yes           |
-| PH717-71 |   Yes                   |   No               | Yes               |No           |
-| PH717-72 |   Yes                   |   No               | Yes               |No           |
-| PT314-51 |   No                   |   No               | Yes               |Yes           |
-| PT315-51 |   Yes                   |   Yes               | Yes               |Yes           |
-| PT315-52 |   Yes                   |   No               | Yes               |No           |
-| PT515-51 |   Yes                   |   Yes               | Yes               |Yes           |
-| PT515-52 |   Yes                   |   No               | Yes               |No           |
-| PT516-52s |   No                   |   No               | Yes               |Yes(3zone)           |
-| PT917-71 |   Yes                   |   No               | Yes               |No           |
+| Product name |                                          Turbo Mode (Implemented)                                           |                                             Turbo Mode (Tested)                                             | RGB (Impelmented) | RGB (Tested) |
+|--------------|:-----------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|:-----------------:|:------------:|
+| AN515-45     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-55     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-57     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-58     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
+| AN517-41     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
+| PH315-52     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-53     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-54     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-55     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |     Yes      |
+| PH317-53     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH317-54     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PH517-51     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PH517-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PH517-61     | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) |        Yes        |     Yes      |
+| PH717-71     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PH717-72     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PT314-51     |                                                     No                                                      |                                                     No                                                      |        Yes        |     Yes      |
+| PT315-51     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PT314-52S     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |      No      |
+| PT315-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PT515-51     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
+| PT515-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| PT516-52s    |                                                     Yes                                                     |                                                     No                                                      |        Yes        |     Yes      |
+| PT917-71     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
 
 
 

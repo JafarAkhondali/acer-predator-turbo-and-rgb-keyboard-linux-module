@@ -439,6 +439,12 @@ static struct quirk_entry quirk_acer_predator_ph315_54 = {
 		.gpu_fans = 1,
 };
 
+static struct quirk_entry quirk_acer_predator_ph315_55 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
 static struct quirk_entry quirk_acer_predator_ph317_53 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -474,6 +480,11 @@ static struct quirk_entry quirk_acer_predator_ph717_72 = {
 		.cpu_fans = 1,
 		.gpu_fans = 1,
 };
+static struct quirk_entry quirk_acer_predator_pt314_52s = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
 static struct quirk_entry quirk_acer_predator_pt315_51 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -490,6 +501,11 @@ static struct quirk_entry quirk_acer_predator_pt515_51 = {
 		.gpu_fans = 2,
 };
 static struct quirk_entry quirk_acer_predator_pt515_52 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 2,
+};
+static struct quirk_entry quirk_acer_predator_pt516_52s = {
 		.turbo = 1,
 		.cpu_fans = 1,
 		.gpu_fans = 2,
@@ -714,6 +730,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		{
 				.callback = dmi_matched,
+				.ident = "Acer Predator PH315-55",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH315-55"),
+				},
+				.driver_data = &quirk_acer_predator_ph315_55,
+		},
+		{
+				.callback = dmi_matched,
 				.ident = "Acer Predator PH317-53",
 				.matches = {
 						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
@@ -786,6 +811,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		{
 				.callback = dmi_matched,
+				.ident = "Acer Predator PT314-52S",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT314-52S"),
+				},
+				.driver_data = &quirk_acer_predator_pt314_52s,
+		},
+		{
+				.callback = dmi_matched,
 				.ident = "Acer Predator PT315-52",
 				.matches = {
 						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
@@ -810,6 +844,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT515-52"),
 				},
 				.driver_data = &quirk_acer_predator_pt515_52,
+		},
+		{
+				.callback = dmi_matched,
+				.ident = "Acer Predator PT516-52s",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT516-52s"),
+				},
+				.driver_data = &quirk_acer_predator_pt516_52s,
 		},
 		{
 				.callback = dmi_matched,
