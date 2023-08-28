@@ -516,6 +516,15 @@ static struct quirk_entry quirk_acer_predator_pt917_71 = {
 		.gpu_fans = 1,
 };
 
+static struct quirk_entry quirk_acer_nitro_an515_58 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
+
+
+
 /* This AMW0 laptop has no bluetooth */
 static struct quirk_entry quirk_medion_md_98300 = {
 		.wireless = 1,
@@ -862,6 +871,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT917-71"),
 				},
 				.driver_data = &quirk_acer_predator_pt917_71,
+		},
+		{
+				.callback = dmi_matched,
+				.ident = "Acer Nitro AN515-58",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Nitro AN515-58"),
+				},
+				.driver_data = &quirk_acer_nitro_an515_58,
 		},
 
 
