@@ -349,7 +349,8 @@ static struct wmi_interface *gaming_interface;
 #define GAMING_KBBL_STATIC_MINOR 0
 
 
-static int dev_major; // Global variable to store major number of driver
+static dev_t gkbbl_static_dev; // Global variable to store the static kbbl device
+static dev_t gkbbl_dynamic_dev; // Global variable to store the dynamic kbbl device
 
 
 /*
@@ -2086,8 +2087,7 @@ static int __init gaming_kbbl_cdev_init(void)
 		return err;
 	}
 
-	dev_major = MAJOR(dev);
-
+	gkbbl_dynamic_dev = dev;
 
 	#if RTLNX_VER_MIN(6, 4, 0)
 		gkbbl_dev_class = class_create(GAMING_KBBL_CHR);
@@ -2100,9 +2100,9 @@ static int __init gaming_kbbl_cdev_init(void)
 	cdev_init(&gkbbl_dev_data.cdev, &gkbbl_dev_fops);
 	gkbbl_dev_data.cdev.owner = THIS_MODULE;
 
-	cdev_add(&gkbbl_dev_data.cdev, MKDEV(dev_major, GAMING_KBBL_MINOR), 1);
+	cdev_add(&gkbbl_dev_data.cdev, gkbbl_dynamic_dev, 1);
 
-	device_create(gkbbl_dev_class, NULL, MKDEV(dev_major, GAMING_KBBL_MINOR), NULL, "%s-%d",
+	device_create(gkbbl_dev_class, NULL, gkbbl_dynamic_dev, NULL, "%s-%d",
 			   GAMING_KBBL_CHR,
 			   GAMING_KBBL_MINOR);
 
@@ -2111,12 +2111,13 @@ static int __init gaming_kbbl_cdev_init(void)
 
 static void __exit gaming_kbbl_cdev_exit(void)
 {
-	device_destroy(gkbbl_dev_class, MKDEV(dev_major, GAMING_KBBL_MINOR));
+	device_destroy(gkbbl_dev_class, gkbbl_dynamic_dev);
 
 	class_unregister(gkbbl_dev_class);
 	class_destroy(gkbbl_dev_class);
+	cdev_del(&gkbbl_dev_data.cdev);
 
-	unregister_chrdev_region(MKDEV(dev_major, GAMING_KBBL_MINOR), MINORMASK);
+	unregister_chrdev_region(gkbbl_dynamic_dev, 1);
 }
 
 
@@ -2172,10 +2173,6 @@ static const struct file_operations gkbbl_static_dev_fops = {
 		.write       = gkbbl_static_drv_write
 };
 
-struct gkbbl_static_device_data {
-	struct cdev cdev;
-};
-
 static struct class *gkbbl_static_dev_class;
 static struct gkbbl_device_data gkbbl_static_dev_data;
 
@@ -2200,7 +2197,7 @@ static int __init gaming_kbbl_static_cdev_init(void)
 		return err;
 	}
 
-	dev_major = MAJOR(dev);
+	gkbbl_static_dev = dev;
 
 	#if RTLNX_VER_MIN(6, 4, 0)
 		gkbbl_static_dev_class = class_create(GAMING_KBBL_STATIC_CHR);
@@ -2213,9 +2210,9 @@ static int __init gaming_kbbl_static_cdev_init(void)
 	cdev_init(&gkbbl_static_dev_data.cdev, &gkbbl_static_dev_fops);
 	gkbbl_static_dev_data.cdev.owner = THIS_MODULE;
 
-	cdev_add(&gkbbl_static_dev_data.cdev, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), 1);
+	cdev_add(&gkbbl_static_dev_data.cdev, gkbbl_static_dev, 1);
 
-	device_create(gkbbl_static_dev_class, NULL, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), NULL, "%s-%d",
+	device_create(gkbbl_static_dev_class, NULL, gkbbl_static_dev, NULL, "%s-%d",
 				  GAMING_KBBL_STATIC_CHR,
 				  GAMING_KBBL_STATIC_MINOR);
 
@@ -2237,12 +2234,13 @@ static int __init gaming_kbbl_poll_and_enable_zones(void)
 
 static void __exit gaming_kbbl_static_cdev_exit(void)
 {
-	device_destroy(gkbbl_static_dev_class, MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR));
+	device_destroy(gkbbl_static_dev_class, gkbbl_static_dev);
 
 	class_unregister(gkbbl_static_dev_class);
 	class_destroy(gkbbl_static_dev_class);
+	cdev_del(&gkbbl_static_dev_data.cdev);
 
-	unregister_chrdev_region(MKDEV(dev_major, GAMING_KBBL_STATIC_MINOR), MINORMASK);
+	unregister_chrdev_region(gkbbl_static_dev, 1);
 }
 
 /*
