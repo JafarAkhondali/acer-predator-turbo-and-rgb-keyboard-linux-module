@@ -183,6 +183,7 @@ if args.mode == 0:
     # Dynamic coloring mode
     payload = [0] * PAYLOAD_SIZE
     payload[2] = args.brightness
+    payload[9] = 1
     with open(CHARACTER_DEVICE, 'wb') as cd:
         cd.write(bytes(payload))
 
@@ -199,6 +200,7 @@ else:
     payload[5] = args.red
     payload[6] = args.green
     payload[7] = args.blue
+    payload[9] = 1
 
     with open(CHARACTER_DEVICE, 'wb') as cd:
         cd.write(bytes(payload))

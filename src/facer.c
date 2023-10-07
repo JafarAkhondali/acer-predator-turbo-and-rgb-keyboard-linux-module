@@ -287,6 +287,7 @@ static int force_series;
 static int force_caps = -1;
 static bool ec_raw_mode;
 static bool has_type_aa;
+static int turbo_state = 0;
 static u16 commun_func_bitmap;
 static u8 commun_fn_key_number;
 
@@ -824,7 +825,7 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 				.ident = "Acer Predator PT314-52S",
 				.matches = {
 						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT314-52S"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT314-52s"),
 				},
 				.driver_data = &quirk_acer_predator_pt314_52s,
 		},
@@ -2360,15 +2361,10 @@ static int acer_gsensor_event(void)
 /*
  *  Predator series turbo button
  */
-static int acer_toggle_turbo(void)
+static void acer_toggle_turbo(void)
 {
-	u64 turbo_led_state;
-
-	/* Get current state from turbo button */
-	if (ACPI_FAILURE(WMID_gaming_get_u64(&turbo_led_state, ACER_CAP_TURBO_LED)))
-		return -1;
-
-	if (turbo_led_state) {
+	if (turbo_state) {
+		turbo_state = 0;
 		/* Turn off turbo led */
 		WMID_gaming_set_u64(0x1, ACER_CAP_TURBO_LED);
 
@@ -2379,6 +2375,7 @@ static int acer_toggle_turbo(void)
 		WMID_gaming_set_u64(0x5, ACER_CAP_TURBO_OC);
 		WMID_gaming_set_u64(0x7, ACER_CAP_TURBO_OC);
 	} else {
+		turbo_state = 1;
 		/* Turn on turbo led */
 		WMID_gaming_set_u64(0x10001, ACER_CAP_TURBO_LED);
 
@@ -2389,7 +2386,6 @@ static int acer_toggle_turbo(void)
 		WMID_gaming_set_u64(0x205, ACER_CAP_TURBO_OC);
 		WMID_gaming_set_u64(0x207, ACER_CAP_TURBO_OC);
 	}
-	return turbo_led_state;
 }
 
 /*
