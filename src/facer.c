@@ -548,21 +548,21 @@ static struct quirk_entry quirk_lenovo_ideapad_s205 = {
 
 /* The Aspire One has a dummy ACPI-WMI interface - disable it */
 static const struct dmi_system_id acer_blacklist[] __initconst = {
-	{
-		.ident = "Acer Aspire One (SSD)",
-		.matches = {
-			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-			DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
+		{
+				.ident = "Acer Aspire One (SSD)",
+				.matches = {
+					DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+					DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
+				},
 		},
-	},
-	{
-		.ident = "Acer Aspire One (HDD)",
-		.matches = {
-			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-			DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
+		{
+				.ident = "Acer Aspire One (HDD)",
+				.matches = {
+					DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+					DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
+				},
 		},
-	},
-	{}
+		{}
 };
 
 static const struct dmi_system_id amw0_whitelist[] __initconst = {
@@ -2393,7 +2393,7 @@ static void acer_toggle_turbo(void)
 	} else {
 		turbo_state = 1;
 		/* Turn on turbo led */
-		WMID_gaming_set_u64(0x3, ACER_CAP_TURBO_LED);
+		WMID_gaming_set_u64(0x10001, ACER_CAP_TURBO_LED);
 
 		/* Set FAN mode to turbo */
 		WMID_gaming_set_fan_mode(0x2);
