@@ -429,6 +429,12 @@ static struct quirk_entry quirk_acer_predator_ph315_52 = {
 		.gpu_fans = 1,
 };
 
+static struct quirk_entry quirk_acer_predator_ph16_71 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
 static struct quirk_entry quirk_acer_predator_ph315_53 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -542,21 +548,21 @@ static struct quirk_entry quirk_lenovo_ideapad_s205 = {
 
 /* The Aspire One has a dummy ACPI-WMI interface - disable it */
 static const struct dmi_system_id acer_blacklist[] __initconst = {
-		{
-				.ident = "Acer Aspire One (SSD)",
-				.matches = {
-						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-						DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
-				},
+	{
+		.ident = "Acer Aspire One (SSD)",
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
 		},
-		{
-				.ident = "Acer Aspire One (HDD)",
-				.matches = {
-						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-						DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
-				},
+	},
+	{
+		.ident = "Acer Aspire One (HDD)",
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
 		},
-		{}
+	},
+	{}
 };
 
 static const struct dmi_system_id amw0_whitelist[] __initconst = {
@@ -597,6 +603,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		{
 				.callback = dmi_matched,
+				.ident = "Acer Predator PH16-71",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR,"Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME,"Predator PH16-71"),
+				},
+				.driver_data = &quirk_acer_predator_ph16_71,
+		},
+		{
+				.callback = dmi_matched,
 				.ident = "Acer Aspire 1520",
 				.matches = {
 						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
@@ -623,6 +638,7 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 				.driver_data = &quirk_acer_travelmate_2490,
 		},
 		{
+				.ident = "Acer Aspire One (SSD)",
 				.callback = dmi_matched,
 				.ident = "Acer Aspire 5100",
 				.matches = {
@@ -2377,7 +2393,7 @@ static void acer_toggle_turbo(void)
 	} else {
 		turbo_state = 1;
 		/* Turn on turbo led */
-		WMID_gaming_set_u64(0x10001, ACER_CAP_TURBO_LED);
+		WMID_gaming_set_u64(0x3, ACER_CAP_TURBO_LED);
 
 		/* Set FAN mode to turbo */
 		WMID_gaming_set_fan_mode(0x2);
@@ -2688,6 +2704,12 @@ static void acer_wmi_notify(u32 value, void *context)
 		case WMID_GAMING_TURBO_KEY_EVENT:
 			if (return_value.key_num == 0x4)
 				acer_toggle_turbo();
+			if (quirk_entry->.key_num == 0x5) // This is the key for ph16-71
+			{
+				acer_toggle_turbo();
+				pr_warn("WMID_GAMING_TURBO_KEY_TOGGLED - %d", return_value.key_num);
+			}
+			pr_warn("WMID_GAMING_TURBO_KEY - %d", return_value.key_num);
 			break;
 		default:
 			pr_warn("Unknown function number - %d - %d\n",
