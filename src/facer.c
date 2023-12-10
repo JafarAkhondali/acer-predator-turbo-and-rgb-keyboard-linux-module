@@ -551,15 +551,15 @@ static const struct dmi_system_id acer_blacklist[] __initconst = {
 		{
 				.ident = "Acer Aspire One (SSD)",
 				.matches = {
-					DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-					DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "AOA110"),
 				},
 		},
 		{
 				.ident = "Acer Aspire One (HDD)",
 				.matches = {
-					DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-					DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
+						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME, "AOA150"),
 				},
 		},
 		{}
