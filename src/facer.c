@@ -2702,14 +2702,14 @@ static void acer_wmi_notify(u32 value, void *context)
 			acer_kbd_dock_event(&return_value);
 			break;
 		case WMID_GAMING_TURBO_KEY_EVENT:
-			if (return_value.key_num == 0x4)
+			if (return_value.key_num == 0x4) {
 				acer_toggle_turbo();
-			if (quirk_entry->.key_num == 0x5) // This is the key for ph16-71
-			{
+				break;
+			}
+			if (return_value.key_num == 0x5) { // This is for ph16-71
 				acer_toggle_turbo();
 				pr_warn("WMID_GAMING_TURBO_KEY_TOGGLED - %d", return_value.key_num);
 			}
-			pr_warn("WMID_GAMING_TURBO_KEY - %d", return_value.key_num);
 			break;
 		default:
 			pr_warn("Unknown function number - %d - %d\n",
