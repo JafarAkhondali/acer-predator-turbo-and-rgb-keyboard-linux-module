@@ -429,6 +429,12 @@ static struct quirk_entry quirk_acer_predator_ph315_52 = {
 		.gpu_fans = 1,
 };
 
+static struct quirk_entry quirk_acer_predator_ph16_71 = {
+		.turbo = 1,
+		.cpu_fans = 1,
+		.gpu_fans = 1,
+};
+
 static struct quirk_entry quirk_acer_predator_ph315_53 = {
 		.turbo = 1,
 		.cpu_fans = 1,
@@ -597,6 +603,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		{
 				.callback = dmi_matched,
+				.ident = "Acer Predator PH16-71",
+				.matches = {
+						DMI_MATCH(DMI_SYS_VENDOR,"Acer"),
+						DMI_MATCH(DMI_PRODUCT_NAME,"Predator PH16-71"),
+				},
+				.driver_data = &quirk_acer_predator_ph16_71,
+		},
+		{
+				.callback = dmi_matched,
 				.ident = "Acer Aspire 1520",
 				.matches = {
 						DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
@@ -623,6 +638,7 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 				.driver_data = &quirk_acer_travelmate_2490,
 		},
 		{
+				.ident = "Acer Aspire One (SSD)",
 				.callback = dmi_matched,
 				.ident = "Acer Aspire 5100",
 				.matches = {
@@ -2686,8 +2702,13 @@ static void acer_wmi_notify(u32 value, void *context)
 			acer_kbd_dock_event(&return_value);
 			break;
 		case WMID_GAMING_TURBO_KEY_EVENT:
-			if (return_value.key_num == 0x4)
+			if (return_value.key_num == 0x4) {
 				acer_toggle_turbo();
+				break;
+			}
+			if (return_value.key_num == 0x5) { // This is for ph16-71
+				acer_toggle_turbo();
+			}
 			break;
 		default:
 			pr_warn("Unknown function number - %d - %d\n",
