@@ -2708,7 +2708,6 @@ static void acer_wmi_notify(u32 value, void *context)
 			}
 			if (return_value.key_num == 0x5) { // This is for ph16-71
 				acer_toggle_turbo();
-				pr_warn("WMID_GAMING_TURBO_KEY_TOGGLED - %d", return_value.key_num);
 			}
 			break;
 		default:
