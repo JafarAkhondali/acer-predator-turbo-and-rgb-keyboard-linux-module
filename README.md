@@ -1,7 +1,7 @@
 # Unofficial Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
 ![](keyboard.webp)
 
-Join the discord server:   
+Join the discord server(It's dead 💀, but a better place for discussion compared to Github):   
 [![](https://dcbadge.vercel.app/api/server/bNa4Qw8rPH)](https://discord.gg/bNa4Qw8rPH)
     
 Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
