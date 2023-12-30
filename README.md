@@ -13,11 +13,7 @@ Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this projec
 
 ### Donation:
 Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
-[Paypal](https://www.paypal.com/paypalme/jafarakhondali)
-
-BNB: bnb18vseyxgydwq8xs2hmz7chekazz9jmj7uplvapg  
-Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C  
-BTC: bc1qpd2v5acc8m8gjmpg78lhz5uakjxdclmawq3xdc  
+Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C
 
 > **Note**
 > # Note to contributors:
