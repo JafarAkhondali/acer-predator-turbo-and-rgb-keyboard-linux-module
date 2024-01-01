@@ -2,7 +2,7 @@
 ![](keyboard.webp)
 
 Join the discord server(It's dead 💀, but a better place for discussion compared to Github):   
-[![](https://dcbadge.vercel.app/api/server/bNa4Qw8rPH)](https://discord.gg/bNa4Qw8rPH)
+[![](https://dcbadge.vercel.app/api/server/bNa4Qw8rPH)](https://discord.gg/ybWvSRfSY5)
     
 Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
 
