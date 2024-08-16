@@ -117,10 +117,15 @@ sudo ./install_openrc.sh
 Turbo mode should work fine by using the turbo button on keyboard.
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
-with kernel space.  
-To make it easier to interact with this device, a simple python script has been attached.  
-`./facer_rgb.py`  
-or check help for more advanced usage:  
+with kernel space. 
+
+You can use the `keyboard.py` which is a simple script that provide an easy to understand CLI for setting you keyboard RGB. To run the script just use the following command 
+
+```bash
+python keyboard.py
+```
+
+If you want more control, you also have access to the `facer_rgb.py` this can be useful if you are building your own scrips. Instruction for using `facer_rgb.py` is given below or check help for more advanced usage:  
 `./facer_rgb.py --help`
 
 ```
