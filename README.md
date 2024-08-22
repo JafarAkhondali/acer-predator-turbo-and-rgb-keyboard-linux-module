@@ -68,7 +68,7 @@ Check the output of this command:
 If the directory exists, it may work fine. Otherwise, RGB will not work at all.
 
 ## Requirements
-If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776).
+If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776).Make sure you have rsync installed. You can check that by doing rsync --version in your terminal and if you dont have it just install it by doing sudo apt install rsync.
 
 Install linux headers using your distro package manager:
 Ubuntu (or other Debian baseds distros):  
