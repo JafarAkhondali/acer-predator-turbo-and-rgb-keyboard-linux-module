@@ -114,7 +114,12 @@ sudo ./install_openrc.sh
 ```
 
 ## Usage
-Turbo mode should work fine by using the turbo button on keyboard.
+Turbo mode should work fine by using the turbo button on keyboard. A enabled/disabled read-only flag is stored at /sys/devices/platform/fan/fan_turbo_state.
+
+```bash
+cat /sys/devices/platform/fan/fan_turbo_state
+disabled
+```
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
 with kernel space. 
