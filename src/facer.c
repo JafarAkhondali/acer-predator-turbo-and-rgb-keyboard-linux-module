@@ -679,7 +679,6 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		.driver_data = &quirk_acer_travelmate_2490,
 	},
 	{
-		.ident = "Acer Aspire One (SSD)",
 		.callback = dmi_matched,
 		.ident = "Acer Aspire 5100",
 		.matches = {
