@@ -11,7 +11,6 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-#include <acpi/video.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -30,6 +29,7 @@
 #include <linux/input.h>
 #include <linux/cdev.h>
 #include <linux/input/sparse-keymap.h>
+#include <acpi/video.h>
 #include <linux/version.h>
 
 MODULE_AUTHOR("Carlos Corbacho");
@@ -75,7 +75,7 @@ MODULE_LICENSE("GPL");
 
 #define ACER_WMID_SET_GAMING_LED_METHODID 2
 #define ACER_WMID_GET_GAMING_LED_METHODID 4
-#define ACER_WMID_GET_GAMING_SYSINFO_METHODID 5
+#define ACER_WMID_GET_GAMING_SYS_INFO_METHODID 5
 #define ACER_WMID_SET_GAMING_STATIC_LED_METHODID 6
 #define ACER_WMID_SET_GAMING_FAN_BEHAVIOR 14
 #define ACER_WMID_SET_GAMING_MISC_SETTING_METHODID 22
@@ -255,7 +255,6 @@ struct hotkey_function_type_aa {
 #define ACER_CAP_THREEG			BIT(4)
 #define ACER_CAP_SET_FUNCTION_MODE	BIT(5)
 #define ACER_CAP_KBD_DOCK		BIT(6)
-
 #define ACER_CAP_TURBO_OC		BIT(7)
 #define ACER_CAP_TURBO_LED		BIT(8)
 #define ACER_CAP_TURBO_FAN		BIT(9)
@@ -552,9 +551,6 @@ static struct quirk_entry quirk_acer_nitro_an515_58 = {
 	.cpu_fans = 1,
 	.gpu_fans = 1,
 };
-
-
-
 
 /* This AMW0 laptop has no bluetooth */
 static struct quirk_entry quirk_medion_md_98300 = {
@@ -957,9 +953,6 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		.driver_data = &quirk_acer_nitro_an515_58,
 	},
-
-
-
 	{
 		.callback = set_force_caps,
 		.ident = "Acer Aspire Switch 10E SW3-016",
@@ -1942,7 +1935,7 @@ static acpi_status WMID_gaming_get_u64(u64 *value, u32 cap)
 	return status;
 }
 
-void WMID_gaming_set_fan_mode(u8 fan_mode)
+static void WMID_gaming_set_fan_mode(u8 fan_mode)
 {
 	/* fan_mode = 1 is used for auto, fan_mode = 2 used for turbo*/
 	u64 gpu_fan_config1 = 0, gpu_fan_config2 = 0;
@@ -2301,7 +2294,7 @@ static int __init gaming_kbbl_poll_and_enable_zones(void)
 	 * Querying GetGamingSysInfo appears to be required to enable Nitro AN515-57
 	 * and possibly other Acer (Predator/Nitro) 4 zone LED keyboards.
 	 */
-	WMI_gaming_execute_u64(ACER_WMID_GET_GAMING_SYSINFO_METHODID, 0, &gaming_sysinfo);
+	WMI_gaming_execute_u64(ACER_WMID_GET_GAMING_SYS_INFO_METHODID, 0, &gaming_sysinfo);
 	/* Turn on all 4 zones */
 	WMI_gaming_execute_u64(ACER_WMID_SET_GAMING_LED_METHODID, 8L | (15UL<<40), NULL);
 	return 0;
@@ -2755,13 +2748,10 @@ static void acer_wmi_notify(u32 value, void *context)
 		acer_kbd_dock_event(&return_value);
 		break;
 	case WMID_GAMING_TURBO_KEY_EVENT:
-		if (return_value.key_num == 0x4) {
+		if (return_value.key_num == 0x4)
 			acer_toggle_turbo();
-			break;
-		}
-		if (return_value.key_num == 0x5) { // This is for ph16-71
+		if (return_value.key_num == 0x5) // This is for ph16-71
 			acer_toggle_turbo();
-		}
 		break;
 	default:
 		pr_warn("Unknown function number - %d - %d\n",
