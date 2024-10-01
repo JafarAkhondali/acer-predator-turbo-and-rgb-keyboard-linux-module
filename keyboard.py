@@ -21,17 +21,17 @@ def setup():
 def prep():
     global mode_choice, zone_list, speed_choice, bright_choice, direction_choice, color_choice, final_command
     command = "./facer_rgb.py "
-    if mode_choice != []:
+    if mode_choice:
         command += f"-m {mode_choice[0]} "
-    if speed_choice != []:
+    if speed_choice:
         command += f"-s {speed_choice[0]} "
-    if bright_choice != []:
+    if bright_choice:
         command += f"-b {bright_choice[0]} "
-    if direction_choice != []:
+    if direction_choice:
         command += f"-d {direction_choice[0]} "
-    if color_choice != []:
+    if color_choice:
         command += f"-cR {color_choice[0]} -cB {color_choice[1]} -cG {color_choice[2]} "
-    if zone_list != []:
+    if zone_list:
         zone = list(map(lambda x: f"-z {x} ", zone_list))
         for i in zone:
             final_command.append(command + i)
