@@ -14,9 +14,7 @@ choice = 0
 
 
 def setup():
-    if (
-        ".keyboard_cache" in [f for f in os.listdir(".") if f.startswith(".")]
-    ) == False:
+    if not (".keyboard_cache" in [f for f in os.listdir(".") if f.startswith(".")]):
         os.system("touch .keyboard_cache")
 
 
