@@ -52,7 +52,7 @@ def speed():
         os.system("clear")
         return None
     if choice < 0 or choice > 9:
-        print("Invlid Choice. Try again")
+        print("Invalid Choice. Try again")
         sleep(1.5)
         os.system("clear")
         speed()
@@ -73,7 +73,7 @@ def bright():
         os.system("clear")
         return None
     if choice < 0 or choice > 100:
-        print("Invlid Choice. Try again")
+        print("Invalid Choice. Try again")
         sleep(1.5)
         os.system("clear")
         bright()
@@ -87,14 +87,17 @@ def direction():
     try:
         choice = int(
             input(
-                "Enter the Driection of Animation [1/2]\n1 -> Right to Left\n2 -> Left to Right\nJusr Press Enter to use the Default Vlaue:"
+                "Enter the Direction of Animation [1/2]"
+                "\n1 -> Right to Left"
+                "\n2 -> Left to Right"
+                "\nJust Press Enter to use the Default Value:"
             )
         )
     except ValueError:
         os.system("clear")
         return None
     if choice not in [1, 2]:
-        print("Invlid Choice. Try again")
+        print("Invalid Choice. Try again")
         sleep(1.5)
         os.system("clear")
         direction()
@@ -106,7 +109,8 @@ def direction():
 def zone():
     global zone_list
     zones = input(
-        "Enter the Zone ID(s) you want to select (1-4) seperated by space\nIf you want to select all the zones just press Enter:"
+        "Enter the Zone ID(s) you want to select (1-4) seperated by space"
+        "\nIf you want to select all the zones just press Enter:"
     )
     if len(zones) == 0:
         os.system("clear")
@@ -126,7 +130,9 @@ def zone():
 def color():
     global color_choice
     raw = input(
-        "Enter a Valid RGB code with all the channels seperated by space\nExample: 255 255 255\nJust Press Enter to use the Default Color (White):"
+        "Enter a Valid RGB code with all the channels seperated by space"
+        "\nExample: 255 255 255"
+        "\nJust Press Enter to use the Default Color (White):"
     )
     if len(raw) == 0:
         color_choice = [255, 255, 255]
@@ -160,7 +166,7 @@ def color():
 
 
 def rerun():
-    # This is different than the refresh.sh and should not be considered redundant
+    # This is different from the refresh.sh and should not be considered redundant
     # If we are using the Zones Function, then the current script will run multiple commands to match
     # all the zones the user has specifies but in this case the refresh will only run the last command.
     global final_command
