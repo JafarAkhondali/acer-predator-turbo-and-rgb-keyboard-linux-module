@@ -31,6 +31,8 @@
 #include <linux/cdev.h>
 #include <linux/input/sparse-keymap.h>
 #include <linux/version.h>
+#include <linux/kobject.h>
+#include <linux/sysfs.h>
 
 MODULE_AUTHOR("Carlos Corbacho");
 MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
@@ -2428,6 +2430,43 @@ static int acer_gsensor_event(void)
 	return 0;
 }
 
+
+// Show function to read the state of the fan turbo
+static ssize_t fan_turbo_state_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+{
+    return sprintf(buf, "%s\n", turbo_state ? "enabled" : "disabled");
+}
+
+// Create the sysfs attribute
+static struct kobj_attribute fan_turbo_state_attribute = __ATTR(fan_turbo_state, 0444, fan_turbo_state_show, NULL);
+
+static struct kobject *fan_turbo_kobj;
+
+// Module initialization function
+static int __init fan_turbo_init(void)
+{
+    int retval;
+
+    // Create a kobject in /sys/devices/platform/
+    fan_turbo_kobj = kobject_create_and_add("fan", &platform_bus.kobj);
+    if (!fan_turbo_kobj)
+        return -ENOMEM;
+
+    // Create the file associated with this kobject
+    retval = sysfs_create_file(fan_turbo_kobj, &fan_turbo_state_attribute.attr);
+    if (retval)
+        kobject_put(fan_turbo_kobj);
+
+    return retval;
+}
+
+// Module exit function
+static void __exit fan_turbo_exit(void)
+{
+    kobject_put(fan_turbo_kobj);
+}
+
+
 /*
  *  Predator series turbo button
  */
@@ -3301,5 +3340,25 @@ static void __exit acer_wmi_exit(void)
 	return;
 }
 
-module_init(acer_wmi_init);
-module_exit(acer_wmi_exit);
+static int __init combined_init(void){
+	int ret;
+
+	//Acer wmi init
+	ret = acer_wmi_init();
+	if (ret)
+		return ret;
+
+	ret = fan_turbo_init();
+	if (ret)
+		return ret;
+
+	return 0;
+}
+
+static void __exit combined_exit(void){
+	acer_wmi_exit();
+	fan_turbo_exit();
+}
+
+module_init(combined_init);
+module_exit(combined_exit);
