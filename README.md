@@ -238,6 +238,13 @@ Static mode coloring (zone=4 => most right zone, color=purple) and save it as ex
 Load the previously saved profile:
 `./facer_rgb.py -load example`
 
+### Fan control
+
+The fan speed can be controlled via character device as well, but at this time the only settings available are maximum and auto.
+
+To set fans to the maximum speed, use `echo 1 > /dev/acer-fan-max-0` .  To return them to automatic, use `echo 0 > /dev/acer-fan-max-0` .
+
+Note that this is independent of the turbo mode, so use caution when returning your fans to automatic if your machine supports turbo overclocking.
 
 ## Known problems
 If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
