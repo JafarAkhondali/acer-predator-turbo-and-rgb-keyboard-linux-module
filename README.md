@@ -8,7 +8,7 @@ Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this projec
 
 
 > **Warning**
-> ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engeineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
+> ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
 
 ### Donation:
 Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
@@ -16,46 +16,46 @@ Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C
 
 > **Note**
 > # Note to contributors:
-> I started to record a mini-series to share my experience in creating this project on [youtube](https://www.youtube.com/watch?v=97-WNhUmoig&list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr). This will definitly help you to contribute in this project or similar projects that are using WMI for communication.
+> I started to record a miniseries to share my experience in creating this project on [YouTube](https://www.youtube.com/watch?v=97-WNhUmoig&list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr). This will definitely help you to contribute in this project or similar projects that are using WMI for communication.
 
 **Will this work on my laptop?**
 
-Compablity table:
+Compatibility table:
 
 
-| Product name |                                          Turbo Mode (Implemented)                                           |                                             Turbo Mode (Tested)                                             | RGB (Impelmented) | RGB (Tested) |
-|--------------|:-----------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|:-----------------:|:------------:|
-| AN515-45     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| AN515-55     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| AN515-56     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| AN515-57     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| AN515-58     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| AN517-41     |                                                      -                                                      |                                                      -                                                      |        Yes        |     Yes      |
-| PH315-52     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PH315-53     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PH315-54     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PH315-55     |                                                     Yes                                                     |                                                     [Buggy](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/122)                                                      |        Yes        |     No      |
-| PH317-53     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PH317-54     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PH517-51     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PH517-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PH517-61     | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) |        Yes        |     Yes      |
-| PH717-71     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PH717-72     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PT314-51     |                                                     No                                                      |                                                     No                                                      |        Yes        |     Yes      |
-| PT315-51     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PT314-52S     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |      No      |
-| PT315-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PT316-51     |                                                     Yes                                                     |                                                     Yes                                                      |        Yes        |      Yes      |
-| PT515-51     |                                                     Yes                                                     |                                                     Yes                                                     |        Yes        |     Yes      |
-| PT515-52     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
-| PT516-52s    |                                                     Yes                                                     |                                                     No                                                      |        Yes        |     Yes      |
-| PT917-71     |                                                     Yes                                                     |                                                     No                                                      |        Yes        |      No      |
+| Product name |                                           Turbo Mode (Implemented)                                           |                                             Turbo Mode (Tested)                                             | RGB (Implemented) | RGB (Tested) |
+|--------------|:------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|:-----------------:|:------------:|
+| AN515-45     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-55     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-56     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-57     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| AN515-58     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| AN517-41     |                                                      -                                                       |                                                      -                                                      |        Yes        |     Yes      |
+| PH315-52     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-53     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-54     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH315-55     |                                                     Yes                                                      |   [Buggy](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/122)   |        Yes        |      No      |
+| PH317-53     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PH317-54     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PH517-51     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PH517-52     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PH517-61     | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)  | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) |        Yes        |     Yes      |
+| PH717-71     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PH717-72     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PT314-51     |                                                      No                                                      |                                                     No                                                      |        Yes        |     Yes      |
+| PT315-51     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PT314-52S    |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |      No      |
+| PT315-52     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PT316-51     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PT515-51     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
+| PT515-52     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PT516-52s    |                                                     Yes                                                      |                                                     No                                                      |        Yes        |     Yes      |
+| PT917-71     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
 
 
 
 
-Obviously, I don't have access to all these models, so if it worked(or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel.
+Obviously, I don't have access to all these models, so if it worked (or not) for you, kindly please mention your model on issues so we can ship this to Linux kernel.
 
 You can find your model using this command:
 `sudo dmidecode -s system-product-name`
@@ -68,10 +68,10 @@ Check the output of this command:
 If the directory exists, it may work fine. Otherwise, RGB will not work at all.
 
 ## Requirements
-If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776). Make sure you have `rsync` installed. You can check that by doing `rsync --version` in your terminal and if you dont have it just install it by doing `sudo apt install rsync`.
+If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776). Make sure you have `rsync` installed. You can check that by doing `rsync --version` in your terminal and if you don't have it just install it by doing `sudo apt install rsync`.
 
 Install linux headers using your distro package manager:
-Ubuntu (or other Debian baseds distros):  
+Ubuntu (or other Debian based distros):  
 `sudo apt-get install linux-headers-$(uname -r) gcc make`
 
 Arch (I don't use arch anymore btw):  
@@ -119,7 +119,7 @@ Turbo mode should work fine by using the turbo button on keyboard.
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
 with kernel space. 
 
-You can use the `keyboard.py` which is a simple script that provide an easy to understand CLI for setting you keyboard RGB. To run the script just use the following command 
+You can use the `keyboard.py` which is a simple script that provide an easy-to-understand CLI for setting you keyboard RGB. To run the script just use the following command 
 
 ```bash
 python keyboard.py
@@ -253,7 +253,7 @@ If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd
 
 
 ## Feedback:
-If this worked or didn't worked for you, kindly make a new issue, and attach the following if possible:  
+If this worked or didn't work for you, kindly make a new issue, and attach the following if possible:  
 `sudo dmidecode | grep "Product Name" -B 2 -A 4`  
 `sudo cat /sys/firmware/acpi/tables/DSDT > dsdt.aml`
 

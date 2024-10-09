@@ -3356,13 +3356,13 @@ static void acer_platform_shutdown(struct platform_device *device)
 }
 
 static struct platform_driver acer_platform_driver = {
-	.driver = {
-		.name = "acer-wmi",
-		.pm = &acer_pm,
-	},
-	.probe = acer_platform_probe,
-	.remove_new = acer_platform_remove,
-	.shutdown = acer_platform_shutdown,
+		.driver = {
+				.name = "acer-wmi",
+				.pm = &acer_pm,
+		},
+		.probe = acer_platform_probe,
+		.remove = (void*)acer_platform_remove,
+		.shutdown = acer_platform_shutdown,
 };
 
 static struct platform_device *acer_platform_device;
