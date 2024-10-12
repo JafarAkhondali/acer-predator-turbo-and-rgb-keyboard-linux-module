@@ -1,0 +1,1 @@
+./facer_rgb.py -m 0 -cR 255 -cB 0 -cG 0 -z 1 

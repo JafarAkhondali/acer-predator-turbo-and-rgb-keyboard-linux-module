@@ -14,7 +14,7 @@ fi
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
 # compile the kernel module
-make
+make || exit 1
 
 # remove previous acer_wmi module
 rmmod acer_wmi
