@@ -16,8 +16,8 @@ rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 fix_missing_make() {
     if [[ -f /etc/debian_version ]]; then
         echo "Detected Debian-based system. Proceeding with installation..."
-        sudo apt install make
-        sudo apt-get install linux-headers-$(uname -r) gcc make
+        apt install make
+        apt-get install linux-headers-$(uname -r) gcc make
         
         make || echo "Failed to install Make dependencies. Please install them manually." && exit 1
     else
@@ -39,8 +39,8 @@ if [[ $(grep platform_profile_register /proc/kallsyms) == "" ]]; then
     echo ""
 
     # check if the modinfo platform_profile returns a valid output
-    sudo modinfo platform_profile || echo "[*] Your kernel doesn't seem to have the required module" && exit 1
-    sudo modprobe platform_profile || echo "[*] Found but failed to load the platform_profile module" && exit 1
+    modinfo platform_profile || echo "[*] Your kernel doesn't seem to have the required module" && exit 1
+    modprobe platform_profile || echo "[*] Found but failed to load the platform_profile module" && exit 1
 
 fi
 
