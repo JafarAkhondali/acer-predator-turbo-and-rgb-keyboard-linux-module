@@ -43,9 +43,9 @@ if [[ $(grep platform_profile_register /proc/kallsyms) == "" ]]; then
     echo ""
 
     # check if the modinfo platform_profile returns a valid output
-    modinfo platform_profile || echo "[*] Your kernel doesn't seem to have the required module" && exit 1
-    modprobe platform_profile || echo "[*] Found but failed to load the platform_profile module" && exit 1
-
+    modinfo platform_profile || { echo "[*] Your kernel doesn't seem to have the required module"; exit 1; }
+    modprobe platform_profile || { echo "[*] Found but failed to load the platform_profile module"; exit 1; }
+    echo "[*] Successfully loaded the platform_profile module"
 fi
 
 # remove previous acer_wmi module if loaded
