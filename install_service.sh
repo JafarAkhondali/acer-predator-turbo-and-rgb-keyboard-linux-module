@@ -84,7 +84,7 @@ fi
 EOF
 
 	#locking down service file for security
-	chown root:root $target_dir/service.sh
+	chown -R root:root $target_dir
 	chmod 744 $target_dir/service.sh
 
 	systemctl daemon-reload
