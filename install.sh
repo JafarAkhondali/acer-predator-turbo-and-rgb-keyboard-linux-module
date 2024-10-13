@@ -14,16 +14,20 @@ fi
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
 fix_missing_make() {
-    if [[ -f /etc/debian_version ]]; then
-        echo "Detected Debian-based system. Proceeding with installation..."
-        apt install make
-        apt-get install linux-headers-$(uname -r) gcc make
+    if command -v apt > /dev/null; then
+        echo "Detected system using apt package manager. Proceeding with installation..."
         
-        make || echo "Failed to install Make dependencies. Please install them manually." && exit 1
+        sudo apt update
+        sudo apt install -y make gcc linux-headers-$(uname -r)
+        
+        # Run make, and if it fails, prompt the user to install dependencies manually
+        make || { echo "Failed to install Make dependencies. Please install them manually."; exit 1; }
     else
-        echo "Not a supported system, you'll have to resolve Make dependencies yourself."
+        echo "System not using apt. You'll need to resolve Make dependencies manually."
+        exit 1
     fi
 }
+
 # compile the kernel module
 make || fix_missing_make
 
@@ -44,8 +48,11 @@ if [[ $(grep platform_profile_register /proc/kallsyms) == "" ]]; then
 
 fi
 
-# remove previous acer_wmi module
-rmmod acer_wmi
+# remove previous acer_wmi module if loaded
+if [[ $(lsmod | grep acer_wmi) != "" ]]; then
+    echo "[*] Removing acer_wmi module"
+    rmmod acer_wmi
+fi
 
 # install required modules
 modprobe wmi
