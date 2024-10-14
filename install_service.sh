@@ -61,6 +61,7 @@ ExecStart=/bin/bash $target_dir/service.sh
 [Install]
 WantedBy=multi-user.target
 EOF
+	chown -R root:root $target_dir
 
 KERNELVERSION=$(uname -r)
 

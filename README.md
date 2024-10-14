@@ -251,6 +251,17 @@ If you have installed it as a service, simply run `./uninstal_service.sh`
 
 If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd-git`
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 
 ## Feedback:
 If this worked or didn't work for you, kindly make a new issue, and attach the following if possible:  
