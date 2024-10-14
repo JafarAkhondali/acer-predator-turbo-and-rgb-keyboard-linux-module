@@ -61,6 +61,7 @@ ExecStart=/bin/bash ./install.sh
 [Install]
 WantedBy=multi-user.target
 EOF
+	chown -R root:root $target_dir
 
 	systemctl daemon-reload
 	systemctl start $service
