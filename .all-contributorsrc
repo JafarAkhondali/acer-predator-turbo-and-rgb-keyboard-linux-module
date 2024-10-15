@@ -1,4 +1,10 @@
 {
   "projectName": "acer-predator-turbo-and-rgb-keyboard-linux-module",
-  "projectOwner": "JafarAkhondali"
+  "projectOwner": "JafarAkhondali",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "contributorsPerLine": 7,
+  "contributors": []
 }
