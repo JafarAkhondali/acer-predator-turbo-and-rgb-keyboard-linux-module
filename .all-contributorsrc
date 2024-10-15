@@ -1,4 +1,51 @@
 {
   "projectName": "acer-predator-turbo-and-rgb-keyboard-linux-module",
-  "projectOwner": "JafarAkhondali"
+  "projectOwner": "JafarAkhondali",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "LarryTheMagicDragon",
+      "name": "LarryTheMagicDragon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92491710?v=4",
+      "profile": "https://github.com/LarryTheMagicDragon",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "mmsaeed509",
+      "name": "Mahmoud Mohammed ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62524855?v=4",
+      "profile": "http://mmsaeed509.github.io",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "santarl",
+      "name": "snta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74417622?v=4",
+      "profile": "https://github.com/santarl",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "TheUnrealDragon",
+      "name": "TheUnrealDragon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61658254?v=4",
+      "profile": "https://github.com/TheUnrealDragon",
+      "contributions": [
+        "maintenance"
+      ]
+    }
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
