@@ -260,6 +260,7 @@ If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/LarryTheMagicDragon"><img src="https://avatars.githubusercontent.com/u/92491710?v=4?s=100" width="100px;" alt="LarryTheMagicDragon"/><br /><sub><b>LarryTheMagicDragon</b></sub></a><br /><a href="#maintenance-LarryTheMagicDragon" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/TheUnrealDragon"><img src="https://avatars.githubusercontent.com/u/61658254?v=4?s=100" width="100px;" alt="TheUnrealDragon"/><br /><sub><b>TheUnrealDragon</b></sub></a><br /><a href="#maintenance-TheUnrealDragon" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>
