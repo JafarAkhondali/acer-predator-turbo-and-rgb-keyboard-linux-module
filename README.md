@@ -261,7 +261,7 @@ If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/LarryTheMagicDragon"><img src="https://avatars.githubusercontent.com/u/92491710?v=4?s=100" width="100px;" alt="LarryTheMagicDragon"/><br /><sub><b>LarryTheMagicDragon</b></sub></a><br /><a href="#maintenance-LarryTheMagicDragon" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://mmsaeed509.github.io"><img src="https://avatars.githubusercontent.com/u/62524855?v=4?s=100" width="100px;" alt="Mahmoud Mohammed "/><br /><sub><b>Mahmoud Mohammed </b></sub></a><br /><a href="#maintenance-mmsaeed509" title="Maintenance">🚧</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santarl"><img src="https://avatars.githubusercontent.com/u/74417622?v=4?s=100" width="100px;" alt="snta"/><br /><sub><b>snta</b></sub></a><br /><a href="#maintenance-santarl" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santarl"><img src="https://avatars.githubusercontent.com/u/74417622?v=4?s=100" width="100px;" alt="snta"/><br /><sub><b>snta</b></sub></a><br /><a href="#maintenance-santarl" title="Maintenance">🚧</a></td><td align="center" valign="top" width="14.28%"><a href="https://github.com/TheUnrealDragon"><img src="https://avatars.githubusercontent.com/u/61658254?v=4?s=100" width="100px;" alt="TheUnrealDragon"/><br /><sub><b>TheUnrealDragon</b></sub></a><br /><a href="#maintenance-TheUnrealDragon" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>
