@@ -3,8 +3,22 @@
   "projectOwner": "JafarAkhondali",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "files": ["README.md"],
+  "files": [
+    "README.md"
+  ],
   "imageSize": 100,
   "contributorsPerLine": 7,
-  "contributors": []
+  "contributors": [
+    {
+      "login": "LarryTheMagicDragon",
+      "name": "LarryTheMagicDragon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92491710?v=4",
+      "profile": "https://github.com/LarryTheMagicDragon",
+      "contributions": [
+        "maintenance"
+      ]
+    }
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
