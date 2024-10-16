@@ -44,6 +44,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "blackPantherOS",
+      "name": "blackPanther OS ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12883566?v=4",
+      "profile": "http://www.blackpantheros.eu",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
