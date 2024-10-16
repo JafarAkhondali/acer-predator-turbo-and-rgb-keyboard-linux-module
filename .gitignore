@@ -63,3 +63,6 @@ core
 .tmp_versions
 .vscode
 .idea
+
+# Cache files
+.keyboard_cache
