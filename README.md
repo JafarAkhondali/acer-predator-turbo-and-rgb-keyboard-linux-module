@@ -253,6 +253,7 @@ If you have installed it as a service, simply run `./uninstal_service.sh`
 If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd-git`
 
 ## Contributors
+I lost access to my Acer device. The main reason this project isn’t dead (yet) is because of all the amazing people contributing to it, especially:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
