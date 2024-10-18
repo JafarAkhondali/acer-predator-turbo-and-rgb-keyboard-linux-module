@@ -42,6 +42,7 @@ Compatibility table:
 | PH517-61     | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94)  | [Partial#94](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/94) |        Yes        |     Yes      |
 | PH717-71     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
 | PH717-72     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
+| PHN18-71     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PT314-51     |                                                      No                                                      |                                                     No                                                      |        Yes        |     Yes      |
 | PT315-51     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PT314-52S    |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |      No      |
@@ -252,6 +253,7 @@ If you have installed it as a service, simply run `./uninstal_service.sh`
 If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd-git`
 
 ## Contributors
+I lost access to my Acer device. The main reason this project isn’t dead (yet) is because of all the amazing people contributing to it, especially:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -261,7 +263,9 @@ If you install it from AUR repository RUN `sudo pacman -R Predator-Sense-systemd
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/LarryTheMagicDragon"><img src="https://avatars.githubusercontent.com/u/92491710?v=4?s=100" width="100px;" alt="LarryTheMagicDragon"/><br /><sub><b>LarryTheMagicDragon</b></sub></a><br /><a href="#maintenance-LarryTheMagicDragon" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://mmsaeed509.github.io"><img src="https://avatars.githubusercontent.com/u/62524855?v=4?s=100" width="100px;" alt="Mahmoud Mohammed "/><br /><sub><b>Mahmoud Mohammed </b></sub></a><br /><a href="#maintenance-mmsaeed509" title="Maintenance">🚧</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santarl"><img src="https://avatars.githubusercontent.com/u/74417622?v=4?s=100" width="100px;" alt="snta"/><br /><sub><b>snta</b></sub></a><br /><a href="#maintenance-santarl" title="Maintenance">🚧</a></td><td align="center" valign="top" width="14.28%"><a href="https://github.com/TheUnrealDragon"><img src="https://avatars.githubusercontent.com/u/61658254?v=4?s=100" width="100px;" alt="TheUnrealDragon"/><br /><sub><b>TheUnrealDragon</b></sub></a><br /><a href="#maintenance-TheUnrealDragon" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santarl"><img src="https://avatars.githubusercontent.com/u/74417622?v=4?s=100" width="100px;" alt="snta"/><br /><sub><b>snta</b></sub></a><br /><a href="#maintenance-santarl" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/TheUnrealDragon"><img src="https://avatars.githubusercontent.com/u/61658254?v=4?s=100" width="100px;" alt="TheUnrealDragon"/><br /><sub><b>TheUnrealDragon</b></sub></a><br /><a href="#maintenance-TheUnrealDragon" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.blackpantheros.eu"><img src="https://avatars.githubusercontent.com/u/12883566?v=4?s=100" width="100px;" alt="blackPanther OS "/><br /><sub><b>blackPanther OS </b></sub></a><br /><a href="https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/commits?author=blackPantherOS" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
