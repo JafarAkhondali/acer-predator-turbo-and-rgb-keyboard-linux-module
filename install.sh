@@ -18,6 +18,7 @@ make
 
 # remove previous acer_wmi module
 rmmod acer_wmi
+rmmod facer
 
 # install required modules
 modprobe wmi

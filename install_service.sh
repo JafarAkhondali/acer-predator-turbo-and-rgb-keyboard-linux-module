@@ -77,6 +77,7 @@ if [ "\$(uname -r)" != "\$KERNELVERSION" ]; then
 	sed -i "s/^KERNELVERSION.*/KERNELVERSION=\"\$(uname -r)\"/" service.sh
 else
 	rmmod acer_wmi
+	rmmod facer
 	modprobe wmi
 	modprobe sparse-keymap
 	modprobe video
