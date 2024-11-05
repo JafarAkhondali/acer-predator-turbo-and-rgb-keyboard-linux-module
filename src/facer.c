@@ -1160,6 +1160,22 @@ static const struct dmi_system_id non_acer_quirks[] __initconst = {
 static struct platform_profile_handler platform_profile_handler;
 static bool platform_profile_support;
 
+#ifdef lts //This is hacky as hell and smarter men than me would probably wince at this, but I'm not smarter than me so this is fine
+int platform_profile_remove()
+{
+	return 0;
+}
+
+int platform_profile_register(struct platform_profile_handler* platform_profile_handler)
+{
+	return 0;
+}
+
+void platform_profile_notify()
+{
+}
+#endif
+
 /*
  * The profile used before turbo mode. This variable is needed for
  * returning from turbo mode when the mode key is in toggle mode.
