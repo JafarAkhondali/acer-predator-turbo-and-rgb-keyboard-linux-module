@@ -8,6 +8,10 @@ PWD       := $(shell pwd)
 KEY := /var/lib/shim-signed/mok/MOK.priv
 X509 := /var/lib/shim-signed/mok/MOK.der
 
+ifdef LTS
+    ccflags-y := -Dlts
+endif
+
 all: default
 
 default:
