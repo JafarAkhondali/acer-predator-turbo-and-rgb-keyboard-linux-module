@@ -295,5 +295,10 @@ If this worked or didn't work for you, kindly make a new issue, and attach the f
 - [ ] Implement RGB Static coloring (per key RGB)  
 
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&type=Date)](https://star-history.com/#JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&Date)
+
+
 ## License
 GNU General Public License v3
