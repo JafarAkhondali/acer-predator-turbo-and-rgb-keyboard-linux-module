@@ -2953,7 +2953,7 @@ static void acer_rfkill_exit(void)
 	}
 }
 
-static void acer_wmi_notify(u32 value, void *context)
+static void acer_wmi_notify(union acpi_object *value, void *context)
 {
 	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
 	union acpi_object *obj;
@@ -2962,12 +2962,6 @@ static void acer_wmi_notify(u32 value, void *context)
 	u16 device_state;
 	const struct key_entry *key;
 	u32 scancode;
-
-	status = wmi_get_event_data(value, &response);
-	if (status != AE_OK) {
-		pr_warn("bad event status 0x%x\n", status);
-		return;
-	}
 
 	obj = (union acpi_object *)response.pointer;
 
