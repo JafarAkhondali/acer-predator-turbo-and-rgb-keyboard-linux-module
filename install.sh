@@ -14,8 +14,13 @@ fi
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
 # compile the kernel module
-make
-
+if [ "$(cat /proc/version | grep clang)" != "" ]; then
+    #For kernels compiled with clang
+    make CC=clang LD=ld.lld
+else
+    #For normal kernels
+    make
+fi
 # remove previous acer_wmi module
 rmmod acer_wmi
 rmmod facer
