@@ -289,7 +289,7 @@ If this worked or didn't work for you, kindly make a new issue, and attach the f
 - [x] GUI(wxPython with tray icon): ([x211321](https://github.com/x211321/RGB-Config-Acer-gkbbl-0))
 - [x] GUI(PyQt): ([0xb4dc0d3x](https://github.com/0xb4dc0d3x/Acer-RGB-Keyboard-Linux-Module-GUI))
 - [x] CLI(Bash): ([Zeaksblog/acer-rgb-menu](https://github.com/Zeaksblog/acer-rgb-menu))
-- [ ] Add DKMS or an Event to recompile module after kernel upgrades #113
+- [x] Add DKMS or an Event to recompile module after kernel upgrades #113
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
 - [ ] Implement RGB Static coloring (per key RGB)  
