@@ -56,12 +56,39 @@ Restart=no
 RemainAfterExit=yes
 User=root
 WorkingDirectory=$target_dir
-ExecStart=/bin/bash ./install.sh
+ExecStart=/bin/bash $target_dir/service.sh
+ExecStop=/bin/bash ./uninstall.sh
 
 [Install]
 WantedBy=multi-user.target
 EOF
 	chown -R root:root $target_dir
+
+KERNELVERSION=$(uname -r)
+
+    cat << EOF > service.sh
+KERNELVERSION="$KERNELVERSION"
+cd $target_dir
+
+rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
+
+if [ "\$(uname -r)" != "\$KERNELVERSION" ]; then
+	make clean
+    source install.sh
+	sed -i "s/^KERNELVERSION.*/KERNELVERSION=\"\$(uname -r)\"/" service.sh
+else
+	rmmod acer_wmi
+	rmmod facer
+	modprobe wmi
+	modprobe sparse-keymap
+	modprobe video
+	insmod src/facer.ko
+fi
+EOF
+
+	#locking down service file for security
+	chown -R root:root $target_dir
+	chmod 744 $target_dir/service.sh
 
 	systemctl daemon-reload
 	systemctl start $service
