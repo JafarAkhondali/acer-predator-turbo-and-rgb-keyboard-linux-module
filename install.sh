@@ -14,19 +14,18 @@ if [ ! "$(uname -r | grep lts)" == "" ]; then
     echo LTS kernel detected
     MAKEFLAGS="LTS=1"
 fi
+
 # Remove previous chr devices if any exists
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
 # compile the kernel module
-
 if [ "$(cat /proc/version | grep clang)" != "" ]; then
     #For kernels compiled with clang
-    make $MAKEFLAGS CC=clang LD=ld.lld
+    make CC=clang LD=ld.lld $MAKEFLAGS
 else
     #For normal kernels
     make $MAKEFLAGS
 fi
-
 # remove previous acer_wmi module
 rmmod acer_wmi
 rmmod facer

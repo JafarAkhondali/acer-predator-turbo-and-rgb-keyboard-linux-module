@@ -51,6 +51,13 @@ MODULE_LICENSE("GPL");
     (LINUX_VERSION_CODE >= KERNEL_VERSION(a_Major, a_Minor, a_Patch))
 
 /*
+ * RTLNX_VER_MAX
+ * Evaluates to true if the linux kernel version is less to the one specfied
+ * (exclusive). */
+#define RTLNX_VER_MAX(a_Major, a_Minor, a_Patch) \
+    (LINUX_VERSION_CODE < KERNEL_VERSION(a_Major, a_Minor, a_Patch))
+
+/*
  * Magic Number
  * Meaning is unknown - this number is required for writing to ACPI for AMW0
  * (it's also used in acerhk when directly accessing the BIOS)
@@ -357,6 +364,20 @@ MODULE_PARM_DESC(cycle_gaming_thermal_profile,
 	"Set thermal mode key in cycle mode. Disabling it sets the mode key in turbo toggle mode");
 MODULE_PARM_DESC(predator_v4,
 	"Enable features for predator laptops that use predator sense v4");
+
+#ifdef lts
+int platform_profile_remove()
+{
+	return 0;
+}
+int platform_profile_register(struct platform_profile_handler* platform_profile_handler)
+{
+	return 0;
+}
+void platform_profile_notify()
+{
+}
+#endif
 
 struct acer_data {
 	int mailled;
@@ -1159,22 +1180,6 @@ static const struct dmi_system_id non_acer_quirks[] __initconst = {
 
 static struct platform_profile_handler platform_profile_handler;
 static bool platform_profile_support;
-
-#ifdef lts //This is hacky as hell and smarter men than me would probably wince at this, but I'm not smarter than me so this is fine
-int platform_profile_remove()
-{
-	return 0;
-}
-
-int platform_profile_register(struct platform_profile_handler* platform_profile_handler)
-{
-	return 0;
-}
-
-void platform_profile_notify()
-{
-}
-#endif
 
 /*
  * The profile used before turbo mode. This variable is needed for
@@ -2969,25 +2974,50 @@ static void acer_rfkill_exit(void)
 	}
 }
 
-static void acer_wmi_notify(union acpi_object *obj, void *context)
+static void acer_wmi_notify(
+#if RTLNX_VER_MIN(6, 12, 0)
+	union acpi_object *obj
+#else
+	u32 value
+#endif
+	, void *context)
 {
 	struct event_return_value return_value;
 	u16 device_state;
 	const struct key_entry *key;
 	u32 scancode;
 
+#if RTLNX_VER_MAX(6, 12, 0)
+	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
+	acpi_status status = wmi_get_event_data(value, &response);
+	if (status != AE_OK) {
+		pr_warn("bad event status 0x%x\n", status);
+		return;
+	}
+	union acpi_object *obj = (union acpi_object *)response.pointer;
+#endif
+
 	if (!obj)
 		return;
 	if (obj->type != ACPI_TYPE_BUFFER) {
 		pr_warn("Unknown response received %d\n", obj->type);
+#if RTLNX_VER_MAX(6, 12, 0)
+		kfree(obj);
+#endif
 		return;
 	}
 	if (obj->buffer.length != 8) {
 		pr_warn("Unknown buffer length %d\n", obj->buffer.length);
+#if RTLNX_VER_MAX(6, 12, 0)
+		kfree(obj);
+#endif
 		return;
 	}
 
 	return_value = *((struct event_return_value *)obj->buffer.pointer);
+#if RTLNX_VER_MAX(6, 12, 0)
+	kfree(obj);
+#endif
 
 	switch (return_value.function) {
 	case WMID_HOTKEY_EVENT:
