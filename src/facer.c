@@ -365,6 +365,20 @@ MODULE_PARM_DESC(cycle_gaming_thermal_profile,
 MODULE_PARM_DESC(predator_v4,
 	"Enable features for predator laptops that use predator sense v4");
 
+#ifdef lts
+int platform_profile_remove()
+{
+	return 0;
+}
+int platform_profile_register(struct platform_profile_handler* platform_profile_handler)
+{
+	return 0;
+}
+void platform_profile_notify()
+{
+}
+#endif
+
 struct acer_data {
 	int mailled;
 	int threeg;
