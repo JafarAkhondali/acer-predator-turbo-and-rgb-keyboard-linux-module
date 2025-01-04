@@ -10,6 +10,16 @@ if [[ -f "/sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/" ]]; then
     exit 1
 fi
 
+unattended=false
+
+if [ "$1" = "-y" ]; then
+    unattended=true
+fi
+
+if [ "$unattended" = true ]; then
+    echo "[*] Running in unattended mode"
+fi
+
 # Remove previous chr devices if any exists
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
@@ -17,8 +27,8 @@ fix_missing_make() {
     if command -v apt > /dev/null; then
         echo "Detected system using apt package manager. Proceeding with installation..."
         
-        sudo apt update
-        sudo apt install -y make gcc linux-headers-$(uname -r)
+        apt update
+        apt install -y make gcc linux-headers-$(uname -r)
         
         # Run make, and if it fails, prompt the user to install dependencies manually
         make || { echo "Failed to install Make dependencies. Please install them manually."; exit 1; }
@@ -34,10 +44,14 @@ make || fix_missing_make
 # check if the profile headers are exported
 if [[ $(grep platform_profile_register /proc/kallsyms) == "" ]]; then
     echo "[*] Your kernel doesn't seem to export the required symbols."
-    read -p "[*] Do you want to continue (if you know what you're doing)? (y/n): " -n 1 -r
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "[*] Exiting..."
-        exit 1
+    
+    if [ "$unattended" = false ]; then
+        read -p "[*] Do you want to continue (if you know what you're doing)? (y/n): " -n 1 -r    
+
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "[*] Exiting..."
+            exit 1
+        fi
     fi
     
     echo ""
