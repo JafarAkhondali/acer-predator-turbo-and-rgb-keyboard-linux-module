@@ -20,6 +20,11 @@ if [ "$unattended" = true ]; then
     echo "[*] Running in unattended mode"
 fi
 
+if [ ! "$(uname -r | grep lts)" == "" ]; then
+    echo LTS kernel detected
+    MAKEFLAGS="LTS=1"
+fi
+
 # Remove previous chr devices if any exists
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
