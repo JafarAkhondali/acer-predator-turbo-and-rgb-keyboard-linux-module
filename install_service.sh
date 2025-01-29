@@ -66,7 +66,7 @@ EOF
 
 KERNELVERSION=$(uname -r)
 
-    cat << EOF > service.sh
+    cat << EOF > $target_dir/service.sh
 KERNELVERSION="$KERNELVERSION"
 cd $target_dir
 
