@@ -72,7 +72,7 @@ cd $target_dir
 
 rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
-if [ "\$(uname -r)" != "\$KERNELVERSION" ]; then
+if [ "\$(uname -r)" != "\$KERNELVERSION" ] || [ ! -f $targetdir/src/facer.ko ]; then
 	make clean
     source install.sh
 	sed -i "s/^KERNELVERSION.*/KERNELVERSION=\"\$(uname -r)\"/" service.sh
