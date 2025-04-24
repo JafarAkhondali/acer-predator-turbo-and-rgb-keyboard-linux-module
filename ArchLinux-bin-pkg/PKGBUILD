@@ -25,95 +25,19 @@ pkgver() {
   grep "PACKAGE_VERSION" dkms.conf | cut -d'=' -f2 | sed 's/-.*$//'
 }
 
-build() {
+package() {
   cd "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module"
 
-  # Check for LTS kernel
-  if [ ! "$(uname -r | grep lts)" == "" ]; then
-    echo "LTS kernel detected"
-    MAKEFLAGS="LTS=1"
-  else
-    MAKEFLAGS=""
-  fi
-
-  # Compile the kernel module
-  if [ "$(cat /proc/version | grep clang)" != "" ]; then
-    # For kernels compiled with clang
-    make CC=clang LD=ld.lld $MAKEFLAGS
-  else
-    # For normal kernels
-    make $MAKEFLAGS
-  fi
-
-  # Sign the module for secure boot if keys are available
-  KEY="/var/lib/shim-signed/mok/MOK.priv"
-  X509="/var/lib/shim-signed/mok/MOK.der"
-
-  if [ -f "$KEY" ] && [ -f "$X509" ]; then
-    echo "Signing module for secure boot..."
-    kmodsign sha512 "$KEY" "$X509" src/facer.ko
-  fi
-}
-
-package() {
-  # Create directories
-  install -dm755 "${pkgdir}/usr/src/facer-${pkgver}"
-  install -dm755 "${pkgdir}/usr/bin"
-  install -dm755 "${pkgdir}/usr/lib/systemd/system"
-
-  # Copy source files for DKMS
-  cp -a "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/"{src,Makefile,dkms.conf} "${pkgdir}/usr/src/facer-${pkgver}/"
-
-  # Update version in dkms.conf
-  sed -i "s/^PACKAGE_VERSION=.*/PACKAGE_VERSION=${pkgver}/" "${pkgdir}/usr/src/facer-${pkgver}/dkms.conf"
-
-  # Install Python scripts
-  install -Dm755 "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/keyboard.py" "${pkgdir}/usr/bin/acer-rgb-keyboard"
-  install -Dm755 "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/facer_rgb.py" "${pkgdir}/usr/bin/facer-rgb"
-
-  # Install service.sh script
+  # Create target directory
   install -dm755 "${pkgdir}/opt/turbo-fan"
-  cat > "${pkgdir}/opt/turbo-fan/service.sh" << EOF
-KERNELVERSION="\$(uname -r)"
-cd /opt/turbo-fan
 
-rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
+  # Copy all files to target directory
+  cp -r ./* "${pkgdir}/opt/turbo-fan/" --exclude=".git"
 
-if [ "\$(uname -r)" != "\$KERNELVERSION" ] || [ ! -f /opt/turbo-fan/src/facer.ko ]; then
-	make clean
-    source /opt/turbo-fan/install.sh
-	sed -i "s/^KERNELVERSION.*/KERNELVERSION=\"\$(uname -r)\"/" /opt/turbo-fan/service.sh
-else
-	rmmod acer_wmi
-	rmmod facer
-	modprobe wmi
-	modprobe sparse-keymap
-	modprobe video
-	insmod /opt/turbo-fan/src/facer.ko
-fi
-EOF
-  chmod 744 "${pkgdir}/opt/turbo-fan/service.sh"
-
-  # Copy necessary files to /opt/turbo-fan
-  install -Dm755 "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/install.sh" "${pkgdir}/opt/turbo-fan/install.sh"
-  install -Dm755 "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/uninstall.sh" "${pkgdir}/opt/turbo-fan/uninstall.sh"
-
-  # Copy source files and compiled module
-  mkdir -p "${pkgdir}/opt/turbo-fan/src"
-  cp -a "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/src/"*.c "${pkgdir}/opt/turbo-fan/src/"
-  cp -a "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/src/"*.h "${pkgdir}/opt/turbo-fan/src/" 2>/dev/null || true
-
-  # Copy the compiled module if it exists
-  if [ -f "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/src/facer.ko" ]; then
-    cp -a "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/src/facer.ko" "${pkgdir}/opt/turbo-fan/src/"
-  fi
-
-  cp -a "${srcdir}/acer-predator-turbo-and-rgb-keyboard-linux-module/Makefile" "${pkgdir}/opt/turbo-fan/"
-
-  # Install systemd service
-  cat > "${pkgdir}/usr/lib/systemd/system/turbo-fan.service" << EOF
+  # Create systemd service file
+  install -Dm644 /dev/stdin "${pkgdir}/usr/lib/systemd/system/turbo-fan.service" << EOF
 [Unit]
-Description=Enables turbo button
+Description = Enables turbo button
 After=sysinit.target
 StartLimitIntervalSec=5
 
@@ -124,35 +48,36 @@ RemainAfterExit=yes
 User=root
 WorkingDirectory=/opt/turbo-fan
 ExecStart=/bin/bash /opt/turbo-fan/service.sh
-ExecStop=/bin/bash /opt/turbo-fan/uninstall.sh
+ExecStop=/bin/bash ./uninstall.sh
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-  # Also keep the DKMS service for compatibility
-  cat > "${pkgdir}/usr/lib/systemd/system/acer-facer.service" << EOF
-[Unit]
-Description=Acer Predator Turbo and RGB Keyboard Module
-After=sysinit.target
-StartLimitIntervalSec=5
+  # Create service.sh script
+  install -Dm755 /dev/stdin "${pkgdir}/opt/turbo-fan/service.sh" << EOF
+KERNELVERSION="\$(uname -r)"
+cd /opt/turbo-fan
 
-[Service]
-Type=simple
-Restart=no
-RemainAfterExit=yes
-ExecStart=/usr/bin/dkms install facer/${pkgver}
-ExecStop=/usr/bin/dkms remove facer/${pkgver} --all
+rm /dev/acer-gkbbl-0 /dev/acer-gkbbl-static-0 -f
 
-[Install]
-WantedBy=multi-user.target
+if [ "\$(uname -r)" != "\$KERNELVERSION" ] || [ ! -f /opt/turbo-fan/src/facer.ko ]; then
+	make clean
+    source install.sh
+	sed -i "s/^KERNELVERSION.*/KERNELVERSION=\"\$(uname -r)\"/" service.sh
+else
+	rmmod acer_wmi
+	rmmod facer
+	modprobe wmi
+	modprobe sparse-keymap
+	modprobe video
+	insmod src/facer.ko
+fi
 EOF
 
-  # Install udev rule for device permissions
-  install -Dm644 /dev/null "${pkgdir}/usr/lib/udev/rules.d/99-acer-gkbbl.rules"
-  cat > "${pkgdir}/usr/lib/udev/rules.d/99-acer-gkbbl.rules" << EOF
-# Acer RGB Keyboard device
-KERNEL=="acer-gkbbl-0", MODE="0666"
-KERNEL=="acer-gkbbl-static-0", MODE="0666"
-EOF
+  # Set appropriate permissions
+  chmod 755 "${pkgdir}/opt/turbo-fan/service.sh"
+
+  # Install facer_rgb.py to /usr/bin/facer_rgb
+  install -Dm755 "${pkgdir}/opt/turbo-fan/facer_rgb.py" "${pkgdir}/usr/bin/facer_rgb"
 }

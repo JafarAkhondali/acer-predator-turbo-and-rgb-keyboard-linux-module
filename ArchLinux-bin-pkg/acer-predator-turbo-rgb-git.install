@@ -1,63 +1,104 @@
+#!/bin/bash
+
+## ------------ COLORS ------------ ##
+
+# Reset #
+Color_Off='\033[0m' # Text Reset
+
+# Regular Colors #
+Black='\033[0;30m'  Red='\033[0;31m'     Green='\033[0;32m'  Yellow='\033[0;33m'
+Blue='\033[0;34m'   Purple='\033[0;35m'  Cyan='\033[0;36m'   White='\033[0;37m'
+
+# Bold #
+BBlack='\033[1;30m' BRed='\033[1;31m'    BGreen='\033[1;32m' BYellow='\033[1;33m'
+BBlue='\033[1;34m'  BPurple='\033[1;35m' BCyan='\033[1;36m'  BWhite='\033[1;37m'
+
+# Underline #
+UBlack='\033[4;30m' URed='\033[4;31m'    UGreen='\033[4;32m' UYellow='\033[4;33m'
+UBlue='\033[4;34m'  UPurple='\033[4;35m' UCyan='\033[4;36m'  UWhite='\033[4;37m'
+
+# Background #
+On_Black='\033[40m' On_Red='\033[41m'    On_Green='\033[42m' On_Yellow='\033[43m'
+On_Blue='\033[44m'  On_Purple='\033[45m' On_Cyan='\033[46m'  On_White='\033[47m'
+
+PKG_NAME="acer-predator-turbo-rgb-git"
+target_dir="/opt/turbo-fan"
+
+# pre_install() {
+	
+#     echo -e ${BRed}"\n[*] Preparing Service Before Installing Files." ${Color_Off}
+#     sleep 0.5
+#     cd $target_dir
+#     ./install_service.sh
+# }
+
+
 post_install() {
-  echo ">>> Loading module..."
-  dkms install facer/$(grep "PACKAGE_VERSION" /usr/src/facer-*/dkms.conf | cut -d'=' -f2 | sed 's/-.*$//')
 
-  echo ">>> Creating device nodes..."
-  modprobe facer
+    echo -e ${BRed}"\n[*] Installing ${BPurple}${PKG_NAME} ${BRed}Service." ${Color_Off}
+    sleep 0.5
 
-  echo ">>> Enabling systemd services..."
-  systemctl daemon-reload
+    echo -e ${BRed}"    ==> ${BCyan}Starting ${BPurple}${PKG_NAME} ${BCyan}Service." ${Color_Off}
+    sudo systemctl start turbo-fan
+    sleep 0.5
 
-  # Enable and start the turbo-fan service (preferred)
-  if systemctl list-unit-files | grep -q turbo-fan.service; then
-    systemctl enable --now turbo-fan.service
-    echo ">>> Turbo-fan service enabled and started"
-  else
-    # Fallback to the DKMS service
-    systemctl enable --now acer-facer.service
-    echo ">>> Acer-facer service enabled and started"
-  fi
+    echo -e ${BRed}"    ==> ${BCyan}Enabling ${BPurple}${PKG_NAME} ${BCyan}Service on startup." ${Color_Off}
+    sudo systemctl enable turbo-fan
+    sleep 0.5
+    
 
-  # Set up module loading on boot if desired
-  if [ -d "/etc/modules-load.d" ]; then
-    echo "facer" > /etc/modules-load.d/facer.conf
-    echo ">>> Module will be loaded on boot"
-  fi
+    # D O N E! #
+    echo -e "\n${BGreen}[✔] D O N E \n" ${Color_Off}
 
-  echo ">>> Installation complete!"
-  echo ">>> You can now use the RGB keyboard control with:"
-  echo ">>>   acer-rgb-keyboard"
-  echo ">>> or for more advanced control:"
-  echo ">>>   facer-rgb --help"
 }
+
+# pre_upgrade() {
+
+# 	pre_install
+
+# }
+
 
 post_upgrade() {
-  post_install
+
+    echo -e ${BRed}"\n[*] Updating ${BPurple}${PKG_NAME} ${BRed}Service." ${Color_Off}
+    sleep 0.5
+
+    echo -e ${BRed}"    ==> ${BCyan}Reloading systemd configuration" ${Color_Off}
+    sudo systemctl daemon-reload
+    sleep 0.5
+
+    echo -e ${BRed}"    ==> ${BCyan}Restarting ${BPurple}${PKG_NAME} ${BCyan}Service." ${Color_Off}
+    sudo systemctl restart turbo-fan
+    sleep 0.5
+
+    echo -e ${BRed}"    ==> ${BCyan}Enabling ${BPurple}${PKG_NAME} ${BCyan}Service on startup." ${Color_Off}
+    sudo systemctl enable turbo-fan
+    sleep 0.5
+
+    
+    # D O N E! #
+    echo -e "\n${BGreen}[✔] D O N E \n" ${Color_Off}
+
 }
 
-pre_remove() {
-  echo ">>> Stopping and disabling services..."
-  # Stop and disable turbo-fan service if it exists
-  if systemctl list-unit-files | grep -q turbo-fan.service; then
-    systemctl disable --now turbo-fan.service
-  fi
+pre_remove(){
 
-  # Stop and disable acer-facer service
-  systemctl disable --now acer-facer.service 2>/dev/null || true
+    echo -e ${BRed}"\n[*] Uninstalling ${BPurple}${PKG_NAME} ${BRed}Service." ${Color_Off}
+    
+    echo -e ${BRed}"    ==> ${BCyan}Stopping ${BPurple}${PKG_NAME} ${BCyan}Service" ${Color_Off}
+    sudo systemctl stop turbo-fan
+    sleep 0.5
 
-  echo ">>> Removing DKMS module..."
-  dkms remove facer/$(grep "PACKAGE_VERSION" /usr/src/facer-*/dkms.conf | cut -d'=' -f2 | sed 's/-.*$//') --all
+    echo -e ${BRed}"    ==> ${BCyan}Disabling ${BPurple}${PKG_NAME} ${BCyan}Service" ${Color_Off}
+    sudo systemctl disable turbo-fan
+    sleep 0.5
 
-  echo ">>> Removing module from kernel..."
-  rmmod facer 2>/dev/null || true
+    echo -e ${BRed}"    ==> ${BCyan}Removing ${BPurple}${PKG_NAME} ${BCyan}source code files" ${Color_Off}
+    sudo rm -rvf /opt/turbo-fan
+    sleep 0.5
 
-  echo ">>> Removing module loading on boot configuration..."
-  rm -f /etc/modules-load.d/facer.conf
-}
+    # D O N E! #
+    echo -e "\n${BGreen}[✔] D O N E \n" ${Color_Off}
 
-post_remove() {
-  echo ">>> Reloading systemd..."
-  systemctl daemon-reload
-
-  echo ">>> Module has been removed."
 }
