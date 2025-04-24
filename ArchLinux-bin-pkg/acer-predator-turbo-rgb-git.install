@@ -1,0 +1,63 @@
+post_install() {
+  echo ">>> Loading module..."
+  dkms install facer/$(grep "PACKAGE_VERSION" /usr/src/facer-*/dkms.conf | cut -d'=' -f2 | sed 's/-.*$//')
+
+  echo ">>> Creating device nodes..."
+  modprobe facer
+
+  echo ">>> Enabling systemd services..."
+  systemctl daemon-reload
+
+  # Enable and start the turbo-fan service (preferred)
+  if systemctl list-unit-files | grep -q turbo-fan.service; then
+    systemctl enable --now turbo-fan.service
+    echo ">>> Turbo-fan service enabled and started"
+  else
+    # Fallback to the DKMS service
+    systemctl enable --now acer-facer.service
+    echo ">>> Acer-facer service enabled and started"
+  fi
+
+  # Set up module loading on boot if desired
+  if [ -d "/etc/modules-load.d" ]; then
+    echo "facer" > /etc/modules-load.d/facer.conf
+    echo ">>> Module will be loaded on boot"
+  fi
+
+  echo ">>> Installation complete!"
+  echo ">>> You can now use the RGB keyboard control with:"
+  echo ">>>   acer-rgb-keyboard"
+  echo ">>> or for more advanced control:"
+  echo ">>>   facer-rgb --help"
+}
+
+post_upgrade() {
+  post_install
+}
+
+pre_remove() {
+  echo ">>> Stopping and disabling services..."
+  # Stop and disable turbo-fan service if it exists
+  if systemctl list-unit-files | grep -q turbo-fan.service; then
+    systemctl disable --now turbo-fan.service
+  fi
+
+  # Stop and disable acer-facer service
+  systemctl disable --now acer-facer.service 2>/dev/null || true
+
+  echo ">>> Removing DKMS module..."
+  dkms remove facer/$(grep "PACKAGE_VERSION" /usr/src/facer-*/dkms.conf | cut -d'=' -f2 | sed 's/-.*$//') --all
+
+  echo ">>> Removing module from kernel..."
+  rmmod facer 2>/dev/null || true
+
+  echo ">>> Removing module loading on boot configuration..."
+  rm -f /etc/modules-load.d/facer.conf
+}
+
+post_remove() {
+  echo ">>> Reloading systemd..."
+  systemctl daemon-reload
+
+  echo ">>> Module has been removed."
+}
