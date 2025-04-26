@@ -12,6 +12,21 @@
  *    Copyright (C) 2021        Bernhard Rosenkraenzer <bero@lindev.ch>
  */
 
+/*
+ * RTLNX_VER_MIN
+ * Evaluates to true if the linux kernel version is equal or higher to the
+ * one specfied.
+ */
+ #define RTLNX_VER_MIN(a_Major, a_Minor, a_Patch) \
+ (LINUX_VERSION_CODE >= KERNEL_VERSION(a_Major, a_Minor, a_Patch))
+
+/*
+* RTLNX_VER_MAX
+* Evaluates to true if the linux kernel version is less to the one specfied
+* (exclusive). */
+#define RTLNX_VER_MAX(a_Major, a_Minor, a_Patch) \
+ (LINUX_VERSION_CODE < KERNEL_VERSION(a_Major, a_Minor, a_Patch))
+
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/kernel.h>
@@ -37,26 +52,14 @@
 #include <linux/hwmon.h>
 #include <linux/bitfield.h>
 #include <linux/version.h>
+
+#if RTLNX_VER_MIN(6, 14, 0)
 #include <linux/unaligned.h>
+#endif
 
 MODULE_AUTHOR("Carlos Corbacho");
 MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
 MODULE_LICENSE("GPL");
-
-/*
- * RTLNX_VER_MIN
- * Evaluates to true if the linux kernel version is equal or higher to the
- * one specfied.
- */
-#define RTLNX_VER_MIN(a_Major, a_Minor, a_Patch) \
-    (LINUX_VERSION_CODE >= KERNEL_VERSION(a_Major, a_Minor, a_Patch))
-
-/*
- * RTLNX_VER_MAX
- * Evaluates to true if the linux kernel version is less to the one specfied
- * (exclusive). */
-#define RTLNX_VER_MAX(a_Major, a_Minor, a_Patch) \
-    (LINUX_VERSION_CODE < KERNEL_VERSION(a_Major, a_Minor, a_Patch))
 
 /*
  * Magic Number
@@ -1208,8 +1211,11 @@ static const struct dmi_system_id non_acer_quirks[] __initconst = {
 	},
 	{}
 };
-
+#if RTLNX_VER_MIN(6, 14, 0)
 static struct device *platform_profile_device;
+#else
+static struct platform_profile_handler platform_profile_handler;
+#endif
 static bool platform_profile_support;
 
 /*
@@ -1990,6 +1996,7 @@ WMI_gaming_execute_u64(u32 method_id, u64 in, u64 *out)
 
 	return status;
 }
+#if RTLNX_VER_MIN(6, 14, 0)
 static int WMI_gaming_execute_u32_u64(u32 method_id, u32 in, u64 *out)
 {
 	struct acpi_buffer result = { ACPI_ALLOCATE_BUFFER, NULL };
@@ -2028,6 +2035,7 @@ static int WMI_gaming_execute_u32_u64(u32 method_id, u32 in, u64 *out)
 
 	return ret;
 }
+#endif
 
 static acpi_status WMID_gaming_set_u64(u64 value, u32 cap)
 {
@@ -2055,7 +2063,6 @@ static acpi_status WMID_gaming_set_u64(u64 value, u32 cap)
 
 	return WMI_gaming_execute_u64(method_id, value, NULL);
 }
-
 
 static acpi_status WMID_gaming_set_u8_array(u8 array[], size_t array_size, u32 cap)
 {
@@ -2139,6 +2146,7 @@ static int WMID_gaming_set_misc_setting(enum acer_wmi_gaming_misc_setting settin
 	return 0;
 }
 
+#if RTLNX_VER_MIN(6, 14, 0)
 static int WMID_gaming_get_misc_setting(enum acer_wmi_gaming_misc_setting setting, u8 *value)
 {
 	u64 input = 0;
@@ -2160,7 +2168,7 @@ static int WMID_gaming_get_misc_setting(enum acer_wmi_gaming_misc_setting settin
 
 	return 0;
 }
-
+#endif
 /*
  * Generic Device (interface-independent)
  */
@@ -2675,16 +2683,29 @@ static void acer_toggle_turbo(void)
 	}
 }
 
+#if RTLNX_VER_MIN(6, 14, 0)
 static int
 acer_predator_v4_platform_profile_get(struct device *dev,
-				      enum platform_profile_option *profile)
+				    	enum platform_profile_option *profile)
+#else
+static int
+acer_predator_v4_platform_profile_get(struct platform_profile_handler *pprof,
+						enum platform_profile_option *profile)
+#endif
 {
 	u8 tp;
 	int err;
 
+#if RTLNX_VER_MIN(6, 14, 0)
 	err = WMID_gaming_get_misc_setting(ACER_WMID_MISC_SETTING_PLATFORM_PROFILE, &tp);
 	if (err)
 		return err;
+#else
+	err = ec_read(ACER_PREDATOR_V4_THERMAL_PROFILE_EC_OFFSET, &tp);
+
+	if (err < 0)
+		return err;
+#endif
 
 	switch (tp) {
 	case ACER_PREDATOR_V4_THERMAL_PROFILE_TURBO:
@@ -2709,11 +2730,17 @@ acer_predator_v4_platform_profile_get(struct device *dev,
 	return 0;
 }
 
+#if RTLNX_VER_MIN(6, 14, 0)
 static int
 acer_predator_v4_platform_profile_set(struct device *dev,
 				      enum platform_profile_option profile)
+#else
+static int
+acer_predator_v4_platform_profile_set(struct platform_profile_handler *pprof,
+				      enum platform_profile_option profile)
+#endif
 {
-	int err, tp;
+	int err ,tp;
 
 	switch (profile) {
 	case PLATFORM_PROFILE_PERFORMANCE:
@@ -2735,9 +2762,18 @@ acer_predator_v4_platform_profile_set(struct device *dev,
 		return -EOPNOTSUPP;
 	}
 
+	#if RTLNX_VER_MIN(6, 14, 0)
 	err = WMID_gaming_set_misc_setting(ACER_WMID_MISC_SETTING_PLATFORM_PROFILE, tp);
 	if (err)
 		return err;
+	#else
+	acpi_status status;
+	status = WMI_gaming_execute_u64(
+		ACER_WMID_SET_GAMING_MISC_SETTING_METHODID, tp, NULL);
+
+	if (ACPI_FAILURE(status))
+		return -EIO;
+	#endif
 
 	if (tp != acer_predator_v4_max_perf)
 		last_non_turbo_profile = tp;
@@ -2745,6 +2781,7 @@ acer_predator_v4_platform_profile_set(struct device *dev,
 	return 0;
 }
 
+#if RTLNX_VER_MIN(6, 14, 0)
 static int
 acer_predator_v4_platform_profile_probe(void *drvdata, unsigned long *choices)
 {
@@ -2824,6 +2861,42 @@ static int acer_platform_profile_setup(struct platform_device *device)
 	return 0;
 }
 
+#else
+static int acer_platform_profile_setup(void)
+{
+	if (quirks->predator_v4) {
+		int err;
+
+		platform_profile_handler.profile_get =
+			acer_predator_v4_platform_profile_get;
+		platform_profile_handler.profile_set =
+			acer_predator_v4_platform_profile_set;
+
+		set_bit(PLATFORM_PROFILE_PERFORMANCE,
+			platform_profile_handler.choices);
+		set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+			platform_profile_handler.choices);
+		set_bit(PLATFORM_PROFILE_BALANCED,
+			platform_profile_handler.choices);
+		set_bit(PLATFORM_PROFILE_QUIET,
+			platform_profile_handler.choices);
+		set_bit(PLATFORM_PROFILE_LOW_POWER,
+			platform_profile_handler.choices);
+
+		err = platform_profile_register(&platform_profile_handler);
+		if (err)
+			return err;
+
+		platform_profile_support = true;
+
+		/* Set default non-turbo profile  */
+		last_non_turbo_profile =
+			ACER_PREDATOR_V4_THERMAL_PROFILE_BALANCED_WMI;
+	}
+	return 0;
+}
+#endif
+
 static int acer_thermal_profile_change(void)
 {
 	/*
@@ -2902,8 +2975,12 @@ static int acer_thermal_profile_change(void)
 		/* Store non-turbo profile for turbo mode toggle*/
 		if (tp != ACER_PREDATOR_V4_THERMAL_PROFILE_TURBO_WMI)
 			last_non_turbo_profile = tp;
-
+		
+		#if RTLNX_VER_MIN(6, 14, 0)
 		platform_profile_notify(platform_profile_device);
+		#else
+		platform_profile_notify();
+		#endif
 	}
 
 	return 0;
@@ -3492,7 +3569,11 @@ static int acer_platform_probe(struct platform_device *device)
 		goto error_rfkill;
 
 	if (has_cap(ACER_CAP_PLATFORM_PROFILE)) {
+		#if RTLNX_VER_MIN(6, 14, 0)
 		err = acer_platform_profile_setup(device);
+		#else
+		err = acer_platform_profile_setup();
+		#endif
 		if (err)
 			goto error_platform_profile;
 	}
@@ -3593,7 +3674,11 @@ static struct platform_driver acer_platform_driver = {
 				.pm = &acer_pm,
 		},
 		.probe = acer_platform_probe,
+		#if RTLNX_VER_MIN(6, 14, 0)
 		.remove = acer_platform_remove,
+		#else
+		.remove = (void*)acer_platform_remove,
+		#endif
 		.shutdown = acer_platform_shutdown,
 };
 
