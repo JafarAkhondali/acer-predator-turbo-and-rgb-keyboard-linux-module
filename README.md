@@ -3,20 +3,16 @@
 
 [![GitHub repo Good Issues for newbies](https://img.shields.io/github/issues/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/good%20first%20issue?style=flat&logo=github&logoColor=green&label=Good%20First%20issues)](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) [![GitHub Help Wanted issues](https://img.shields.io/github/issues/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/help%20wanted?style=flat&logo=github&logoColor=b545d1&label=%22Help%20Wanted%22%20issues)](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) [![GitHub Help Wanted PRs](https://img.shields.io/github/issues-pr/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/help%20wanted?style=flat&logo=github&logoColor=b545d1&label=%22Help%20Wanted%22%20PRs)](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pulls?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) [![GitHub repo Issues](https://img.shields.io/github/issues/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module?style=flat&logo=github&logoColor=red&label=Issues)](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues?q=is%3Aopen)   [![](https://dcbadge.vercel.app/api/server/bNa4Qw8rPH)](https://discord.gg/ybWvSRfSY5)
     
-Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends current acer-wmi linux kernel module to support Acer gaming functions.
+Inspired by [faustus(for asus)](https://github.com/hackbnw/faustus), this project extends the current Acer-WMI Linux kernel module to support Acer gaming functions.
 
 
 
 > **Warning**
-> ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engineering official Predator Sense app. This driver interacts with low-level WMI methods which haven't been tested on all series.  
-
-### Donation:
-Donations are not required, but shows your ❤️ to open source and encourages me to implement more features for this project.
-Tether(ERC20): 0x11753b26B4d91177B779D429a6a1C1C90f722f1C
+> ## Use at your own risk! Acer was not involved in developing this driver, and everything is developed by reverse engineering the official Predator Sense app. This driver interacts with low-level WMI methods that haven't been tested on all series.  
 
 > **Note**
 > # Note to contributors:
-> I started to record a miniseries to share my experience in creating this project on [YouTube](https://www.youtube.com/watch?v=97-WNhUmoig&list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr). This will definitely help you to contribute in this project or similar projects that are using WMI for communication.
+> I started to record a miniseries to share my experience in creating this project on [YouTube](https://www.youtube.com/watch?v=97-WNhUmoig&list=PLv2kA4LxAI4Dq2ic_hU9bdvxIzoz5SzBr). This will help you to contribute to this project or similar projects that are using WMI for communication.
 
 **Will this work on my laptop?**
 
@@ -62,16 +58,16 @@ You can find your model using this command:
 `sudo dmidecode -s system-product-name`
 ___
 #### RGB Keyboard:
-I think dynamic RGB effects should work only on 4zone RGB keyboards like 300 series but haven't tested other models.
+I think dynamic RGB effects should work only on 4-zone RGB keyboards like 300 series but haven't tested other models.
 
 Check the output of this command:  
 `# file /sys/bus/wmi/devices/7A4DDFE7-5B5D-40B4-8595-4408E0CC7F56/`  
 If the directory exists, it may work fine. Otherwise, RGB will not work at all.
 
 ## Requirements
-If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776). Make sure you have `rsync` installed. You can check that by doing `rsync --version` in your terminal and if you don't have it just install it by doing `sudo apt install rsync`.
+If you have secure boot enabled, you are not using Ubuntu and installation failed with error `Key was rejected by service`, you can sign the module yourself by following the instructions [here](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/28#issuecomment-1054423776). Make sure you have `rsync` installed. You can check that by doing `rsync --version` in your terminal, and if you don't have it, just install it by doing `sudo apt install rsync`.
 
-Install linux headers using your distro package manager:
+Install Linux headers using your distro package manager:
 Ubuntu (or other Debian based distros):  
 `sudo apt-get install linux-headers-$(uname -r) gcc make`
 
@@ -115,18 +111,17 @@ sudo ./install_openrc.sh
 ```
 
 ## Usage
-Turbo mode should work fine by using the turbo button on keyboard.
+Turbo mode should work fine by using the turbo button on the keyboard.
 
-For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate
-with kernel space. 
+For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate with kernel space. 
 
-You can use the `keyboard.py` which is a simple script that provide an easy-to-understand CLI for setting you keyboard RGB. To run the script just use the following command 
+You can use the `keyboard.py`, which is a simple script that provides an easy-to-understand CLI for setting your keyboard RGB. To run the script, just use the following command 
 
 ```bash
 python keyboard.py
 ```
 
-If you want more control, you also have access to the `facer_rgb.py` this can be useful if you are building your own scrips. Instruction for using `facer_rgb.py` is given below or check help for more advanced usage:  
+If you want more control, you also have access to the `facer_rgb.py`; this can be useful if you are building your scripts. Instruction for using `facer_rgb.py` is given below, or check the help for more advanced usage:  
 `./facer_rgb.py --help`
 
 ```
