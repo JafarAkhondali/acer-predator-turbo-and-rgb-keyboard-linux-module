@@ -32,7 +32,7 @@ package() {
   install -dm755 "${pkgdir}/opt/turbo-fan"
 
   # Copy all files to target directory
-  cp -r ./* "${pkgdir}/opt/turbo-fan/" --exclude=".git"
+  rsync -av ./* "${pkgdir}/opt/turbo-fan/" --exclude=".git"
 
   # Create systemd service file
   install -Dm644 /dev/stdin "${pkgdir}/usr/lib/systemd/system/turbo-fan.service" << EOF
