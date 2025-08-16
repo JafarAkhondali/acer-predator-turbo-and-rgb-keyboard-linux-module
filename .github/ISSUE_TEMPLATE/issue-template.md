@@ -21,3 +21,5 @@ assignees: ''
 |Distribution Specific Information|`lsb_release -a`|
 |Kernel Version|`uname -a`|
 
+If the turbo button is not working, what is the output of the command below when you press the turbo key?  
+```bash sudo dmesg | grep "Unknown function number"```
