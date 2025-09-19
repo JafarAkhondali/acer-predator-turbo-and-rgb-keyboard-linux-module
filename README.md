@@ -241,7 +241,7 @@ If something didn't look right, do a reboot (or boot to windows) and play a litt
 
 ## Uninstall:
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.  
-If you have installed it as a service, simply run `./uninstal_service.sh`
+If you have installed it as a service, simply run `./uninstall_service.sh`
 
 ## Uninstall FOR Arch Linux Only
 
