@@ -2456,6 +2456,8 @@ static ssize_t gkbbl_static_drv_write(struct file *file, const char __user *buf,
 	unsigned long err;
 	struct led_zone_set_param set_params;
 	struct acpi_buffer set_input;
+	acpi_status status;
+	
 	err = copy_from_user(config_buf, buf, GAMING_KBBL_STATIC_CONFIG_LEN);
 	set_params = (struct led_zone_set_param) {
 		.zone = config_buf[0],
@@ -2476,7 +2478,14 @@ static ssize_t gkbbl_static_drv_write(struct file *file, const char __user *buf,
 	if (err < 0)
 		pr_err("Copying data from userspace failed with code: %lu\n", err);
 
-	wmi_evaluate_method( WMID_GUID4, 0, ACER_WMID_SET_GAMING_STATIC_LED_METHODID, &set_input, NULL);
+	status = wmi_evaluate_method( WMID_GUID4, 0, ACER_WMID_SET_GAMING_STATIC_LED_METHODID, &set_input, NULL);
+	if (ACPI_FAILURE(status)) {
+		pr_info ("SET_GAMING_STATIC_LED, acpi failure\n");
+	} else {
+		pr_info ("SET_GAMING_STATIC_LED, acpi success, zone %d, RGB (%d,%d,%d)\n", 
+			config_buf[0], config_buf[1], config_buf[2], config_buf[3]);
+	}
+	
 	return count;
 }
 
