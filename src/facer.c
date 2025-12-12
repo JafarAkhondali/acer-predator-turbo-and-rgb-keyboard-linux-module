@@ -646,6 +646,11 @@ static struct quirk_entry quirk_acer_predator_pt316_51 = {
 	.cpu_fans = 1,
 	.gpu_fans = 1,
 };
+static struct quirk_entry quirk_acer_predator_pt316_51s = {
+    .turbo = 1,
+    .cpu_fans = 1,
+    .gpu_fans = 1,
+}
 static struct quirk_entry quirk_acer_predator_pt515_51 = {
 	.turbo = 1,
 	.cpu_fans = 1,
@@ -1050,6 +1055,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT316-51"),
 		},
 		.driver_data = &quirk_acer_predator_pt316_51,
+	},
+	{
+	    .callback = dmi_matched,
+        .ident = "Acer Predator PT316-51s",
+        .matches = {
+            DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+            DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT316-51s"),
+        },
+        .driver_data = &quirk_acer_predator_pt316_51s,
 	},
 	{
 		.callback = dmi_matched,
@@ -2140,7 +2154,7 @@ static void WMID_gaming_set_fan_mode(u8 fan_mode)
 		gpu_fan_config1 |= fan_mode << (2 * i + 6);
 	WMID_gaming_set_u64(gpu_fan_config2 | gpu_fan_config1 << 16, ACER_CAP_TURBO_FAN);
 }
- 
+
 static int WMID_gaming_set_misc_setting(enum acer_wmi_gaming_misc_setting setting, u8 value)
 {
 	acpi_status status;
@@ -2866,7 +2880,7 @@ static int acer_platform_profile_setup(struct platform_device *device)
 			&device->dev, "acer-wmi", NULL, &acer_predator_v4_platform_profile_ops);
 		if (IS_ERR(platform_profile_device))
 			return PTR_ERR(platform_profile_device);
-	
+
 		platform_profile_support = true;
 
 		/* Set default non-turbo profile  */
@@ -2990,7 +3004,7 @@ static int acer_thermal_profile_change(void)
 		/* Store non-turbo profile for turbo mode toggle*/
 		if (tp != ACER_PREDATOR_V4_THERMAL_PROFILE_TURBO_WMI)
 			last_non_turbo_profile = tp;
-		
+
 		#if RTLNX_VER_MIN(6, 14, 0)
 		platform_profile_notify(platform_profile_device);
 		#else
