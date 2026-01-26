@@ -26,7 +26,7 @@ if [[ "$mode" == "install" || "$mode" == "remove" ]]; then
 	if [[ "$(rc-update | grep $service)" ]]; then
 		echo "['$service' service is presented. Remove it.]";
 		rc-service $service stop;
-		rc-service del $service default;
+		rc-update del $service default;
 		rm $service_dir/turbo-fan
 	fi
 		
