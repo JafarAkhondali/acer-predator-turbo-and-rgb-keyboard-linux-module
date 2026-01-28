@@ -501,6 +501,7 @@ static void __init set_quirks(void)
 
 static int __init dmi_matched(const struct dmi_system_id *dmi)
 {
+	pr_info("DMI, detected known device (%s)\n", dmi->ident);
 	quirks = dmi->driver_data;
 	return 1;
 }
@@ -677,6 +678,13 @@ static struct quirk_entry quirk_acer_nitro_an515_58 = {
 	.cpu_fans = 1,
 	.gpu_fans = 1,
 };
+
+static struct quirk_entry quirk_acer_nitro_an16s_61 = {
+        .turbo = 1,
+        .cpu_fans = 1,
+        .gpu_fans = 1,
+};
+
 
 static struct quirk_entry quirk_acer_predator_v4 = {
 	.predator_v4 = 1,
@@ -1101,6 +1109,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 		},
 		.driver_data = &quirk_acer_nitro_an515_58,
 	},
+	{
+                .callback = dmi_matched,
+                .ident = "Acer Nitro AN16S-61",
+                .matches = {
+                        DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+                        DMI_MATCH(DMI_PRODUCT_NAME, "Nitro AN16S-61"),
+                },
+                .driver_data = &quirk_acer_nitro_an16s_61,
+        },
 	{
 		.callback = dmi_matched,
 		.ident = "Acer Predator PHN16-71",
@@ -2453,6 +2470,8 @@ static ssize_t gkbbl_static_drv_write(struct file *file, const char __user *buf,
 	unsigned long err;
 	struct led_zone_set_param set_params;
 	struct acpi_buffer set_input;
+	acpi_status status;
+	
 	err = copy_from_user(config_buf, buf, GAMING_KBBL_STATIC_CONFIG_LEN);
 	set_params = (struct led_zone_set_param) {
 		.zone = config_buf[0],
@@ -2473,7 +2492,14 @@ static ssize_t gkbbl_static_drv_write(struct file *file, const char __user *buf,
 	if (err < 0)
 		pr_err("Copying data from userspace failed with code: %lu\n", err);
 
-	wmi_evaluate_method( WMID_GUID4, 0, ACER_WMID_SET_GAMING_STATIC_LED_METHODID, &set_input, NULL);
+	status = wmi_evaluate_method( WMID_GUID4, 0, ACER_WMID_SET_GAMING_STATIC_LED_METHODID, &set_input, NULL);
+	if (ACPI_FAILURE(status)) {
+		pr_info ("SET_GAMING_STATIC_LED, acpi failure\n");
+	} else {
+		pr_info ("SET_GAMING_STATIC_LED, acpi success, zone %d, RGB (%d,%d,%d)\n", 
+			config_buf[0], config_buf[1], config_buf[2], config_buf[3]);
+	}
+	
 	return count;
 }
 
