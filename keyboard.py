@@ -1,4 +1,5 @@
 import os
+import subprocess
 from time import sleep as sleep
 
 (
@@ -15,7 +16,7 @@ choice = 0
 
 def setup():
     if not (".keyboard_cache" in [f for f in os.listdir(".") if f.startswith(".")]):
-        os.system("touch .keyboard_cache")
+        open(".keyboard_cache", "w").close()
 
 
 def prep():
@@ -186,7 +187,7 @@ def rerun():
 def run():
     global final_command
     for i in final_command:
-        os.system(i)
+        subprocess.run(i.split(), shell=False)
     with open(".keyboard_cache", "w") as file:
         file.write(",".join(final_command))
 
