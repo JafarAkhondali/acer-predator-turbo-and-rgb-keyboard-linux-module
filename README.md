@@ -49,6 +49,7 @@ Compatibility table:
 | PH717-72     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
 | PHN18-71     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PT314-51     |                                                      No                                                      |                                                     No                                                      |        Yes        |     Yes      |
+| PT314-51s    |                                                      No                                                      |                                                     No                                                      |        Yes        |     Yes      |
 | PT315-51     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PT314-52s    |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |      No      |
 | PT315-52     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
@@ -248,6 +249,8 @@ Load the previously saved profile:
 ## Known problems
 If installation failed, check this [issue](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/4#issuecomment-905486393)
 If something didn't look right, do a reboot (or boot to windows) and play a little with some Predator Sense app to reset ACPI registers. 
+
+If the keyboard brightness reacts but colors and effects are ignored (it stays on the default color): some ECs only render RGB while their "PredatorSense is running" flag is set (EC register `0x03`, bit 4). This is done automatically for the PT314-51s; on other models you can test it with `sudo modprobe facer rgb_ec_enable=1` and, if it fixes RGB for you, please open an issue or a PR so your model can be added.
 
 ## Uninstall:
 Simply run `./uninstall.sh` and (hopefully) everything should be back to normal.  
