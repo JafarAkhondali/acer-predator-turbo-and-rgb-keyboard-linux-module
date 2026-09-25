@@ -1,11 +1,13 @@
-![Flag_of_Iran_simplified_RGB](https://github.com/user-attachments/assets/4823f375-3daf-4a6f-a041-1146bfc32c74)
-### Recently, thousands of people were killed (by gunshot) in Iran. Who killed them? The Islamic regime. Years ago, I went to a peaceful protest myself and saw how brutal they were, and I was physically hurt by them. My injuries were minimal, but many people died. The protests are not happening for the first time, killing the protestors is not happening for the first time, and killing with weapons is not their only method. They killed people by abusing nature, corrupting the economy, making unsafe cars and roads, forcing religion, and countless other methods. One of their methods to silence us and counter protests is to turn people against each other, causing protesters to fight among themselves and lose focus, energy, and hope, instead of focusing on the government itself. Right now, the economy in Iran is so bad that living a normal life is a big challenge for the majority of people. I can’t speak on behalf of all people, but most people I know want this regime to change, and the rest also dislike the regime and are just afraid of civil wars. This project, and my other open-source projects and research, were small efforts to contribute to humanity and make a positive impact on other people’s lives.
+<p align="center">
+<img src="https://github.com/user-attachments/assets/4823f375-3daf-4a6f-a041-1146bfc32c74" alt="Screenshot" width="300">
+</p>
+
+#### Recently, thousands of people were killed (by gunshot) in Iran. Who killed them? The Islamic regime. Years ago, I went to a peaceful protest myself and saw how brutal they were, and I was physically hurt by them. My injuries were minimal, but many people died. The protests are not happening for the first time, killing the protestors is not happening for the first time, and killing with weapons is not their only method. They killed people by abusing nature, corrupting the economy, making unsafe cars and roads, forcing religion, and countless other methods. One of their methods to silence us and counter protests is to turn people against each other, causing protesters to fight among themselves and lose focus, energy, and hope, instead of focusing on the government itself. Right now, the economy in Iran is so bad that living a normal life is a big challenge for the majority of people. I can’t speak on behalf of all people, but most people I know want this regime to change, and the rest also dislike the regime and are just afraid of civil wars. This project, and my other open-source projects and research, were small efforts to contribute to humanity and make a positive impact on other people’s lives.
 ___
 
-### :sos::bangbang: You can help the people of Iran(and many more with restricted internet) for free!  :bangbang::sos:
+#### :sos::bangbang: You can help the people of Iran(and many more with restricted internet) for free!  :bangbang::sos:
 Simply run a Conduit (if you have unlimited internet) on your laptop, (home) server, or phone. It has been proven that people can bypass the internet censorship in Iran in this way. For installation, you can use this guide(dockerized, so that it's safe): https://gist.github.com/CappyT/4df97556349375a44a43b4d6011e0ded
 Official website: https://conduit.psiphon.ca/en/
-
 
 ___
 ### Unofficial Acer Gaming RGB keyboard backlight and Turbo mode Linux kernel module (Acer Predator, Acer Helios, Acer Nitro)
@@ -290,14 +292,23 @@ If this worked or didn't work for you, kindly make a new issue, and attach the f
 - [x] Add support for saving\load\list profiles (Thanks to [jayrfs](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/33))
 - [x] Install as openrc service (Thanks to [Axtloss](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/pull/36))
 - [x] Make binary package For Arch Linux (By [mmsaeed509](https://github.com/mmsaeed509)). 
-- [x] GUI(Electron): ([Zehra](https://github.com/zehratullayl/Linux-Predator-GUI))
-- [x] GUI(wxPython with tray icon): ([x211321](https://github.com/x211321/RGB-Config-Acer-gkbbl-0))
-- [x] GUI(PyQt): ([0xb4dc0d3x](https://github.com/0xb4dc0d3x/Acer-RGB-Keyboard-Linux-Module-GUI))
-- [x] CLI(Bash): ([Zeaksblog/acer-rgb-menu](https://github.com/Zeaksblog/acer-rgb-menu))
 - [x] Add DKMS or an Event to recompile module after kernel upgrades #113
 - [ ] Custom Fans speed
 - [ ] Implement RGB Dynamic effects (per key RGB)  
 - [ ] Implement RGB Static coloring (per key RGB)  
+
+## Community:
+Projects based/inspired or with similar goal to this project:
+- [**Div-Acer-Manager-Max**](https://github.com/PXDiv/Div-Acer-Manager-Max) [![GitHub stars](https://img.shields.io/github/stars/PXDiv/Div-Acer-Manager-Max?style=flat-square&logo=github&label=stars)](https://github.com/PXDiv/Div-Acer-Manager-Max/) — GUI suite built around Linuwu-Sense.
+- [**Linuwu-Sense**](https://github.com/0x7375646F/Linuwu-Sense) [![GitHub stars](https://img.shields.io/github/stars/0x7375646F/Linuwu-Sense?style=flat-square&logo=github&label=stars)](https://github.com/0x7375646F/Linuwu-Sense/) — Acer WMI fan, Turbo, RGB & profile controls.
+- [**Linux-PredatorSense**](https://github.com/snowyoneill/Linux-PredatorSense) [![GitHub stars](https://img.shields.io/github/stars/snowyoneill/Linux-PredatorSense?style=flat-square&logo=github&label=stars)](https://github.com/snowyoneill/Linux-PredatorSense/) — PredatorSense replacement for Linux.
+- [**RGB-Config-Acer-gkbbl-0**](https://github.com/x211321/RGB-Config-Acer-gkbbl-0) [![GitHub stars](https://img.shields.io/github/stars/x211321/RGB-Config-Acer-gkbbl-0?style=flat-square&logo=github&label=stars)](https://github.com/x211321/RGB-Config-Acer-gkbbl-0/) — RGB keyboard GUI & profiles.
+- [**Linux-Predator-GUI**](https://github.com/zehratullayl/Linux-Predator-GUI) [![GitHub stars](https://img.shields.io/github/stars/zehratullayl/Linux-Predator-GUI?style=flat-square&logo=github&label=stars)](https://github.com/zehratullayl/Linux-Predator-GUI/) — Electron GUI.
+- [**acer-rgb-menu**](https://github.com/Zeaksblog/acer-rgb-menu) [![GitHub stars](https://img.shields.io/github/stars/Zeaksblog/acer-rgb-menu?style=flat-square&logo=github&label=stars)](https://github.com/Zeaksblog/acer-rgb-menu/) — Simple Bash menu for `facer_rgb.py`.
+- [**HELIOS**](https://github.com/KrithinP/helios) [![GitHub stars](https://img.shields.io/github/stars/KrithinP/helios?style=flat-square&logo=github&label=stars)](https://github.com/KrithinP/helios/) — Thermals, fans, RGB & battery controls.
+- [**omarchy-predator-turbo**](https://github.com/Aniket1995/omarchy-predator-turbo) [![GitHub stars](https://img.shields.io/github/stars/Aniket1995/omarchy-predator-turbo?style=flat-square&logo=github&label=stars)](https://github.com/Aniket1995/omarchy-predator-turbo/) — Omarchy Turbo, fan & telemetry controls.
+- [**omarchy-predator-rgb**](https://github.com/Aniket1995/omarchy-predator-rgb) [![GitHub stars](https://img.shields.io/github/stars/Aniket1995/omarchy-predator-rgb?style=flat-square&logo=github&label=stars)](https://github.com/Aniket1995/omarchy-predator-rgb/) — Omarchy RGB keyboard controller.
+- [**PredatorCtl**](https://github.com/M-H-Jishan/PredatorCtl) [![GitHub stars](https://img.shields.io/github/stars/M-H-Jishan/PredatorCtl?style=flat-square&logo=github&label=stars)](https://github.com/M-H-Jishan/PredatorCtl/) — Fan, Turbo, profiles & RGB controls.
 
 
 ## Star History
