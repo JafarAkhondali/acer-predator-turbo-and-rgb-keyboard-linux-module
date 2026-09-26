@@ -379,6 +379,7 @@ static u8 commun_fn_key_number;
 static u8 macro_key_state = 0;
 static bool cycle_gaming_thermal_profile = true;
 static bool predator_v4;
+static bool rgb_ec_enable;
 
 module_param(mailled, int, 0444);
 module_param(brightness, int, 0444);
@@ -388,6 +389,7 @@ module_param(force_caps, int, 0444);
 module_param(ec_raw_mode, bool, 0444);
 module_param(cycle_gaming_thermal_profile, bool, 0644);
 module_param(predator_v4, bool, 0444);
+module_param(rgb_ec_enable, bool, 0444);
 MODULE_PARM_DESC(mailled, "Set initial state of Mail LED");
 MODULE_PARM_DESC(brightness, "Set initial LCD backlight brightness");
 MODULE_PARM_DESC(threeg, "Set initial state of 3G hardware");
@@ -398,6 +400,8 @@ MODULE_PARM_DESC(cycle_gaming_thermal_profile,
 	"Set thermal mode key in cycle mode. Disabling it sets the mode key in turbo toggle mode");
 MODULE_PARM_DESC(predator_v4,
 	"Enable features for predator laptops that use predator sense v4");
+MODULE_PARM_DESC(rgb_ec_enable,
+	"Set the EC PredatorSense flag so the keyboard renders RGB (try it if only brightness reacts)");
 
 #ifdef lts
 int platform_profile_remove()
@@ -478,6 +482,7 @@ struct quirk_entry {
 	u8 cpu_fans;
 	u8 gpu_fans;
 	u8 predator_v4;
+	u8 rgb_ec_enable;
 };
 
 static struct quirk_entry *quirks;
@@ -625,6 +630,9 @@ static struct quirk_entry quirk_acer_predator_ph717_72 = {
 	.turbo = 1,
 	.cpu_fans = 1,
 	.gpu_fans = 1,
+};
+static struct quirk_entry quirk_acer_predator_pt314_51s = {
+	.rgb_ec_enable = 1,
 };
 static struct quirk_entry quirk_acer_predator_pt314_52s = {
 	.turbo = 1,
@@ -1024,6 +1032,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT315-51"),
 		},
 		.driver_data = &quirk_acer_predator_pt315_51,
+	},
+	{
+		.callback = dmi_matched,
+		.ident = "Acer Predator PT314-51s",
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT314-51s"),
+		},
+		.driver_data = &quirk_acer_predator_pt314_51s,
 	},
 	{
 		.callback = dmi_matched,
@@ -2556,6 +2573,31 @@ static int __init gaming_kbbl_poll_and_enable_zones(void)
 	return 0;
 }
 
+/*
+ * Some models (e.g. Predator PT314-51s) accept and store the RGB settings sent
+ * through WMI, but their EC keeps showing the default keyboard colour - only
+ * the brightness reacts - until the "PredatorSense is running" flag is set:
+ * EC register 0x03 bit 4, named PSEE in the DSDT. PredatorSense sets it on
+ * Windows; the ACPI tables declare the field but never write it.
+ */
+#define ACER_EC_APP_FLAGS		0x03
+#define ACER_EC_APP_FLAGS_PSENSE	BIT(4)
+
+static int acer_ec_enable_predator_sense(void)
+{
+	u8 flags;
+	int err;
+
+	err = ec_read(ACER_EC_APP_FLAGS, &flags);
+	if (err)
+		return err;
+
+	if (flags & ACER_EC_APP_FLAGS_PSENSE)
+		return 0;
+
+	return ec_write(ACER_EC_APP_FLAGS, flags | ACER_EC_APP_FLAGS_PSENSE);
+}
+
 static void __exit gaming_kbbl_static_cdev_exit(void)
 {
 	device_destroy(gkbbl_static_dev_class, gkbbl_static_dev);
@@ -3691,6 +3733,10 @@ static int acer_resume(struct device *dev)
 	if (acer_wmi_accel_dev)
 		acer_gsensor_init();
 
+	/* Re-assert the flag in case the EC dropped it during sleep */
+	if ((quirks->rgb_ec_enable || rgb_ec_enable) && wmi_has_guid(WMID_GUID4))
+		acer_ec_enable_predator_sense();
+
 	return 0;
 }
 #else
@@ -3897,6 +3943,9 @@ static int __init acer_wmi_init(void)
 			gaming_kbbl_cdev_init();
 			gaming_kbbl_static_cdev_init();
 			gaming_kbbl_poll_and_enable_zones();
+			if ((quirks->rgb_ec_enable || rgb_ec_enable) &&
+			    acer_ec_enable_predator_sense())
+				pr_warn("Cannot set the EC PredatorSense flag, keyboard RGB may be ignored\n");
 		}
 	}
 
