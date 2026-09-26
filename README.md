@@ -313,7 +313,7 @@ Projects based/inspired or with similar goal to this project:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&type=Date)](https://star-history.com/#JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&type=Date)](https://star-history.dera.page/#JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module&Date)
 
 
 ## License
