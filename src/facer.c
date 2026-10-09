@@ -578,6 +578,14 @@ static struct quirk_entry quirk_acer_predator_ph315_54 = {
 	.turbo = 1,
 	.cpu_fans = 1,
 	.gpu_fans = 1,
+	/*
+	 * This model answers the Predator Sense v4 fan speed queries, but the
+	 * quirk did not enable the capability. Setting it here gets
+	 * ACER_CAP_FAN_SPEED_READ (and ACER_CAP_PLATFORM_PROFILE) alongside
+	 * turbo, whereas the predator_v4=1 module parameter replaces the whole
+	 * quirk and so trades turbo away for the readings.
+	 */
+	.predator_v4 = 1,
 };
 
 static struct quirk_entry quirk_acer_predator_ph315_55 = {
