@@ -57,6 +57,11 @@
 #include <linux/unaligned.h>
 #endif
 
+/* kstrtobool() moved out of linux/kernel.h into its own header in 5.19 */
+#if RTLNX_VER_MIN(5, 19, 0)
+#include <linux/kstrtox.h>
+#endif
+
 MODULE_AUTHOR("Carlos Corbacho");
 MODULE_DESCRIPTION("Acer Laptop WMI Extras Driver");
 MODULE_LICENSE("GPL");
@@ -3711,10 +3716,68 @@ static void acer_platform_shutdown(struct platform_device *device)
 		set_u32(LED_OFF, ACER_CAP_MAILLED);
 }
 
+/*
+ * Userspace interface for turbo mode.
+ *
+ * acer_toggle_turbo() was only reachable from the chassis turbo key handler
+ * (WMID_GAMING_TURBO_KEY_EVENT, key_num 0x4). Without this, an application
+ * has no way to enable turbo, nor to tell whether it is currently on.
+ *
+ *   /sys/devices/platform/acer-wmi/turbo   0 = off, 1 = on
+ *
+ * Writing the value turbo is already in is a no-op, so the attribute is
+ * idempotent. The physical key toggles the same turbo_state, so reads stay
+ * in sync with it.
+ */
+static ssize_t turbo_show(struct device *dev,
+			  struct device_attribute *attr, char *buf)
+{
+	return sysfs_emit(buf, "%d\n", turbo_state);
+}
+
+static ssize_t turbo_store(struct device *dev, struct device_attribute *attr,
+			   const char *buf, size_t count)
+{
+	bool on;
+	int err;
+
+	err = kstrtobool(buf, &on);
+	if (err)
+		return err;
+
+	if (on != !!turbo_state)
+		acer_toggle_turbo();
+
+	return count;
+}
+static DEVICE_ATTR_RW(turbo);
+
+static struct attribute *acer_gaming_attrs[] = {
+	&dev_attr_turbo.attr,
+	NULL,
+};
+
+static umode_t acer_gaming_attr_visible(struct kobject *kobj,
+					struct attribute *attr, int n)
+{
+	if (attr == &dev_attr_turbo.attr)
+		return has_cap(ACER_CAP_TURBO_OC) ? attr->mode : 0;
+
+	return attr->mode;
+}
+
+static const struct attribute_group acer_gaming_attr_group = {
+	.attrs = acer_gaming_attrs,
+	.is_visible = acer_gaming_attr_visible,
+};
+
+__ATTRIBUTE_GROUPS(acer_gaming_attr);
+
 static struct platform_driver acer_platform_driver = {
 		.driver = {
 				.name = "acer-wmi",
 				.pm = &acer_pm,
+				.dev_groups = acer_gaming_attr_groups,
 		},
 		.probe = acer_platform_probe,
 		#if RTLNX_VER_MIN(6, 14, 0)
