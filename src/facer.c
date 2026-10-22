@@ -479,6 +479,7 @@ struct quirk_entry {
 	s8 brightness;
 	u8 bluetooth;
 	u8 turbo;
+	u8 turbo_led_v2;
 	u8 cpu_fans;
 	u8 gpu_fans;
 	u8 predator_v4;
@@ -595,6 +596,7 @@ static struct quirk_entry quirk_acer_predator_ph315_54 = {
 
 static struct quirk_entry quirk_acer_predator_ph315_55 = {
 	.turbo = 1,
+	.turbo_led_v2 = 1,
 	.cpu_fans = 1,
 	.gpu_fans = 1,
 };
@@ -2754,7 +2756,10 @@ static void acer_toggle_turbo(void)
 	if (turbo_state) {
 		turbo_state = 0;
 		/* Turn off turbo led */
-		WMID_gaming_set_u64(0x1, ACER_CAP_TURBO_LED);
+		if (quirks && quirks->turbo_led_v2)
+			WMID_gaming_set_u64(0x100001, ACER_CAP_TURBO_LED);
+		else
+			WMID_gaming_set_u64(0x1, ACER_CAP_TURBO_LED);
 
 		/* Set FAN mode to auto */
 		WMID_gaming_set_fan_mode(0x1);
@@ -2765,7 +2770,10 @@ static void acer_toggle_turbo(void)
 	} else {
 		turbo_state = 1;
 		/* Turn on turbo led */
-		WMID_gaming_set_u64(0x10001, ACER_CAP_TURBO_LED);
+		if (quirks && quirks->turbo_led_v2)
+			WMID_gaming_set_u64(0x110001, ACER_CAP_TURBO_LED);
+		else
+			WMID_gaming_set_u64(0x10001, ACER_CAP_TURBO_LED);
 
 		/* Set FAN mode to turbo */
 		WMID_gaming_set_fan_mode(0x2);
