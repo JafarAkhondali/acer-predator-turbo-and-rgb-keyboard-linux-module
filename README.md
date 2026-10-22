@@ -126,6 +126,18 @@ sudo ./install_openrc.sh
 ## Usage
 Turbo mode should work fine by using the turbo button on the keyboard.
 
+Turbo can also be read and set from userspace, which is useful for scripts and
+for laptops whose turbo key is handled elsewhere:
+
+```bash
+cat /sys/devices/platform/acer-wmi/turbo    # 0 = off, 1 = on
+echo 1 | sudo tee /sys/devices/platform/acer-wmi/turbo
+```
+
+The attribute only appears on models whose quirk enables turbo. To use it
+without `sudo`, add a udev rule such as
+`SUBSYSTEM=="platform", KERNEL=="acer-wmi", RUN+="/bin/chmod 0666 /sys/devices/platform/acer-wmi/turbo"`.
+
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate with kernel space. 
 
 You can use the `keyboard.py`, which is a simple script that provides an easy-to-understand CLI for setting your keyboard RGB. To run the script, just use the following command 
