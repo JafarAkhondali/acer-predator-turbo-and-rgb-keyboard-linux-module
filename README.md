@@ -41,7 +41,7 @@ Compatibility table:
 | PH315-52     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PH315-53     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PH315-54     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
-| PH315-55     |                                                     Yes                                                      |   [Buggy](https://github.com/JafarAkhondali/acer-predator-turbo-and-rgb-keyboard-linux-module/issues/122)   |        Yes        |      No      |
+| PH315-55     |                                                     Yes                                                      |                                          Yes (kernel 6.14+)                                                 |        Yes        |      No      |
 | PH317-53     |                                                     Yes                                                      |                                                     Yes                                                     |        Yes        |     Yes      |
 | PH317-54     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
 | PH517-51     |                                                     Yes                                                      |                                                     No                                                      |        Yes        |      No      |
@@ -125,6 +125,32 @@ sudo ./install_openrc.sh
 
 ## Usage
 Turbo mode should work fine by using the turbo button on the keyboard.
+
+### Operating modes and GPU overclock (PH315-55)
+Like PredatorSense, the PH315-55 works with operating modes. They are exposed as the platform profile (`/sys/firmware/acpi/platform_profile`, also used by power-profiles-daemon):
+
+| PredatorSense | platform profile       | fans              | GPU overclock (core / memory) |
+|---------------|------------------------|-------------------|-------------------------------|
+| Quiet         | `quiet`                | auto              | none                          |
+| Normal        | `balanced`             | auto              | none                          |
+| Extreme       | `balanced-performance` | auto              | +100 MHz / +200 MHz           |
+| Turbo         | `performance`          | max               | +100 MHz / +200 MHz           |
+
+The turbo key toggles between Turbo and the previous mode. The firmware takes care of the fans and of the CPU/GPU power budget of each mode, but the GPU overclock is applied by PredatorSense itself through NvAPI. On Linux, `facer_gpu_oc.py` does the same through NVML (NVIDIA driver 555+ recommended), only on AC power with at least 40% battery, as on Windows:
+
+```bash
+sudo ./install_gpu_oc_service.sh          # or: sudo ./install_gpu_oc_service.sh remove
+journalctl -u facer-gpu-oc -f             # shows the offsets applied on each mode change
+```
+
+In Extreme and Turbo the BIOS also raises the GPU power budget through its NVPCF table: +10 W of configurable TGP and up to +25 W of Dynamic Boost. On Linux this needs `nvidia-powerd`, the NVIDIA Dynamic Boost daemon. Without it the GPU stays at its 115 W base limit in every mode. With it, the RTX 3070 Ti limit goes from 115 W in Normal to 125 W in Turbo, and up to 150 W under load. Debian ships the service and the D-Bus policy only as examples, and the example unit points to the wrong path:
+
+```bash
+sudo apt install nvidia-powerd
+sudo install -m 644 /usr/share/doc/nvidia-powerd/examples/nvidia-dbus.conf /etc/dbus-1/system.d/
+sed 's#/usr/bin/nvidia-powerd#/usr/sbin/nvidia-powerd#' /usr/share/doc/nvidia-powerd/examples/nvidia-powerd.service | sudo tee /etc/systemd/system/nvidia-powerd.service
+sudo systemctl daemon-reload && sudo systemctl reload dbus && sudo systemctl enable --now nvidia-powerd
+```
 
 For RGB, the module will mount a new character device at `/dev/acer-gkbbl-0` to communicate with kernel space. 
 
