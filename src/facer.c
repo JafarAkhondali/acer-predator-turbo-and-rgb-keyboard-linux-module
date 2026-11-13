@@ -403,7 +403,7 @@ MODULE_PARM_DESC(predator_v4,
 MODULE_PARM_DESC(rgb_ec_enable,
 	"Set the EC PredatorSense flag so the keyboard renders RGB (try it if only brightness reacts)");
 
-#ifdef lts
+#if RTLNX_VER_MAX(5, 12, 0)
 int platform_profile_remove()
 {
 	return 0;
